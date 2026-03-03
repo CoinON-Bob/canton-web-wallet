@@ -10,17 +10,17 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = 'primary',
+  size = 'md',
   isLoading = false,
   className = '',
   disabled,
-  ...props 
+  ...props
 }) => {
   const baseStyles = "inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
-  
+
   const sizeStyles = {
     sm: "px-3 py-2 text-xs",
     md: "px-4 py-2.5 text-sm",
@@ -28,10 +28,10 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    primary: "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 shadow-lg shadow-blue-500/20",
-    secondary: "bg-white/5 text-white border border-white/10 hover:bg-white/10",
-    outline: "bg-transparent text-blue-400 border border-blue-500/30 hover:bg-blue-500/10",
-    ghost: "bg-transparent text-gray-400 hover:text-white hover:bg-white/5"
+    primary: "bg-[var(--primary)] text-[var(--text-inverse)] hover:bg-[var(--primary-600)] shadow-[var(--shadow-sm)]",
+    secondary: "bg-[var(--card)] text-[var(--text)] border border-[var(--border)] hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)]",
+    outline: "bg-transparent text-[var(--primary)] border border-[var(--primary)]/30 hover:bg-[var(--primary-subtle)]",
+    ghost: "bg-transparent text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)]"
   };
 
   return (
@@ -62,16 +62,16 @@ interface CardProps {
   onClick?: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ 
-  children, 
-  className = '', 
-  hover = false, 
-  onClick 
+export const Card: React.FC<CardProps> = ({
+  children,
+  className = '',
+  hover = false,
+  onClick
 }) => {
   return (
     <div
-      className={`bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 ${
-        hover ? 'cursor-pointer hover:bg-white/[0.05] hover:border-white/[0.12]' : ''
+      className={`rounded-2xl p-6 bg-[var(--card)] border border-[var(--border)] shadow-[var(--shadow-sm)] ${
+        hover ? 'cursor-pointer hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]' : ''
       } transition-all duration-200 ${className}`}
       onClick={onClick}
     >
@@ -88,33 +88,31 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
 }
 
-export const Input: React.FC<InputProps> = ({ 
-  label, 
-  error, 
-  icon, 
-  className = '', 
-  ...props 
+export const Input: React.FC<InputProps> = ({
+  label,
+  error,
+  icon,
+  className = '',
+  ...props
 }) => {
   return (
     <div className={className}>
       {label && (
-        <label className="block text-sm font-medium text-gray-400 mb-2">{label}</label>
+        <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">{label}</label>
       )}
       <div className="relative">
         {icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">{icon}</div>
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">{icon}</div>
         )}
         <input
-          className={`w-full bg-white/5 border ${
-            error ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-blue-500/50'
-          } rounded-xl px-4 py-3 ${icon ? 'pl-12' : ''} text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${
-            error ? 'focus:ring-red-500/10' : 'focus:ring-blue-500/10'
-          } transition-all ${className}`}
+          className={`w-full bg-[var(--input)] border ${
+            error ? 'border-[var(--error)]/50 focus:border-[var(--error)]' : 'border-[var(--input-border)] focus:border-[var(--primary)]'
+          } rounded-xl px-4 py-3 ${icon ? 'pl-12' : ''} text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all ${className}`}
           {...props}
         />
-      </div>      
+      </div>
       {error && (
-        <p className="mt-2 text-sm text-red-400">{error}</p>
+        <p className="mt-2 text-sm text-[var(--error)]">{error}</p>
       )}
     </div>
   );
@@ -128,17 +126,17 @@ interface TagProps {
   className?: string;
 }
 
-export const Tag: React.FC<TagProps> = ({ 
-  children, 
-  variant = 'default', 
-  className = '' 
+export const Tag: React.FC<TagProps> = ({
+  children,
+  variant = 'default',
+  className = ''
 }) => {
   const variants = {
-    success: 'bg-green-500/10 text-green-400 border border-green-500/20',
-    warning: 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
-    error: 'bg-red-500/10 text-red-400 border border-red-500/20',
-    info: 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-    default: 'bg-white/5 text-gray-400 border border-white/10'
+    success: 'bg-[var(--success-subtle)] text-[var(--success)] border border-[var(--success)]/20',
+    warning: 'bg-[var(--warning-subtle)] text-[var(--warning)] border border-[var(--warning)]/20',
+    error: 'bg-[var(--error-subtle)] text-[var(--error)] border border-[var(--error)]/20',
+    info: 'bg-[var(--info-subtle)] text-[var(--info)] border border-[var(--info)]/20',
+    default: 'bg-[var(--card)] text-[var(--text-secondary)] border border-[var(--border)]'
   };
 
   return (
@@ -159,11 +157,11 @@ interface ModalProps {
   footer?: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  title, 
-  children, 
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
   size = 'md',
   footer
 }) => {
@@ -177,35 +175,35 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+      <div
+        className="absolute inset-0 bg-[var(--modal-backdrop)] backdrop-blur-sm"
         onClick={onClose}
-      />      
+      />
       <motion.div
-        className={`relative bg-[#111118] border border-white/10 rounded-2xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] overflow-hidden`}
+        className={`relative bg-[var(--modal)] border border-[var(--border)] rounded-2xl shadow-[var(--shadow-xl)] w-full ${sizes[size]} max-h-[90vh] overflow-hidden`}
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.2 }}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          <h3 className="text-lg font-semibold text-white">{title}</h3>          
-          <button 
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+          <h3 className="text-lg font-semibold text-[var(--text)]">{title}</h3>
+          <button
             onClick={onClose}
-            className="p-2 text-gray-500 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors rounded-lg hover:bg-[var(--card)]"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        
+
         <div className="px-6 py-5 overflow-y-auto">
           {children}
         </div>
-        
+
         {footer && (
-          <div className="px-6 py-4 border-t border-white/10 bg-white/[0.02]">
+          <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--card)]">
             {footer}
           </div>
         )}
@@ -223,27 +221,27 @@ interface EmptyStateProps {
   action?: React.ReactNode;
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({ 
-  icon, 
-  title, 
-  description, 
-  action 
+export const EmptyState: React.FC<EmptyStateProps> = ({
+  icon,
+  title,
+  description,
+  action
 }) => (
   <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
     {icon && (
-      <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-4 text-gray-500">
+      <div className="w-16 h-16 bg-[var(--card)] rounded-2xl flex items-center justify-center mb-4 text-[var(--text-muted)]">
         {icon}
       </div>
-    )}    
-    <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>    
-    <p className="text-gray-500 max-w-sm mb-6">{description}</p>    
+    )}
+    <h3 className="text-lg font-semibold text-[var(--text)] mb-2">{title}</h3>
+    <p className="text-[var(--text-secondary)] max-w-sm mb-6">{description}</p>
     {action && <div>{action}</div>}
   </div>
 );
 
 // ==================== Page Transition 组件 ====================
 
-export const PageTransition: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
+export const PageTransition: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className = ''
 }) => (
@@ -261,7 +259,7 @@ export const PageTransition: React.FC<{ children: React.ReactNode; className?: s
 // ==================== Loading Skeleton 组件 ====================
 
 export const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`animate-pulse bg-white/5 rounded-lg ${className}`} />
+  <div className={`animate-pulse bg-[var(--card)] rounded-lg ${className}`} />
 );
 
 // ==================== Stat Card 组件 ====================
@@ -274,21 +272,21 @@ interface StatCardProps {
   icon?: React.ReactNode;
 }
 
-export const StatCard: React.FC<StatCardProps> = ({ 
-  title, 
-  value, 
-  change, 
+export const StatCard: React.FC<StatCardProps> = ({
+  title,
+  value,
+  change,
   positive = true,
-  icon 
+  icon
 }) => (
-  <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors">
+  <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 hover:bg-[var(--card-hover)] transition-colors">
     <div className="flex items-center justify-between mb-2">
-      <p className="text-sm text-gray-500">{title}</p>
-      {icon && <div className="text-gray-400">{icon}</div>}
+      <p className="text-sm text-[var(--text-muted)]">{title}</p>
+      {icon && <div className="text-[var(--text-secondary)]">{icon}</div>}
     </div>
-    <p className="text-2xl font-bold text-white">{value}</p>
+    <p className="text-2xl font-bold text-[var(--text)]">{value}</p>
     {change && (
-      <p className={`text-sm mt-1 ${positive ? 'text-green-400' : 'text-red-400'}`}>
+      <p className={`text-sm mt-1 ${positive ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
         {positive ? '↑' : '↓'} {change}
       </p>
     )}

@@ -1,5 +1,7 @@
 export { default as DashboardPage } from './Dashboard';
 export { default as LoginPage } from './Login';
+export { default as RegisterPage } from './Register';
+export { default as ForgotPasswordPage } from './ForgotPassword';
 export { default as AssetsPage } from './Assets';
 export { default as SendPage } from './Send';
 export { default as SwapPage } from './Swap';

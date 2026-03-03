@@ -22,6 +22,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { useWalletStore } from '../../store';
+import { shortAddress, getCantonExplorerUrl } from '../../utils/address';
 import { Modal, useToast, ToastManager } from '../ui';
 
 // ==================== 导航项配置 ====================
@@ -75,26 +76,30 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
     navigate('/login');
   };
 
-  const formatAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  // 使用 Canton 地址短格式
+  const formatAddress = (addr: string) => shortAddress(addr, 6, 4);
+
+  // Canton Explorer 链接（阶段1占位）
+  const explorerUrl = getCantonExplorerUrl(user?.walletAddress || '');
 
   return (
     <>
-      <header className="h-14 bg-[#0a0a0f]/95 backdrop-blur border-b border-white/5 flex items-center justify-between px-3 sm:px-4 sticky top-0 z-50">
+      <header className="h-14 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)] flex items-center justify-between px-3 sm:px-4 sticky top-0 z-50">
         {/* Left: Menu Toggle + Logo */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 -ml-1 hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
+            className="lg:hidden p-2 -ml-1 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
             aria-label="Open menu"
           >
-            <Menu className="w-5 h-5 text-gray-400" />
+            <Menu className="w-5 h-5 text-[var(--text-muted)]" />
           </button>
           
           <Link to="/dashboard" className="flex items-center gap-2">
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-sm font-bold">C</span>
+              <span className="text-[var(--text)] text-sm font-bold">C</span>
             </div>
-            <span className="font-semibold text-white text-sm hidden sm:block">Canton</span>
+            <span className="font-semibold text-[var(--text)] text-sm hidden sm:block">Canton</span>
           </Link>
         </div>
 
@@ -102,9 +107,9 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
         <div className="flex items-center gap-2">
           {/* Network Badge - Hidden on smallest screens */}
           
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-white/5 rounded-lg border border-white/5">
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-xs text-gray-300">Canton</span>
+            <span className="text-xs text-[var(--text-secondary)]">Canton</span>
           </div>
 
           {/* Wallet Address Button */}
@@ -112,17 +117,17 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           <div className="relative">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center gap-2 px-2 sm:px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg border border-white/5 transition-colors touch-manipulation min-h-[36px]"
+              className="flex items-center gap-2 px-2 sm:px-3 py-1.5 bg-[var(--card)] hover:bg-[var(--card-hover)] rounded-lg border border-[var(--border)] transition-colors touch-manipulation min-h-[36px]"
             >
               <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white text-[10px] font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
+                <span className="text-[var(--text)] text-[10px] font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
               </div>
               
-              <span className="text-sm text-white font-mono hidden sm:block">
+              <span className="text-sm text-[var(--text)] font-mono hidden sm:block">
                 {user?.walletAddress ? formatAddress(user.walletAddress) : ''}
               </span>
               
-              <ChevronDown className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] flex-shrink-0 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {/* Dropdown Menu */}
@@ -140,23 +145,23 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.1 }}
-                    className="absolute right-0 top-full mt-2 w-[280px] sm:w-72 bg-[#111118] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50"
+                    className="absolute right-0 top-full mt-2 w-[280px] sm:w-72 bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-xl shadow-2xl overflow-hidden z-50"
                   >
                     {/* Address Section */}
-                    <div className="p-4 border-b border-white/5">
-                      <p className="text-xs text-gray-500 mb-2">Connected Wallet</p>
+                    <div className="p-4 border-b border-[var(--border)]">
+                      <p className="text-xs text-[var(--text-muted)] mb-2">Connected Wallet</p>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm text-white font-mono truncate flex-1">{user?.walletAddress}</p>
+                        <p className="text-sm text-[var(--text)] font-mono truncate flex-1">{user?.walletAddress}</p>
                         <button
                           onClick={handleCopyAddress}
-                          className="p-2 hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
+                          className="p-2 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
                           title="Copy address"
                         >
-                          <Copy className="w-4 h-4 text-gray-400 hover:text-white" />
+                          <Copy className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--text)]" />
                         </button>
                       </div>
                       
-                      <p className="text-xs text-gray-500 mt-2 truncate">{user?.email}</p>
+                      <p className="text-xs text-[var(--text-muted)] mt-2 truncate">{user?.email}</p>
                     </div>
 
                     {/* Menu Items */}
@@ -164,28 +169,29 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <Link
                         to="/settings"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
                       >
                         <Settings className="w-4 h-4" />
                         Settings
                       </Link>
                       
-                      <a
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setIsMenuOpen(false);
-                          window.open(`https://explorer.canton.network/address/${user?.walletAddress}`, '_blank');
-                        }}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        View on Explorer
-                      </a>
+                      {/* Explorer 链接 - 阶段1隐藏，阶段2启用 */}
+                      {explorerUrl && (
+                        <a
+                          href={explorerUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          View on Explorer
+                        </a>
+                      )}
                     </div>
 
                     {/* Sign Out */}
-                    <div className="p-2 border-t border-white/5">
+                    <div className="p-2 border-t border-[var(--border)]">
                       <button
                         onClick={() => {
                           setIsMenuOpen(false);
@@ -215,20 +221,20 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           <div className="flex gap-3">
             <button
               onClick={() => setShowLogoutConfirm(false)}
-              className="flex-1 px-4 py-3 text-sm text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-colors touch-manipulation"
+              className="flex-1 px-4 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] bg-[var(--card)] hover:bg-[var(--card-hover)] rounded-xl transition-colors touch-manipulation"
             >
               {t('common.cancel')}
             </button>
             <button
               onClick={handleLogout}
-              className="flex-1 px-4 py-3 text-sm text-white bg-red-500 hover:bg-red-600 rounded-xl transition-colors touch-manipulation"
+              className="flex-1 px-4 py-3 text-sm text-[var(--text)] bg-red-500 hover:bg-red-600 rounded-xl transition-colors touch-manipulation"
             >
               {t('common.confirmLogout')}
             </button>
           </div>
         }
       >
-        <p className="text-gray-400 text-sm">{t('common.logoutDesc')}</p>
+        <p className="text-[var(--text-muted)] text-sm">{t('common.logoutDesc')}</p>
       </Modal>
     </>
   );
@@ -297,7 +303,7 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
         <>
           {/* Backdrop */}
           <motion.div
-            className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="lg:hidden fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -306,7 +312,7 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
           
           {/* Drawer */}
           <motion.aside
-            className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[#0a0a0f] border-r border-white/10 z-50 flex flex-col"
+            className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[var(--bg)] border-r border-[var(--border-strong)] z-50 flex flex-col"
             initial={{ x: '-100%' }}
             animate={{ x: translateX }}
             exit={{ x: '-100%' }}
@@ -316,16 +322,16 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             onTouchEnd={onTouchEnd}
           >
             {/* Drawer Header */}
-            <div className="h-14 flex items-center justify-between px-4 border-b border-white/5">
+            <div className="h-14 flex items-center justify-between px-4 border-b border-[var(--border)]">
               <Link to="/dashboard" className="flex items-center gap-2" onClick={onClose}>
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">C</span>
+                  <span className="text-[var(--text)] text-sm font-bold">C</span>
                 </div>
-                <span className="font-semibold text-white">Canton</span>
+                <span className="font-semibold text-[var(--text)]">Canton</span>
               </Link>
               
               <button
-                className="p-2 -mr-1 text-gray-400 hover:text-white touch-manipulation"
+                className="p-2 -mr-1 text-[var(--text-muted)] hover:text-[var(--text)] touch-manipulation"
                 onClick={onClose}
                 aria-label="Close menu"
               >
@@ -345,12 +351,12 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
                     to={item.path}
                     className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all touch-manipulation ${
                       isActive
-                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        ? 'bg-[var(--primary-subtle)] text-[var(--primary)] border border-[var(--primary)]/20'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--card)]'
                     }`}
                     onClick={onClose}
                   >
-                    <span className={isActive ? 'text-blue-400' : 'text-gray-500'}>
+                    <span className={isActive ? 'text-[var(--primary)]' : 'text-[var(--text-muted)]'}>
                       <Icon className="w-5 h-5" />
                     </span>
                     <span className="text-base font-medium">{t(item.labelKey)}</span>
@@ -360,14 +366,14 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             </nav>
 
             {/* User Info */}
-            <div className="p-4 border-t border-white/5">
+            <div className="p-4 border-t border-[var(--border)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
+                  <span className="text-[var(--text)] text-sm font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-white truncate">{user?.email}</p>
-                  <p className="text-xs text-gray-500 font-mono">
+                  <p className="text-sm text-[var(--text)] truncate">{user?.email}</p>
+                  <p className="text-xs text-[var(--text-muted)] font-mono">
                     {user?.walletAddress?.slice(0, 6)}...{user?.walletAddress?.slice(-4)}
                   </p>
                 </div>
@@ -391,7 +397,7 @@ const DesktopSidebar: React.FC = () => {
 
   return (
     <motion.aside
-      className="hidden lg:flex flex-col h-[calc(100vh-56px)] sticky top-14 border-r border-white/5 bg-[#0a0a0f]"
+      className="hidden lg:flex flex-col h-[calc(100vh-56px)] sticky top-14 border-r border-[var(--border)] bg-[var(--bg)]"
       initial={false}
       animate={{ width: isCollapsed ? 64 : 200 }}
       transition={{ duration: 0.2, ease: 'easeInOut' }}
@@ -399,7 +405,7 @@ const DesktopSidebar: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-4 w-6 h-6 bg-[#111118] border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white z-10"
+        className="absolute -right-3 top-4 w-6 h-6 bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] z-10"
         title={isCollapsed ? 'Expand' : 'Collapse'}
       >
         <ChevronDown className={`w-3 h-3 transition-transform ${isCollapsed ? '-rotate-90' : 'rotate-90'}`} />
@@ -417,12 +423,12 @@ const DesktopSidebar: React.FC = () => {
               to={item.path}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
                 isActive
-                  ? 'bg-blue-500/10 text-blue-400'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--card)]'
               }`}
               title={isCollapsed ? t(item.labelKey) : undefined}
             >
-              <span className={isActive ? 'text-blue-400' : 'text-gray-500'}>
+              <span className={isActive ? 'text-[var(--primary)]' : 'text-[var(--text-muted)]'}>
                 <Icon className="w-4 h-4 flex-shrink-0" />
               </span>
               
@@ -451,15 +457,15 @@ const DesktopSidebar: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="p-3 border-t border-white/5"
+            className="p-3 border-t border-[var(--border)]"
           >
             <div className="flex items-center gap-3 px-2">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white text-xs font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
+                <span className="text-[var(--text)] text-xs font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
               </div>
               <div className="min-w-0">
-                <p className="text-sm text-white truncate">{user?.email?.split('@')[0]}</p>
-                <p className="text-xs text-gray-500">Institutional</p>
+                <p className="text-sm text-[var(--text)] truncate">{user?.email?.split('@')[0]}</p>
+                <p className="text-xs text-[var(--text-muted)]">Institutional</p>
               </div>
             </div>
           </motion.div>
@@ -476,7 +482,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const { toasts, removeToast } = useToast();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
+    <div className="min-h-screen bg-[var(--bg)]">
       <WalletControlBar onMenuClick={() => setIsDrawerOpen(true)} />
       
       <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

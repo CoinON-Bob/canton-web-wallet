@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Copy, Wallet, DollarSign, FileText, QrCode as QrIcon } from 'lucide-react';
 import QRCode from 'qrcode';
+import { shortAddress } from '../../utils/address';
 import { Card } from './index';
 
 interface ReceiveModalProps {
@@ -92,7 +93,7 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-[var(--bg-overlay)] backdrop-blur-sm z-50"
             onClick={onClose}
           />
 
@@ -107,41 +108,41 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <Card className="bg-[#111118] border-white/10 rounded-t-3xl sm:rounded-2xl p-6 max-h-[90vh] overflow-auto">
+            <Card className="bg-[var(--bg-elevated)] border-[var(--border)] rounded-t-3xl sm:rounded-2xl p-6 max-h-[90vh] overflow-auto">
               {/* Handle bar for mobile */}
               
-              <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6 sm:hidden" />
+              <div className="w-12 h-1 bg-[var(--border-strong)] rounded-full mx-auto mb-6 sm:hidden" />
 
               {/* Header */}
               
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center">
-                    <Wallet className="w-5 h-5 text-green-400" />
+                  <div className="w-10 h-10 bg-[var(--success-subtle)] rounded-xl flex items-center justify-center">
+                    <Wallet className="w-5 h-5 text-[var(--success)]" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">Receive</h3>
-                    <p className="text-sm text-gray-500">Share your address to receive funds</p>
+                    <h3 className="text-lg font-semibold text-[var(--text)]">Receive</h3>
+                    <p className="text-sm text-[var(--text-muted)]">Share your address to receive funds</p>
                   </div>
                 </div>
                 
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
+                  className="p-2 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
                 >
-                  <X className="w-5 h-5 text-gray-400" />
+                  <X className="w-5 h-5 text-[var(--text-secondary)]" />
                 </button>
               </div>
 
               {/* Tab Switcher */}
               
-              <div className="flex bg-white/5 rounded-xl p-1 mb-6">
+              <div className="flex bg-[var(--card)] rounded-xl p-1 mb-6">
                 <button
                   onClick={() => setActiveTab('qr')}
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all touch-manipulation ${
                     activeTab === 'qr' 
-                      ? 'bg-white/10 text-white' 
-                      : 'text-gray-500 hover:text-gray-300'
+                      ? 'bg-[var(--card-hover)] text-[var(--text)]' 
+                      : 'text-[var(--text-muted)] hover:text-gray-300'
                   }`}
                 >
                   <QrIcon className="w-4 h-4" />
@@ -152,8 +153,8 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
                   onClick={() => setActiveTab('address')}
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all touch-manipulation ${
                     activeTab === 'address' 
-                      ? 'bg-white/10 text-white' 
-                      : 'text-gray-500 hover:text-gray-300'
+                      ? 'bg-[var(--card-hover)] text-[var(--text)]' 
+                      : 'text-[var(--text-muted)] hover:text-gray-300'
                   }`}
                 >
                   <Wallet className="w-4 h-4" />
@@ -172,7 +173,7 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
                   {/* Amount Input (Optional) */}
                   
                   <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
                       <DollarSign className="w-4 h-4" />
                     </div>
                     <input
@@ -180,14 +181,14 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
                       placeholder="Amount (optional)"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-500 focus:outline-none focus:border-[var(--primary)] transition-colors"
                     />
                   </div>
 
                   {/* Note Input (Optional) */}
                   
                   <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
                       <FileText className="w-4 h-4" />
                     </div>
                     
@@ -196,7 +197,7 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
                       placeholder="Note (optional)"
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+                      className="w-full pl-11 pr-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-500 focus:outline-none focus:border-[var(--primary)] transition-colors"
                     />
                   </div>
 
@@ -216,7 +217,7 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
                     </div>
                   </div>
 
-                  <p className="text-center text-sm text-gray-500">
+                  <p className="text-center text-sm text-[var(--text-muted)]">
                     Scan with any wallet app to send funds
                   </p>
                 </motion.div>
@@ -230,23 +231,26 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
                   animate={{ opacity: 1 }}
                   className="space-y-4"
                 >
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                    <p className="text-xs text-gray-500 mb-2">Your Wallet Address</p>
+                  <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+                    <p className="text-xs text-[var(--text-muted)] mb-2">Your Wallet Address</p>
                     <div className="flex items-center gap-3">
-                      <p className="text-sm text-white font-mono break-all flex-1">{address}</p>
+                      <p className="text-sm text-[var(--text)] font-mono break-all flex-1">{address}</p>
                       
                       <button
                         onClick={onCopy}
-                        className="p-2.5 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-colors touch-manipulation flex-shrink-0"
+                        className="p-2.5 bg-[var(--primary-subtle)] hover:bg-[var(--primary)]/20 rounded-xl transition-colors touch-manipulation flex-shrink-0"
                         title="Copy address"
                       >
-                        <Copy className="w-5 h-5 text-blue-400" />
+                        <Copy className="w-5 h-5 text-[var(--primary)]" />
                       </button>
                     </div>
+                    <p className="text-xs text-[var(--text-muted)] mt-2 font-mono">
+                      {shortAddress(address, 8, 6)}
+                    </p>
                   </div>
 
-                  <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
-                    <p className="text-sm text-yellow-400">
+                  <div className="bg-[var(--warning-subtle)] border border-[var(--warning)]/20 rounded-xl p-4">
+                    <p className="text-sm text-[var(--warning)]">
                       ⚠️ Only send assets on Canton Network to this address. 
                       Sending from other networks may result in permanent loss.
                     </p>

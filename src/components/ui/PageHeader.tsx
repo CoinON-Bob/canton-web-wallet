@@ -41,34 +41,34 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
     <motion.header
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-40 bg-[#0a0a0f]/95 backdrop-blur border-b border-white/5 px-4 py-3"
+      className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)] px-4 py-3"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {showBack && (
             <button
               onClick={handleBack}
-              className="p-2 -ml-2 hover:bg-white/5 rounded-lg transition-colors touch-manipulation active:scale-95"
+              className="p-2 -ml-2 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation active:scale-95"
               aria-label="Go back"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-400" />
+              <ArrowLeft className="w-5 h-5 text-[var(--text-secondary)]" />
             </button>
           )}
           
           <div>
-            <h1 className="text-lg font-semibold text-white">{title}</h1>
+            <h1 className="text-lg font-semibold text-[var(--text)]">{title}</h1>
             
             {/* Breadcrumb */}
             
             {breadcrumb.length > 1 && (
-              <nav className="flex items-center gap-1 text-xs text-gray-500">
+              <nav className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
                 {breadcrumb.map((crumb, index) => (
                   <React.Fragment key={crumb.path}>
                     {index > 0 && <ChevronRight className="w-3 h-3" />}
                     <button
                       onClick={() => navigate(crumb.path)}
-                      className={`hover:text-gray-300 transition-colors ${
-                        index === breadcrumb.length - 1 ? 'text-gray-400' : ''
+                      className={`hover:text-[var(--text-secondary)] transition-colors ${
+                        index === breadcrumb.length - 1 ? 'text-[var(--text-secondary)]' : ''
                       }`}
                     >
                       {crumb.label}
@@ -79,7 +79,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             )}
             
             {subtitle && !breadcrumb.length && (
-              <p className="text-xs text-gray-500">{subtitle}</p>
+              <p className="text-xs text-[var(--text-muted)]">{subtitle}</p>
             )}
           </div>
         </div>

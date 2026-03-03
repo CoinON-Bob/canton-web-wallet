@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useWalletStore } from '../store';
-import { Button, Input, Card, PageTransition } from '../components/ui';
+import { MOCK_CANTON_ADDRESS } from '../config/canton';
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 // ==================== 图标 ====================
 
@@ -28,42 +30,51 @@ const Icons = {
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { setUser } = useWalletStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    if (!email && !password) {
-      // Demo mode
-      setUser({
-        email: 'institutional@canton.network',
-        walletAddress: '0x' + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-        isAuthenticated: true
-      });
-    } else if (email && password) {
-      setUser({
-        email,
-        walletAddress: '0x' + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-        isAuthenticated: true
-      });
-    } else {
-      setError('Please enter both email and password');
+    // 验证
+    if (!email || !password) {
+      setError(t('login.errors.required'));
+      return;
     }
     
+    setIsLoading(true);
+    
+    // 模拟 API 调用
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // 登录成功
+    setUser({
+      email,
+      walletAddress: MOCK_CANTON_ADDRESS,
+      isAuthenticated: true
+    });
+    
     setIsLoading(false);
+    
+    // 检查是否有 redirect 参数
+    const redirect = searchParams.get('redirect');
+    navigate(redirect || '/dashboard');
+  };
+
+  const fillDemoCredentials = () => {
+    setEmail('institutional@canton.network');
+    setPassword('demo123');
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Background decorations - subtle gradient orbs */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
@@ -104,6 +115,7 @@ export const LoginPage: React.FC = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* 邮箱 */}
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-2">{t('login.email')}</label>
               <div className="relative">
@@ -120,19 +132,32 @@ export const LoginPage: React.FC = () => {
               </div>
             </div>
 
+            {/* 密码 */}
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">{t('login.password')}</label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-gray-400">{t('login.password')}</label>
+                <Link to="/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                  {t('login.forgotPassword')}
+                </Link>
+              </div>
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                   <Icons.Lock />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={t('login.passwordPlaceholder')}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors text-sm"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
@@ -146,6 +171,7 @@ export const LoginPage: React.FC = () => {
               </motion.div>
             )}
 
+            {/* 登录按钮 */}
             <button
               type="submit"
               disabled={isLoading}
@@ -157,23 +183,37 @@ export const LoginPage: React.FC = () => {
                   {t('login.signingIn')}
                 </>
               ) : (
-                t('login.signIn')
+                <>
+                  {t('login.signIn')}
+                  <ArrowRight className="w-4 h-4" />
+                </>
               )}
             </button>
 
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('institutional@canton.network');
-                  setPassword('demo123');
-                }}
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-              >
-                Use demo credentials
-              </button>
-            </div>
+            {/* Demo 账号按钮 */}
+            <button
+              type="button"
+              onClick={fillDemoCredentials}
+              className="w-full py-2 text-xs text-gray-500 hover:text-gray-300 transition-colors"
+            >
+              {t('login.useDemo')}
+            </button>
           </form>
+
+          {/* 分隔线 */}
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-sm text-gray-500">{t('login.or')}</span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
+
+          {/* 注册入口 */}
+          <p className="text-center text-gray-400">
+            {t('login.noAccount')}{' '}
+            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-medium">
+              {t('login.signUp')}
+            </Link>
+          </p>
 
           {/* Security Notice */}
           <div className="mt-6 pt-5 border-t border-white/10">
@@ -192,7 +232,7 @@ export const LoginPage: React.FC = () => {
         </motion.div>
 
         <p className="text-center text-gray-600 text-xs mt-6">
-          © 2024 Canton Network. All rights reserved.
+          © {new Date().getFullYear()} Canton Network. All rights reserved.
         </p>
       </motion.div>
     </div>

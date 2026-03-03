@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -26,6 +27,7 @@ type FilterStatus = 'all' | TransactionStatus;
 type FilterType = 'all' | TransactionType;
 
 export const ActivityPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { transactions } = useWalletStore();
   
@@ -97,10 +99,10 @@ export const ActivityPage: React.FC = () => {
 
   const getStatusIcon = (status: TransactionStatus) => {
     switch (status) {
-      case 'Confirmed': return <CheckCircle className="w-4 h-4 text-green-400" />;
-      case 'Failed': return <XCircle className="w-4 h-4 text-red-400" />;
-      case 'Pending': return <Clock className="w-4 h-4 text-yellow-400" />;
-      default: return <Clock className="w-4 h-4 text-blue-400" />;
+      case 'Confirmed': return <CheckCircle className="w-4 h-4 text-[var(--success)]" />;
+      case 'Failed': return <XCircle className="w-4 h-4 text-[var(--error)]" />;
+      case 'Pending': return <Clock className="w-4 h-4 text-[var(--warning)]" />;
+      default: return <Clock className="w-4 h-4 text-[var(--primary)]" />;
     }
   };
 
@@ -123,8 +125,8 @@ export const ActivityPage: React.FC = () => {
   return (
     <PageTransition className="min-h-screen">
       <PageHeader 
-        title="Activity" 
-        subtitle="View your transaction history"
+        title={t('activity.title')} 
+        subtitle={t('activity.subtitle')}
       />
       
       <div className="p-4 lg:p-6 max-w-4xl mx-auto space-y-4">
@@ -132,18 +134,18 @@ export const ActivityPage: React.FC = () => {
         
         <div className="grid grid-cols-3 gap-3">
           <Card className="p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Confirmed</p>
-            <p className="text-2xl font-bold text-green-400">{stats.confirmed}</p>
+            <p className="text-xs text-[var(--text-muted)] mb-1">Confirmed</p>
+            <p className="text-2xl font-bold text-[var(--success)]">{stats.confirmed}</p>
           </Card>
           
           <Card className="p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Pending</p>
-            <p className="text-2xl font-bold text-yellow-400">{stats.pending}</p>
+            <p className="text-xs text-[var(--text-muted)] mb-1">Pending</p>
+            <p className="text-2xl font-bold text-[var(--warning)]">{stats.pending}</p>
           </Card>
           
           <Card className="p-4 text-center">
-            <p className="text-xs text-gray-500 mb-1">Failed</p>
-            <p className="text-2xl font-bold text-red-400">{stats.failed}</p>
+            <p className="text-xs text-[var(--text-muted)] mb-1">Failed</p>
+            <p className="text-2xl font-bold text-[var(--error)]">{stats.failed}</p>
           </Card>
         </div>
 
@@ -152,20 +154,20 @@ export const ActivityPage: React.FC = () => {
         <Card className="p-4">
           <div className="flex gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
               <input
                 type="text"
                 placeholder="Search by token, address, or hash..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
               />
             </div>
             
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-colors ${
-                showFilters ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                showFilters ? 'bg-blue-500/20 text-[var(--primary)]' : 'bg-[var(--card-hover)] text-[var(--text-secondary)] hover:bg-[var(--card-active)]'
               }`}
             >
               <Filter className="w-5 h-5" />
@@ -180,10 +182,10 @@ export const ActivityPage: React.FC = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mt-4 pt-4 border-t border-white/5 space-y-4"
+              className="mt-4 pt-4 border-t border-[var(--border-subtle)] space-y-4"
             >
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Status</label>
+                <label className="block text-sm text-[var(--text-secondary)] mb-2">Status</label>
                 <div className="flex flex-wrap gap-2">
                   {(['all', 'Confirmed', 'Pending', 'Failed', 'Created', 'Signing', 'Broadcasted'] as FilterStatus[]).map(status => (
                     <button
@@ -191,8 +193,8 @@ export const ActivityPage: React.FC = () => {
                       onClick={() => setStatusFilter(status)}
                       className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                         statusFilter === status 
-                          ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
-                          : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                          ? 'bg-blue-500/20 text-[var(--primary)] border border-blue-500/30' 
+                          : 'bg-[var(--card-hover)] text-[var(--text-secondary)] hover:bg-[var(--card-active)]'
                       }`}
                     >
                       {status === 'all' ? 'All' : status}
@@ -202,7 +204,7 @@ export const ActivityPage: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Type</label>
+                <label className="block text-sm text-[var(--text-secondary)] mb-2">Type</label>
                 <div className="flex flex-wrap gap-2">
                   {(['all', 'Send', 'Receive', 'Swap', 'Batch', 'Offer'] as FilterType[]).map(type => (
                     <button
@@ -210,8 +212,8 @@ export const ActivityPage: React.FC = () => {
                       onClick={() => setTypeFilter(type)}
                       className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                         typeFilter === type 
-                          ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
-                          : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                          ? 'bg-blue-500/20 text-[var(--primary)] border border-blue-500/30' 
+                          : 'bg-[var(--card-hover)] text-[var(--text-secondary)] hover:bg-[var(--card-active)]'
                       }`}
                     >
                       {type === 'all' ? 'All' : type}
@@ -228,16 +230,16 @@ export const ActivityPage: React.FC = () => {
         <div className="space-y-4">
           {Object.entries(groupedTransactions).length === 0 ? (
             <Card className="p-12 text-center">
-              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-gray-500" />
+              <div className="w-16 h-16 bg-[var(--card-hover)] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Clock className="w-8 h-8 text-[var(--text-muted)]" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">No transactions found</h3>
-              <p className="text-gray-500">Try adjusting your search or filters</p>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-2">No transactions found</h3>
+              <p className="text-[var(--text-muted)]">Try adjusting your search or filters</p>
             </Card>
           ) : (
             Object.entries(groupedTransactions).map(([date, txs]) => (
               <div key={date}>
-                <p className="text-sm text-gray-500 mb-3 sticky top-0 bg-[#0a0a0f]/95 backdrop-blur py-2 z-10">{date}</p>
+                <p className="text-sm text-[var(--text-muted)] mb-3 sticky top-0 bg-[var(--bg)]/95 backdrop-blur py-2 z-10">{date}</p>
                 
                 <div className="space-y-2">
                   {txs.map((tx, index) => (
@@ -248,18 +250,18 @@ export const ActivityPage: React.FC = () => {
                       transition={{ delay: index * 0.05 }}
                       className="group"
                     >
-                      <Card className="p-4 hover:bg-white/[0.03] transition-colors cursor-pointer"
+                      <Card className="p-4 hover:bg-[var(--card)]/[0.03] transition-colors cursor-pointer"
                         onClick={() => navigate(`/activity/${tx.id}`)}
                       >
                         <div className="flex items-center gap-4">
                           {/* Icon */}
                           
                           <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                            tx.type === 'Send' ? 'bg-red-500/10 text-red-400' :
-                            tx.type === 'Receive' ? 'bg-green-500/10 text-green-400' :
+                            tx.type === 'Send' ? 'bg-[var(--error-subtle)] text-[var(--error)]' :
+                            tx.type === 'Receive' ? 'bg-[var(--success-subtle)] text-[var(--success)]' :
                             tx.type === 'Swap' ? 'bg-purple-500/10 text-purple-400' :
                             tx.type === 'Batch' ? 'bg-orange-500/10 text-orange-400' :
-                            'bg-blue-500/10 text-blue-400'
+                            'bg-[var(--primary-subtle)] text-[var(--primary)]'
                           }`}>
                             {getTxIcon(tx.type)}
                           </div>
@@ -268,18 +270,18 @@ export const ActivityPage: React.FC = () => {
                           
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="text-white font-medium">{tx.type}</span>
+                              <span className="text-[var(--text)] font-medium">{tx.type}</span>
                               <Tag variant={getStatusVariant(tx.status)} className="text-xs">
                                 {tx.status}
                               </Tag>
                             </div>
                             
-                            <p className="text-sm text-gray-500 truncate">
+                            <p className="text-sm text-[var(--text-muted)] truncate">
                               {tx.description || `${tx.type} ${tx.amount} ${tx.token}`}
                             </p>
                             
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-gray-600 font-mono">
+                              <span className="text-xs text-[var(--text-muted)] font-mono">
                                 {tx.hash.slice(0, 10)}...{tx.hash.slice(-8)}
                               </span>
                               
@@ -288,9 +290,9 @@ export const ActivityPage: React.FC = () => {
                                   e.stopPropagation();
                                   handleCopyHash(tx.hash);
                                 }}
-                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-white/5 rounded transition-all"
+                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-[var(--card-hover)] rounded transition-all"
                               >
-                                <Copy className="w-3 h-3 text-gray-500" />
+                                <Copy className="w-3 h-3 text-[var(--text-muted)]" />
                               </button>
                             </div>
                           </div>
@@ -298,16 +300,16 @@ export const ActivityPage: React.FC = () => {
                           {/* Amount & Time */}
                           
                           <div className="text-right">
-                            <p className="text-white font-medium">
+                            <p className="text-[var(--text)] font-medium">
                               {tx.type === 'Send' ? '-' : tx.type === 'Receive' ? '+' : ''}
                               {tx.amount} {tx.token}
                             </p>
                             
-                            <p className="text-sm text-gray-500">{formatTime(tx.timestamp)}</p>
+                            <p className="text-sm text-[var(--text-muted)]">{formatTime(tx.timestamp)}</p>
                             
                             <div className="flex items-center justify-end gap-1 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               {getStatusIcon(tx.status)}
-                              <ExternalLink className="w-3 h-3 text-gray-500" />
+                              <ExternalLink className="w-3 h-3 text-[var(--text-muted)]" />
                             </div>
                           </div>
                         </div>

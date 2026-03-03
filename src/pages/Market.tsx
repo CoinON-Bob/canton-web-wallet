@@ -186,10 +186,10 @@ export const MarketPage: React.FC = () => {
   };
 
   const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <span className="text-gray-600">↕</span>;
+    if (sortField !== field) return <span className="text-[var(--text-muted)]">↕</span>;
     return sortOrder === 'desc' ? 
-      <span className="text-blue-400">↓</span> : 
-      <span className="text-blue-400">↑</span>;
+      <span className="text-[var(--primary)]">↓</span> : 
+      <span className="text-[var(--primary)]">↑</span>;
   };
 
   return (
@@ -202,21 +202,21 @@ export const MarketPage: React.FC = () => {
         <Card className="p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
               <input
                 type="text"
                 placeholder={t('market.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
               />
             </div>
             
-            <div className="flex bg-white/5 rounded-xl p-1">
+            <div className="flex bg-[var(--card-hover)] rounded-xl p-1">
               <button
                 onClick={() => setActiveTab('all')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === 'all' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-gray-300'
+                  activeTab === 'all' ? 'bg-[var(--card-active)] text-[var(--text)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-secondary)]'
                 }`}
               >
                 {t('market.allTokens')}
@@ -225,7 +225,7 @@ export const MarketPage: React.FC = () => {
               <button
                 onClick={() => setActiveTab('pinned')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                  activeTab === 'pinned' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-gray-300'
+                  activeTab === 'pinned' ? 'bg-[var(--card-active)] text-[var(--text)]' : 'text-[var(--text-secondary)] hover:text-[var(--text-secondary)]'
                 }`}
               >
                 <Star className="w-4 h-4" />
@@ -240,12 +240,12 @@ export const MarketPage: React.FC = () => {
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-white/5">
+              <thead className="bg-[var(--card-hover)]">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400">#</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400">Token</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-[var(--text-secondary)]">#</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-[var(--text-secondary)]">Token</th>
                   <th 
-                    className="px-4 py-3 text-right text-xs font-medium text-gray-400 cursor-pointer hover:text-white"
+                    className="px-4 py-3 text-right text-xs font-medium text-[var(--text-secondary)] cursor-pointer hover:text-[var(--text)]"
                     onClick={() => handleSort('marketCap')}
                   >
                     <div className="flex items-center justify-end gap-1">
@@ -254,7 +254,7 @@ export const MarketPage: React.FC = () => {
                     </div>
                   </th>
                   <th 
-                    className="px-4 py-3 text-right text-xs font-medium text-gray-400 cursor-pointer hover:text-white"
+                    className="px-4 py-3 text-right text-xs font-medium text-[var(--text-secondary)] cursor-pointer hover:text-[var(--text)]"
                     onClick={() => handleSort('change24h')}
                   >
                     <div className="flex items-center justify-end gap-1">
@@ -263,7 +263,7 @@ export const MarketPage: React.FC = () => {
                     </div>
                   </th>
                   <th 
-                    className="px-4 py-3 text-right text-xs font-medium text-gray-400 cursor-pointer hover:text-white"
+                    className="px-4 py-3 text-right text-xs font-medium text-[var(--text-secondary)] cursor-pointer hover:text-[var(--text)]"
                     onClick={() => handleSort('volume24h')}
                   >
                     <div className="flex items-center justify-end gap-1">
@@ -281,29 +281,29 @@ export const MarketPage: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.03 }}
-                    className="hover:bg-white/[0.03] cursor-pointer transition-colors"
+                    className="hover:bg-[var(--card)]/[0.03] cursor-pointer transition-colors"
                     onClick={() => navigate(`/market/${token.symbol.toLowerCase()}`)}
                   >
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">{index + 1}</span>
+                        <span className="text-sm text-[var(--text-muted)]">{index + 1}</span>
                         {token.pinned && (
-                          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                          <Star className="w-4 h-4 text-[var(--warning)] fill-yellow-400" />
                         )}
                       </div>
                     </td>
                     
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-xl">
+                        <div className="w-10 h-10 bg-[var(--primary-subtle)] rounded-xl flex items-center justify-center text-xl">
                           {token.icon}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-white">{token.symbol}</span>
+                            <span className="font-semibold text-[var(--text)]">{token.symbol}</span>
                           </div>
-                          <p className="text-sm text-gray-500">{token.name}</p>
-                          <p className="text-sm font-medium text-white mt-0.5">
+                          <p className="text-sm text-[var(--text-muted)]">{token.name}</p>
+                          <p className="text-sm font-medium text-[var(--text)] mt-0.5">
                             ${formatPrice(token.price)}
                           </p>
                         </div>
@@ -311,12 +311,12 @@ export const MarketPage: React.FC = () => {
                     </td>
                     
                     <td className="px-4 py-4 text-right">
-                      <span className="text-white">{formatMarketCap(token.marketCap)}</span>
+                      <span className="text-[var(--text)]">{formatMarketCap(token.marketCap)}</span>
                     </td>
                     
                     <td className="px-4 py-4 text-right">
                       <div className={`flex items-center justify-end gap-1 ${
-                        token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
+                        token.change24h >= 0 ? 'text-[var(--success)]' : 'text-[var(--error)]'
                       }`}>
                         {token.change24h >= 0 ? (
                           <ArrowUpRight className="w-4 h-4" />
@@ -330,7 +330,7 @@ export const MarketPage: React.FC = () => {
                     </td>
                     
                     <td className="px-4 py-4 text-right">
-                      <span className="text-white">{formatVolume(token.volume24h)}</span>
+                      <span className="text-[var(--text)]">{formatVolume(token.volume24h)}</span>
                     </td>
                   </motion.tr>
                 ))}
@@ -340,8 +340,8 @@ export const MarketPage: React.FC = () => {
           
           {filteredTokens.length === 0 && (
             <div className="p-12 text-center">
-              <TrendingUp className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500">{t('common.noData')}</p>
+              <TrendingUp className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4" />
+              <p className="text-[var(--text-muted)]">{t('common.noData')}</p>
             </div>
           )}
         </Card>

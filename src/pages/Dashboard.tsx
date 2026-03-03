@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { 
   ArrowUpRight, 
   ArrowDownLeft,
@@ -10,55 +11,51 @@ import {
   TrendingDown,
   ChevronRight,
   Copy,
-  Check,
-  Wallet,
   Eye,
   EyeOff
 } from 'lucide-react';
 import { useWalletStore } from '../store';
+import { shortAddress } from '../utils/address';
 import { Card, Tag, PageTransition, useToast, ReceiveModal } from '../components/ui';
 
-// ==================== Quick Action Button (Touch Optimized) ====================
+// ==================== Quick Action Button ====================
 
 const QuickAction: React.FC<{
   icon: React.ReactNode;
-  label: string;
+  labelKey: string;
   to?: string;
   onClick?: () => void;
   color?: string;
-}> = ({ icon, label, to, onClick, color = 'blue' }) => {
+}> = ({ icon, labelKey, to, onClick, color = 'blue' }) => {
+  const { t } = useTranslation();
   const colorStyles = {
-    blue: 'bg-blue-500/10 text-blue-400 active:bg-blue-500/20',
-    green: 'bg-green-500/10 text-green-400 active:bg-green-500/20',
+    blue: 'bg-[var(--primary-subtle)] text-[var(--primary)] active:bg-[var(--primary)]/20',
+    green: 'bg-[var(--success-subtle)] text-[var(--success)] active:bg-[var(--success)]/20',
     purple: 'bg-purple-500/10 text-purple-400 active:bg-purple-500/20',
-    orange: 'bg-orange-500/10 text-orange-400 active:bg-orange-500/20',
+    orange: 'bg-[var(--warning-subtle)] text-[var(--warning)] active:bg-[var(--warning)]/20',
   };
 
   const content = (
     <>
-      <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
+      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--card)] flex items-center justify-center">
         {icon}
       </div>
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-xs sm:text-sm font-medium text-[var(--text)]">{t(labelKey)}</span>
     </>
   );
 
+  const baseClass = `flex flex-col items-center justify-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-xl ${colorStyles[color as keyof typeof colorStyles]} transition-all touch-manipulation active:scale-95 w-full h-full min-h-[80px] sm:min-h-0`;
+
   if (onClick) {
     return (
-      <button
-        onClick={onClick}
-        className={`flex flex-col items-center gap-2 p-4 rounded-xl ${colorStyles[color as keyof typeof colorStyles]} transition-colors touch-manipulation active:scale-95`}
-      >
+      <button onClick={onClick} className={baseClass}>
         {content}
       </button>
     );
   }
 
   return (
-    <Link
-      to={to || '/'}
-      className={`flex flex-col items-center gap-2 p-4 rounded-xl ${colorStyles[color as keyof typeof colorStyles]} transition-colors touch-manipulation active:scale-95`}
-    >
+    <Link to={to || '/'} className={baseClass}>
       {content}
     </Link>
   );
@@ -67,6 +64,7 @@ const QuickAction: React.FC<{
 // ==================== Dashboard Page ====================
 
 export const DashboardPage: React.FC = () => {
+  const { t } = useTranslation();
   const { tokens, transactions, offers, batchTransfers, user, hideBalance, toggleHideBalance } = useWalletStore();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -86,11 +84,11 @@ export const DashboardPage: React.FC = () => {
   const handleCopyAddress = () => {
     if (user?.walletAddress) {
       navigator.clipboard.writeText(user.walletAddress);
-      showToast('Address copied', 'success');
+      showToast(t('common.copied'), 'success');
     }
   };
 
-  const formatAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  const formatAddress = (addr: string) => shortAddress(addr, 6, 4);
 
   return (
     <PageTransition className="p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 max-w-7xl mx-auto">
@@ -106,23 +104,23 @@ export const DashboardPage: React.FC = () => {
             {/* Balance Section */}
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs sm:text-sm text-gray-500">Total Balance</span>
+                <span className="text-xs sm:text-sm text-[var(--text-muted)]">{t('dashboard.totalBalance')}</span>
                 <button
                   onClick={toggleHideBalance}
-                  className="p-1.5 hover:bg-white/5 rounded transition-colors touch-manipulation"
-                  aria-label={hideBalance ? 'Show balance' : 'Hide balance'}
+                  className="p-1.5 hover:bg-[var(--card-hover)] rounded transition-colors touch-manipulation"
+                  aria-label={hideBalance ? t('dashboard.show') : t('dashboard.hide')}
                 >
-                  {hideBalance ? <EyeOff className="w-4 h-4 text-gray-500" /> : <Eye className="w-4 h-4 text-gray-500" />}
+                  {hideBalance ? <EyeOff className="w-4 h-4 text-[var(--text-muted)]" /> : <Eye className="w-4 h-4 text-[var(--text-muted)]" />}
                 </button>
               </div>
               
               <div className="flex items-baseline gap-3">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--text)]">
                   {hideBalance ? '••••••' : `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
                 </h1>
                 
                 {!hideBalance && (
-                  <div className={`flex items-center gap-1 text-xs sm:text-sm ${totalChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <div className={`flex items-center gap-1 text-xs sm:text-sm ${totalChange >= 0 ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
                     {totalChange >= 0 ? <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" /> : <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4" />}
                     <span>{totalChange >= 0 ? '+' : ''}{totalChange.toFixed(2)}%</span>
                   </div>
@@ -130,44 +128,43 @@ export const DashboardPage: React.FC = () => {
               </div>
               
               <div className="flex items-center gap-2 mt-2 cursor-pointer" onClick={handleCopyAddress}>
-                <span className="text-xs sm:text-sm text-gray-500 font-mono hover:text-gray-300 transition-colors">
+                <span className="text-xs sm:text-sm text-[var(--text-muted)] font-mono hover:text-gray-300 transition-colors">
                   {user?.walletAddress ? formatAddress(user.walletAddress) : ''}
                 </span>
                 <button
                   onClick={handleCopyAddress}
-                  className="p-1.5 hover:bg-white/5 rounded transition-colors touch-manipulation"
-                  title="Copy address"
+                  className="p-1.5 hover:bg-[var(--card-hover)] rounded transition-colors touch-manipulation"
+                  title={t('common.copy')}
                 >
-                  <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 hover:text-gray-300" />
+                  <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--text-muted)] hover:text-gray-300" />
                 </button>
               </div>
             </div>
 
-            {/* Quick Actions - Horizontal Scroll on Mobile */}
-            
-            <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1 sm:mx-0 sm:px-0">
-              <QuickAction 
-                icon={<ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />} 
-                label="Send" 
-                to="/send" 
+            {/* Quick Actions */}
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full">
+              <QuickAction
+                icon={<ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />}
+                labelKey="nav.send"
+                to="/send"
                 color="blue"
               />
-              <QuickAction 
-                icon={<ArrowDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />} 
-                label="Receive" 
+              <QuickAction
+                icon={<ArrowDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />}
+                labelKey="dashboard.receive"
                 onClick={() => setIsReceiveModalOpen(true)}
                 color="green"
               />
-              <QuickAction 
-                icon={<Repeat className="w-5 h-5 sm:w-6 sm:h-6" />} 
-                label="Swap" 
-                to="/swap" 
+              <QuickAction
+                icon={<Repeat className="w-5 h-5 sm:w-6 sm:h-6" />}
+                labelKey="nav.swap"
+                to="/swap"
                 color="purple"
               />
-              <QuickAction 
-                icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" />} 
-                label="Batch" 
-                to="/batch" 
+              <QuickAction
+                icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" />}
+                labelKey="nav.batch"
+                to="/batch"
                 color="orange"
               />
             </div>
@@ -175,30 +172,30 @@ export const DashboardPage: React.FC = () => {
         </Card>
       </motion.div>
 
-      {/* Stats Row - 2x2 Grid on Mobile */}
+      {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
         {[
-          { label: 'Assets', value: tokens.length, change: `${tokens.length} tokens`, positive: true },
-          { label: 'Offers', value: pendingOffers, change: 'Pending', positive: pendingOffers > 0 },
-          { label: 'Batches', value: processingBatches, change: 'Active', positive: processingBatches > 0 },
-          { label: '24h Volume', value: `$12.5K`, change: '+15%', positive: true },
+          { labelKey: 'dashboard.assets', value: tokens.length, change: `${tokens.length} ${t('common.tokens') || 'tokens'}`, positive: true },
+          { labelKey: 'dashboard.offers', value: pendingOffers, change: t('dashboard.pending'), positive: pendingOffers > 0 },
+          { labelKey: 'dashboard.batches', value: processingBatches, change: t('dashboard.active'), positive: processingBatches > 0 },
+          { labelKey: 'dashboard.volume24h', value: '$12.5K', change: '+15%', positive: true },
         ].map((stat, i) => (
           <motion.div
-            key={stat.label}
+            key={stat.labelKey}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.05 }}
           >
-            <Card className="p-3 sm:p-4 hover:bg-white/[0.04] transition-colors cursor-pointer touch-manipulation">
-              <p className="text-[10px] sm:text-xs text-gray-500 mb-1">{stat.label}</p>
-              <p className="text-lg sm:text-xl font-bold text-white">{stat.value}</p>
-              <p className={`text-[10px] sm:text-xs mt-0.5 ${stat.positive ? 'text-green-400' : 'text-gray-500'}`}>{stat.change}</p>
+            <Card className="p-3 sm:p-4 hover:bg-[var(--card-hover)] transition-colors cursor-pointer touch-manipulation">
+              <p className="text-[10px] sm:text-xs text-[var(--text-muted)] mb-1">{t(stat.labelKey)}</p>
+              <p className="text-lg sm:text-xl font-bold text-[var(--text)]">{stat.value}</p>
+              <p className={`text-[10px] sm:text-xs mt-0.5 ${stat.positive ? 'text-[var(--success)]' : 'text-[var(--text-muted)]'}`}>{stat.change}</p>
             </Card>
           </motion.div>
         ))}
       </div>
 
-      {/* Single Column Layout for Mobile */}
+      {/* Single Column Layout */}
       <div className="space-y-3 sm:space-y-4">
         {/* Assets List */}
         <motion.div
@@ -208,13 +205,13 @@ export const DashboardPage: React.FC = () => {
         >
           <Card>
             <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <h3 className="text-sm sm:text-base font-semibold text-white">Assets</h3>
+              <h3 className="text-sm sm:text-base font-semibold text-[var(--text)]">{t('dashboard.assets')}</h3>
               
               <Link 
                 to="/assets"
-                className="text-xs sm:text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors touch-manipulation"
+                className="text-xs sm:text-sm text-[var(--primary)] hover:text-[var(--primary-600)] flex items-center gap-1 transition-colors touch-manipulation"
               >
-                View all
+                {t('common.viewAll')}
                 <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </Link>
             </div>
@@ -223,25 +220,25 @@ export const DashboardPage: React.FC = () => {
               {tokens.slice(0, 5).map((token, index) => (
                 <motion.div
                   key={token.symbol}
-                  className="flex items-center justify-between p-2.5 sm:p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors touch-manipulation active:scale-[0.98]"
+                  className="flex items-center justify-between p-2.5 sm:p-3 bg-[var(--card-hover)] rounded-lg cursor-pointer hover:bg-[var(--card-active)] transition-colors touch-manipulation active:scale-[0.98]"
                   onClick={() => navigate('/assets')}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.25 + index * 0.03 }}
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold text-blue-400">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[var(--primary-subtle)] rounded-lg flex items-center justify-center text-base sm:text-lg font-bold text-[var(--primary)]">
                       {token.icon}
                     </div>
                     <div>
-                      <p className="font-medium text-white text-sm">{token.symbol}</p>
-                      <p className="text-xs text-gray-500">{token.name}</p>
+                      <p className="font-medium text-[var(--text)] text-sm">{token.symbol}</p>
+                      <p className="text-xs text-[var(--text-muted)]">{token.name}</p>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <p className="font-semibold text-white text-sm">${token.valueUSD}</p>
-                    <p className={`text-xs ${token.change24h.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                    <p className="font-semibold text-[var(--text)] text-sm">${token.valueUSD}</p>
+                    <p className={`text-xs ${token.change24h.startsWith('+') ? 'text-[var(--success)]' : 'text-[var(--error)]'}`}>
                       {token.change24h}
                     </p>
                   </div>
@@ -259,13 +256,13 @@ export const DashboardPage: React.FC = () => {
         >
           <Card>
             <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <h3 className="text-sm sm:text-base font-semibold text-white">Recent Activity</h3>
+              <h3 className="text-sm sm:text-base font-semibold text-[var(--text)]">{t('dashboard.recentActivity')}</h3>
               
               <Link 
                 to="/activity"
-                className="text-xs sm:text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors touch-manipulation"
+                className="text-xs sm:text-sm text-[var(--primary)] hover:text-[var(--primary-600)] flex items-center gap-1 transition-colors touch-manipulation"
               >
-                View all
+                {t('common.viewAll')}
                 <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </Link>
             </div>
@@ -274,7 +271,7 @@ export const DashboardPage: React.FC = () => {
               {transactions.slice(0, 5).map((tx, index) => (
                 <motion.div
                   key={tx.id}
-                  className="flex items-center justify-between p-2.5 sm:p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors touch-manipulation active:scale-[0.98]"
+                  className="flex items-center justify-between p-2.5 sm:p-3 bg-[var(--card-hover)] rounded-lg cursor-pointer hover:bg-[var(--card-active)] transition-colors touch-manipulation active:scale-[0.98]"
                   onClick={() => navigate('/activity')}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -282,9 +279,9 @@ export const DashboardPage: React.FC = () => {
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3">
                     <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center ${
-                      tx.type === 'Send' ? 'bg-red-500/10 text-red-400' :
-                      tx.type === 'Receive' ? 'bg-green-500/10 text-green-400' :
-                      'bg-blue-500/10 text-blue-400'
+                      tx.type === 'Send' ? 'bg-red-500/10 text-[var(--error)]' :
+                      tx.type === 'Receive' ? 'bg-green-500/10 text-[var(--success)]' :
+                      'bg-[var(--primary-subtle)] text-[var(--primary)]'
                     }`}>
                       {tx.type === 'Send' ? <ArrowUpRight className="w-4 h-4" /> : 
                        tx.type === 'Receive' ? <ArrowDownLeft className="w-4 h-4" /> : 
@@ -292,8 +289,8 @@ export const DashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <p className="font-medium text-white text-sm">{tx.type}</p>
-                      <p className="text-xs text-gray-500">{tx.amount} {tx.token}</p>
+                      <p className="font-medium text-[var(--text)] text-sm">{tx.type}</p>
+                      <p className="text-xs text-[var(--text-muted)]">{tx.amount} {tx.token}</p>
                     </div>
                   </div>
 
@@ -304,7 +301,7 @@ export const DashboardPage: React.FC = () => {
                     } className="text-[10px] px-1.5 py-0.5">
                       {tx.status}
                     </Tag>
-                    <p className="text-[10px] text-gray-500 mt-1">
+                    <p className="text-[10px] text-[var(--text-muted)] mt-1">
                       {new Date(tx.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </p>
                   </div>
@@ -316,12 +313,11 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* Receive Modal */}
-      
       <ReceiveModal
         isOpen={isReceiveModalOpen}
         onClose={() => setIsReceiveModalOpen(false)}
         address={user?.walletAddress || ''}
-        onCopy={() => showToast('Address copied', 'success')}
+        onCopy={() => showToast(t('common.copied'), 'success')}
       />
     </PageTransition>
   );

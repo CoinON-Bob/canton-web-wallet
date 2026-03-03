@@ -9,8 +9,15 @@ import type {
   Notification,
   PageRoute
 } from '../types';
+import { MOCK_CANTON_ADDRESS, MOCK_CONTACTS, MOCK_TRANSACTION_PARTIES } from '../config/canton';
 
 // ==================== 初始数据 ====================
+
+const initialUser: User = {
+  email: 'user@canton.network',
+  walletAddress: MOCK_CANTON_ADDRESS,
+  isAuthenticated: true,
+};
 
 const initialTokens: Token[] = [
   { 
@@ -63,12 +70,12 @@ const initialTransactions: Transaction[] = [
   {
     id: 'tx1',
     type: 'Send',
-    hash: '0x7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2',
+    hash: 'CANTON::TX1A2B3C4D5E6F7G8',
     amount: '1.5',
     token: 'ETH',
     status: 'Confirmed',
-    from: '0xabcd1234efgh5678ijkl9012mnop3456',
-    to: '0x9876fedcba543210hgfeijkl9876mnop',
+    from: MOCK_CANTON_ADDRESS,
+    to: MOCK_CONTACTS.INSTITUTIONAL_PARTNER,
     fee: '0.0021 ETH',
     timestamp: '2024-03-02T14:30:00Z',
     description: 'Transfer to institutional partner'
@@ -76,12 +83,12 @@ const initialTransactions: Transaction[] = [
   {
     id: 'tx2',
     type: 'Receive',
-    hash: '0xa1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3',
+    hash: 'CANTON::TX2B3C4D5E6F7G8H9',
     amount: '5,000',
     token: 'USDC',
     status: 'Confirmed',
-    from: '0x1111222233334444555566667777888899990000',
-    to: '0xabcd1234efgh5678ijkl9012mnop3456',
+    from: MOCK_CONTACTS.CLIENT_A,
+    to: MOCK_CANTON_ADDRESS,
     fee: '0.0015 ETH',
     timestamp: '2024-03-02T13:15:00Z',
     description: 'Payment from client'
@@ -89,12 +96,12 @@ const initialTransactions: Transaction[] = [
   {
     id: 'tx3',
     type: 'Swap',
-    hash: '0xb2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4',
+    hash: 'CANTON::TX3C4D5E6F7G8H9J0',
     amount: '0.05',
     token: 'BTC',
     status: 'Confirmed',
-    from: '0xabcd1234efgh5678ijkl9012mnop3456',
-    to: '0xswapuniswapv30000000000000000000000',
+    from: MOCK_CANTON_ADDRESS,
+    to: MOCK_TRANSACTION_PARTIES[0],
     fee: '0.0018 ETH',
     timestamp: '2024-03-01T09:45:00Z',
     description: 'ETH → BTC swap'
@@ -102,12 +109,12 @@ const initialTransactions: Transaction[] = [
   {
     id: 'tx4',
     type: 'Batch',
-    hash: '0xc3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5',
+    hash: 'CANTON::TX4D5E6F7G8H9J1K2',
     amount: '50',
     token: 'USDC',
     status: 'Confirmed',
-    from: '0xabcd1234efgh5678ijkl9012mnop3456',
-    to: '0xbatch00000000000000000000000000000',
+    from: MOCK_CANTON_ADDRESS,
+    to: MOCK_TRANSACTION_PARTIES[1],
     fee: '0.025 ETH',
     timestamp: '2024-02-28T16:20:00Z',
     description: 'Monthly salary distribution'
@@ -115,12 +122,12 @@ const initialTransactions: Transaction[] = [
   {
     id: 'tx5',
     type: 'Send',
-    hash: '0xd4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6',
+    hash: 'CANTON::TX5E6F7G8H9J1K2L3',
     amount: '100',
     token: 'MATIC',
     status: 'Pending',
-    from: '0xabcd1234efgh5678ijkl9012mnop3456',
-    to: '0xpayrollcontract000000000000000000',
+    from: MOCK_CANTON_ADDRESS,
+    to: MOCK_TRANSACTION_PARTIES[2],
     fee: '0.0012 ETH',
     timestamp: '2024-03-02T15:00:00Z',
     description: 'Gas fee reimbursement'
@@ -130,7 +137,7 @@ const initialTransactions: Transaction[] = [
 const initialOffers: Offer[] = [
   {
     id: 'offer1',
-    from: '0x7890abcd1234efgh5678ijkl9012mnop',
+    from: 'CANTONclientAA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0',
     amount: '2,500',
     token: 'USDC',
     expiresAt: '2024-03-03T12:00:00Z',
@@ -140,7 +147,7 @@ const initialOffers: Offer[] = [
   },
   {
     id: 'offer2',
-    from: '0x5678efgh9012ijkl3456mnop7890abcd',
+    from: MOCK_CONTACTS.CLIENT_B,
     amount: '0.8',
     token: 'ETH',
     expiresAt: '2024-03-02T18:00:00Z',
@@ -234,6 +241,7 @@ interface WalletState {
   isLoading: boolean;
   currentPage: PageRoute;
   hideBalance: boolean;
+  theme: 'dark' | 'light';
   
   // Actions
   setUser: (user: User | null) => void;
@@ -251,6 +259,8 @@ interface WalletState {
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
   toggleHideBalance: () => void;
+  toggleTheme: () => void;
+  setTheme: (theme: 'dark' | 'light') => void;
 }
 
 // ==================== localStorage 辅助函数 ====================
@@ -263,10 +273,30 @@ const getInitialHideBalance = (): boolean => {
   return false;
 };
 
+const getInitialTheme = (): 'dark' | 'light' => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('canton-wallet-theme');
+    // 有保存就用，否则默认 dark（不跟随系统）
+    if (saved === 'light' || saved === 'dark') {
+      return saved;
+    }
+  }
+  return 'dark';
+};
+
+// ==================== Theme 应用函数 ====================
+
+export const applyTheme = (theme: 'dark' | 'light') => {
+  if (typeof window !== 'undefined') {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('canton-wallet-theme', theme);
+  }
+};
+
 // ==================== Store 实现 ====================
 
 export const useWalletStore = create<WalletState>((set) => ({
-  // Initial state
+  // Initial state - 默认未登录
   user: null,
   tokens: initialTokens,
   transactions: initialTransactions,
@@ -276,6 +306,7 @@ export const useWalletStore = create<WalletState>((set) => ({
   isLoading: false,
   currentPage: 'dashboard',
   hideBalance: getInitialHideBalance(),
+  theme: getInitialTheme(),
   
   // Actions
   setUser: (user) => set({ user }),
@@ -346,7 +377,18 @@ export const useWalletStore = create<WalletState>((set) => ({
     const newValue = !state.hideBalance;
     localStorage.setItem('canton-wallet-hide-balance', String(newValue));
     return { hideBalance: newValue };
-  })
+  }),
+  
+  toggleTheme: () => set((state) => {
+    const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+    return { theme: newTheme };
+  }),
+  
+  setTheme: (theme) => set(() => {
+    applyTheme(theme);
+    return { theme };
+  }),
 }));
 
 // ==================== 导出类型 ====================

@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useWalletStore } from '../store';
+import { AuthGuard, PublicOnlyGuard } from '../components/auth/AuthGuard';
 import { MainLayout } from '../components/layout';
 import { 
   LoginPage, 
+  RegisterPage,
+  ForgotPasswordPage,
   DashboardPage, 
   AssetsPage, 
   SendPage, 
@@ -16,75 +18,153 @@ import {
   MarketDetailPage
 } from '../pages';
 
-// ==================== 路由守卫组件 ====================
-
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user } = useWalletStore();
-  
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
-// ==================== 公共路由组件 ====================
-
-const PublicRoutes: React.FC = () => {
-  const { user } = useWalletStore();
-  
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
-  
-  return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
-  );
-};
-
-// ==================== 受保护路由组件 ====================
-
-const AppRoutes: React.FC = () => {
-  return (
-    <MainLayout>
-      <Routes>
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/assets" element={<AssetsPage />} />
-        <Route path="/send" element={<SendPage />} />
-        <Route path="/swap" element={<SwapPage />} />
-        <Route path="/batch" element={<BatchPage />} />
-        <Route path="/offers" element={<OffersPage />} />
-        <Route path="/activity" element={<ActivityPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/market" element={<MarketPage />} />
-        <Route path="/market/:symbol" element={<MarketDetailPage />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </MainLayout>
-  );
-};
-
 // ==================== 主路由组件 ====================
 
 export const Router: React.FC = () => {
-  const { user } = useWalletStore();
-  
   return (
     <BrowserRouter>
-      {user ? (
-        <ProtectedRoute>
-          <AppRoutes />
-        </ProtectedRoute>
-      ) : (
-        <PublicRoutes />
-      )}
+      <Routes>
+        {/* 公共路由 - 未登录才能访问 */}
+        <Route 
+          path="/login" 
+          element={
+            <PublicOnlyGuard>
+              <LoginPage />
+            </PublicOnlyGuard>
+          } 
+        />
+        <Route 
+          path="/register" 
+          element={
+            <PublicOnlyGuard>
+              <RegisterPage />
+            </PublicOnlyGuard>
+          } 
+        />
+        <Route 
+          path="/forgot-password" 
+          element={
+            <PublicOnlyGuard>
+              <ForgotPasswordPage />
+            </PublicOnlyGuard>
+          } 
+        />
+
+        {/* 受保护路由 - 需要登录 */}
+        <Route
+          path="/dashboard"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <DashboardPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/assets"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <AssetsPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/send"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <SendPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/swap"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <SwapPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/batch"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <BatchPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/offers"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <OffersPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/activity"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <ActivityPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/settings"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <SettingsPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/market"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <MarketPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/market/:symbol"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <MarketDetailPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+
+        {/* 默认重定向 */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
     </BrowserRouter>
   );
 };

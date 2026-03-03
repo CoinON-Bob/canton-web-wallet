@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Construction, LogOut, AlertTriangle } from 'lucide-react';
 import { useWalletStore } from '../store';
@@ -17,6 +18,7 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
   description = 'This feature is under development and will be available soon.',
   showSignOut = false
 }) => {
+  const { t } = useTranslation();
   const { setUser } = useWalletStore();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
@@ -45,21 +47,21 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
             {showSignOut && (
               <>
                 <div className="border-t border-white/10 pt-6 mt-6">
-                  <h3 className="text-lg font-semibold text-white mb-4">Account</h3>
+                  <h3 className="text-lg font-semibold text-white mb-4">{t('common.account')}</h3>
                   
                   <button
                     onClick={() => setShowLogoutConfirm(true)}
                     className="w-full sm:w-auto inline-flex items-center gap-2 px-6 py-3 text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-xl transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
-                    Sign Out
+                    {t('common.logout')}
                   </button>
                 </div>
 
                 <Modal
                   isOpen={showLogoutConfirm}
                   onClose={() => setShowLogoutConfirm(false)}
-                  title="Sign Out"
+                  title={t('common.logout')}
                   size="sm"
                   footer={
                     <div className="flex gap-3">
@@ -67,23 +69,23 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
                         onClick={() => setShowLogoutConfirm(false)}
                         className="flex-1 px-4 py-2 text-sm text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
                       >
-                        Cancel
+                        {t('common.cancel')}
                       </button>
                       <button
                         onClick={handleLogout}
                         className="flex-1 px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors"
                       >
-                        Sign Out
+                        {t('common.confirmLogout')}
                       </button>
                     </div>
                   }
                 >
                   <div className="flex items-center gap-3 text-yellow-500 mb-3">
                     <AlertTriangle className="w-5 h-5" />
-                    <span className="font-medium">Confirm Sign Out</span>
+                    <span className="font-medium">{t('common.logoutConfirm')}</span>
                   </div>
                   <p className="text-gray-400 text-sm">
-                    Are you sure you want to sign out? You will need to sign in again to access your wallet.
+                    {t('common.logoutDesc')}
                   </p>
                 </Modal>
               </>
@@ -97,47 +99,65 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
 
 // ==================== 各页面导出 ====================
 
-export const SendPage: React.FC = () => (
-  <PlaceholderPage 
-    title="Send Assets"
-    description="Securely send assets to any address with gas estimation, address book integration, and transaction preview."
-  />
-);
+export const SendPage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <PlaceholderPage 
+      title={t('nav.send')}
+      description="Securely send assets to any address with gas estimation, address book integration, and transaction preview."
+    />
+  );
+};
 
-export const SwapPage: React.FC = () => (
-  <PlaceholderPage 
-    title="Token Swap"
-    description="Swap tokens instantly with optimal routing, slippage protection, and real-time price charts."
-  />
-);
+export const SwapPage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <PlaceholderPage 
+      title={t('nav.swap')}
+      description="Swap tokens instantly with optimal routing, slippage protection, and real-time price charts."
+    />
+  );
+};
 
-export const BatchPage: React.FC = () => (
-  <PlaceholderPage 
-    title="Batch Transfers"
-    description="Execute mass transfers efficiently with CSV import, progress tracking, and partial failure handling."
-  />
-);
+export const BatchPage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <PlaceholderPage 
+      title={t('nav.batch')}
+      description="Execute mass transfers efficiently with CSV import, progress tracking, and partial failure handling."
+    />
+  );
+};
 
-export const OffersPage: React.FC = () => (
-  <PlaceholderPage 
-    title="Canton Offers"
-    description="Create and manage peer-to-peer offers with customizable conditions and expiration settings."
-  />
-);
+export const OffersPage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <PlaceholderPage 
+      title={t('nav.offers')}
+      description="Create and manage peer-to-peer offers with customizable conditions and expiration settings."
+    />
+  );
+};
 
-export const ActivityPage: React.FC = () => (
-  <PlaceholderPage 
-    title="Activity Log"
-    description="Complete transaction history with advanced filtering, search, and export capabilities."
-  />
-);
+export const ActivityPage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <PlaceholderPage 
+      title={t('nav.activity')}
+      description="Complete transaction history with advanced filtering, search, and export capabilities."
+    />
+  );
+};
 
-export const SettingsPage: React.FC = () => (
-  <PlaceholderPage 
-    title="Settings"
-    description="Manage your account preferences, security settings, and notification preferences."
-    showSignOut={true}
-  />
-);
+export const SettingsPage: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <PlaceholderPage 
+      title={t('nav.settings')}
+      description="Manage your account preferences, security settings, and notification preferences."
+      showSignOut={true}
+    />
+  );
+};
 
 export default PlaceholderPage;

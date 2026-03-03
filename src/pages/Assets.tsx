@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { 
   Search, 
   TrendingUp, 
@@ -15,6 +16,7 @@ import { Card, Tag, PageTransition, PageHeader } from '../components/ui';
 // ==================== Assets 页面 ====================
 
 export const AssetsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { tokens, hideBalance } = useWalletStore();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,22 +46,21 @@ export const AssetsPage: React.FC = () => {
 
   return (
     <PageTransition className="min-h-screen">
-      {/* Page Header */}
       <PageHeader 
-        title="Assets" 
-        subtitle="Manage your portfolio"
+        title={t('assets.title')} 
+        subtitle={t('assets.subtitle')}
         rightAction={
           <button
             onClick={() => navigate('/assets/import')}
-            className="p-2 hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
-            title="Import token"
+            className="p-2 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+            title={t('assets.importToken')}
           >
-            <Plus className="w-5 h-5 text-gray-400" />
+            <Plus className="w-5 h-5 text-[var(--text-secondary)]" />
           </button>
         }
       />
       
-      <div className="p-6 lg:p-8 space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Header Stats */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -68,26 +69,26 @@ export const AssetsPage: React.FC = () => {
         <Card className="bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-transparent border-blue-500/20">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
-              <p className="text-gray-400 mb-2 text-sm">Total Portfolio Value</p>
-              <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
+              <p className="text-[var(--text-secondary)] mb-2 text-sm">{t('assets.totalValue')}</p>
+              <h2 className="text-4xl lg:text-5xl font-bold text-[var(--text)] tracking-tight">
                 {hideBalance ? '••••••' : `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
               </h2>
               <div className="flex items-center gap-3 mt-3">
-                <span className="px-2.5 py-1 bg-green-500/10 text-green-400 text-sm font-medium rounded-lg flex items-center gap-1">
+                <span className="px-2.5 py-1 bg-[var(--success-subtle)] text-[var(--success)] text-sm font-medium rounded-lg flex items-center gap-1">
                   <TrendingUp className="w-4 h-4" />
-                  {positiveChange} up
+                  {positiveChange} {t('assets.positiveChange')}
                 </span>
-                <span className="px-2.5 py-1 bg-red-500/10 text-red-400 text-sm font-medium rounded-lg flex items-center gap-1">
+                <span className="px-2.5 py-1 bg-[var(--error-subtle)] text-[var(--error)] text-sm font-medium rounded-lg flex items-center gap-1">
                   <TrendingDown className="w-4 h-4" />
-                  {negativeChange} down
+                  {negativeChange} {t('assets.negativeChange')}
                 </span>
               </div>
             </div>
 
             <div className="flex gap-3">
               <div className="text-right">
-                <p className="text-sm text-gray-400">Total Assets</p>
-                <p className="text-2xl font-bold text-white">{tokens.length}</p>
+                <p className="text-sm text-[var(--text-secondary)]">{t('assets.totalAssets')}</p>
+                <p className="text-2xl font-bold text-[var(--text)]">{tokens.length}</p>
               </div>
             </div>
           </div>
@@ -102,15 +103,15 @@ export const AssetsPage: React.FC = () => {
         transition={{ delay: 0.1 }}
       >
         <div className="relative flex-1">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
             <Search className="w-5 h-5" />
           </div>
           <input
             type="text"
-            placeholder="Search assets..."
+            placeholder={t('assets.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-12 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+            className="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-3 pl-12 text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] transition-colors"
           />
         </div>
 
@@ -118,11 +119,11 @@ export const AssetsPage: React.FC = () => {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'value' | 'change' | 'name')}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500/50"
+            className="bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:border-[var(--primary)]"
           >
-            <option value="value" className="bg-[#111118]">Sort by Value</option>
-            <option value="change" className="bg-[#111118]">Sort by Change</option>
-            <option value="name" className="bg-[#111118]">Sort by Name</option>
+            <option value="value" className="bg-[var(--bg-elevated)]">{t('assets.sortValue')}</option>
+            <option value="change" className="bg-[var(--bg-elevated)]">{t('assets.sortChange')}</option>
+            <option value="name" className="bg-[var(--bg-elevated)]">{t('assets.sortName')}</option>
           </select>
         </div>
       </motion.div>
@@ -132,44 +133,44 @@ export const AssetsPage: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
+        className="w-full"
       >
-        <Card>
-          <div className="space-y-4">
-            {sortedTokens.map((token, index) => (
-              <motion.div
-                key={token.symbol}
-                className="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group"
-                onClick={() => navigate(`/assets/${token.symbol.toLowerCase()}`)}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 + index * 0.05 }}
-              >
+        <div className="flex flex-col gap-3">
+          {sortedTokens.map((token, index) => (
+            <motion.div
+              key={token.symbol}
+              className="flex items-center justify-between p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] transition-all cursor-pointer group shadow-[var(--shadow-sm)]"
+              onClick={() => navigate(`/assets/${token.symbol.toLowerCase()}`)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 + index * 0.05 }}
+            >
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center text-2xl font-bold text-blue-400 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 bg-[var(--primary-subtle)] rounded-xl flex items-center justify-center text-2xl font-bold text-[var(--primary)] group-hover:scale-110 transition-transform">
                     {token.icon}
                   </div>
                   
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="font-semibold text-white text-lg">{token.symbol}</p>
+                      <p className="font-semibold text-[var(--text)] text-lg">{token.symbol}</p>
                       <Tag variant={parseFloat(token.change24h) >= 0 ? 'success' : 'error'} className="text-xs">
                         {token.change24h}
                       </Tag>
                     </div>
-                    <p className="text-sm text-gray-500">{token.name}</p>
-                    <p className="text-xs text-gray-600">Balance: {token.balance} {token.symbol}</p>
+                    <p className="text-sm text-[var(--text-muted)]">{token.name}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t('common.balance')}: {token.balance} {token.symbol}</p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <p className="text-xl font-bold text-white">
+                  <p className="text-xl font-bold text-[var(--text)]">
                     {hideBalance ? '••••••' : `$${token.valueUSD}`}
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-[var(--text-muted)]">
                     {hideBalance ? '••••••' : `$${token.price.toLocaleString()}`} / {token.symbol}
                   </p>
-                  <div className="flex items-center gap-1 justify-end mt-1 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-sm">View details</span>
+                  <div className="flex items-center gap-1 justify-end mt-1 text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-sm">{t('common.viewDetails')}</span>
                     <ChevronRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -178,14 +179,13 @@ export const AssetsPage: React.FC = () => {
           </div>
 
           {sortedTokens.length === 0 && (
-            <div className="text-center py-12">
-              <Wallet className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500">No assets found matching "{searchQuery}"</p>
+            <div className="text-center py-12 bg-[var(--card)] border border-[var(--border)] rounded-xl">
+              <Wallet className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4" />
+              <p className="text-[var(--text-muted)]">{t('assets.noAssetsFound', { query: searchQuery })}</p>
             </div>
           )}
-        </Card>
-      </motion.div>
-    </div>
+        </motion.div>
+      </div>
     </PageTransition>
   );
 };
