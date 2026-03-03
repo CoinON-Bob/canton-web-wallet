@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "canton-web-wallet",
+  "framework": "vite",
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "outputDirectory": "dist"
+}

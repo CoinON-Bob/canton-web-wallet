@@ -1,0 +1,11 @@
+export { default as DashboardPage } from './Dashboard';
+export { default as LoginPage } from './Login';
+export { default as AssetsPage } from './Assets';
+export { default as SendPage } from './Send';
+export { default as SwapPage } from './Swap';
+export { default as BatchPage } from './Batch';
+export { default as ActivityPage } from './Activity';
+export { default as SettingsPage } from './Settings';
+export { default as MarketPage } from './Market';
+export { default as MarketDetailPage } from './MarketDetail';
+export { OffersPage } from './Placeholder';
