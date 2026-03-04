@@ -146,7 +146,7 @@ export const Router: React.FC = () => {
             </AuthGuard>
           }
         >
-          <Route index element={<SettingsPage />} />
+          <Route index element={<div />} /> {/* 空元素，SettingsLayoutNew 会处理 */}
           <Route path="account" element={<SettingsAccountPage />} />
           <Route path="address-book" element={<SettingsAddressBookPage />} />
           <Route path="private-key" element={<SettingsAccountPage />} />

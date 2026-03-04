@@ -342,9 +342,12 @@ export const SettingsLayoutNew: React.FC = () => {
   if (isMobile) {
     // 移动端：只显示列表，详情通过路由跳转
     const location = useLocation();
-    const isSettingsDetailPage = location.pathname !== '/settings' && location.pathname.startsWith('/settings/');
+    const isSettingsRoot = location.pathname === '/settings';
     
-    if (isSettingsDetailPage) {
+    if (isSettingsRoot) {
+      // 移动端列表页
+      return <MobileSettingsList />;
+    } else {
       // 移动端详情页：显示返回按钮 + Outlet
       return (
         <div className="min-h-screen">
@@ -371,9 +374,6 @@ export const SettingsLayoutNew: React.FC = () => {
           </div>
         </div>
       );
-    } else {
-      // 移动端列表页
-      return <MobileSettingsList />;
     }
   } else {
     // 桌面端：左右分栏布局
