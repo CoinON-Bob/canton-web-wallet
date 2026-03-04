@@ -19,7 +19,8 @@ import {
   ExternalLink,
   Check,
   ArrowLeft,
-  TrendingUp
+  TrendingUp,
+  Compass
 } from 'lucide-react';
 import { useWalletStore } from '../../store';
 import { shortAddress, getCantonExplorerUrl } from '../../utils/address';
@@ -30,11 +31,7 @@ import { Modal, useToast, ToastManager } from '../ui';
 const navItems = [
   { id: 'dashboard', labelKey: 'nav.dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { id: 'market', labelKey: 'nav.market', icon: TrendingUp, path: '/market' },
-  { id: 'assets', labelKey: 'nav.assets', icon: Wallet, path: '/assets' },
-  { id: 'send', labelKey: 'nav.send', icon: Send, path: '/send' },
-  { id: 'swap', labelKey: 'nav.swap', icon: ArrowLeftRight, path: '/swap' },
-  { id: 'batch', labelKey: 'nav.batch', icon: Users, path: '/batch' },
-  { id: 'offers', labelKey: 'nav.offers', icon: Gift, path: '/offers' },
+  { id: 'discover', labelKey: 'nav.discover', icon: Compass, path: '/discover' },
   { id: 'activity', labelKey: 'nav.activity', icon: History, path: '/activity' },
   { id: 'settings', labelKey: 'nav.settings', icon: Settings, path: '/settings' },
 ];

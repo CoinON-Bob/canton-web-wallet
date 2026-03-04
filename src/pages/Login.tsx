@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useWalletStore } from '../store';
 import { MOCK_CANTON_ADDRESS } from '../config/canton';
-import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff, Globe, ChevronDown } from 'lucide-react';
 
 // ==================== 图标 ====================
 
@@ -24,6 +24,62 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
     </svg>
   ),
+};
+
+// ==================== 语言切换组件 ====================
+
+const LanguageSwitcher: React.FC = () => {
+  const { i18n } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const languages = [
+    { code: 'zh', name: '中文', flag: '🇨🇳' },
+    { code: 'en', name: 'English', flag: '🇺🇸' }
+  ];
+  
+  const currentLang = languages.find(lang => lang.code === i18n.language) || languages[0];
+  
+  const handleLanguageChange = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setIsOpen(false);
+  };
+  
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors"
+        aria-label="切换语言"
+      >
+        <Globe className="w-4 h-4" />
+        <span>{currentLang.flag} {currentLang.name}</span>
+        <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      
+      {isOpen && (
+        <>
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute right-0 top-full mt-1 w-40 bg-[var(--bg-elevated)] border border-white/10 rounded-lg shadow-lg z-50 overflow-hidden">
+            {languages.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => handleLanguageChange(lang.code)}
+                className={`w-full px-3 py-2.5 text-sm text-left hover:bg-white/5 transition-colors flex items-center gap-2 ${
+                  i18n.language === lang.code ? 'bg-blue-500/10 text-blue-400' : 'text-gray-300'
+                }`}
+              >
+                <span className="text-base">{lang.flag}</span>
+                <span>{lang.name}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 // ==================== 登录页面 ====================
@@ -75,6 +131,11 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+      {/* 语言切换控件 - 右上角 */}
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSwitcher />
+      </div>
+      
       {/* Background decorations - subtle gradient orbs */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />

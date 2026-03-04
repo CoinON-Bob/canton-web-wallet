@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -15,40 +15,101 @@ import {
   Mail,
   Wallet,
   Key,
-  Languages
+  Languages,
+  Users,
+  BookOpen,
+  Gift,
+  CreditCard,
+  Zap,
+  FileText,
+  HelpCircle,
+  ShieldCheck,
+  Lock,
+  MessageSquare,
+  Star,
+  DollarSign,
+  RefreshCw,
+  Database
 } from 'lucide-react';
 import { useWalletStore } from '../store';
 import { shortAddress } from '../utils/address';
-import { Card, PageTransition, PageHeader, Modal } from '../components/ui';
+import { Card, PageTransition, PageHeader, Modal, useToast } from '../components/ui';
 
-// ==================== Settings 页面 ====================
+// ==================== 设置项类型定义 ====================
+
+interface SettingItem {
+  id: string;
+  title: string;
+  titleKey?: string;
+  description: string;
+  descriptionKey?: string;
+  icon: React.ComponentType<any>;
+  path?: string;
+  action?: () => void;
+  badge?: string;
+  badgeColor?: string;
+  isDanger?: boolean;
+  isComingSoon?: boolean;
+}
+
+// ==================== 设置页面 ====================
 
 export const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { user, setUser, toggleHideBalance, hideBalance, theme, toggleTheme } = useWalletStore();
-  const [activeSection, setActiveSection] = useState<'profile' | 'preferences' | 'security'>('profile');
+  const { showToast } = useToast();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const isChinese = i18n.language === 'zh';
   
-  // Preferences with language from i18n
+  // 语言选项
+  const languageOptions = [
+    { value: 'zh', label: '中文(简体)' },
+    { value: 'en', label: 'English' }
+  ];
+  
+  // 货币选项
+  const currencyOptions = [
+    { value: 'USD', label: 'USD ($)', symbol: '$' },
+    { value: 'CNY', label: 'CNY (¥)', symbol: '¥' },
+    { value: 'EUR', label: 'EUR (€)', symbol: '€' },
+    { value: 'GBP', label: 'GBP (£)', symbol: '£' }
+  ];
+  
+  // 用户偏好
   const [preferences, setPreferences] = useState({
     emailNotifications: true,
     pushNotifications: false,
     hideBalances: hideBalance,
     darkMode: theme === 'dark',
-    language: i18n.language === 'zh' ? '中文(简体)' : 'English'
+    language: i18n.language === 'zh' ? 'zh' : 'en',
+    currency: 'USD'
   });
-
-  // Sync theme from store
-  useEffect(() => {
-    setPreferences(prev => ({ ...prev, darkMode: theme === 'dark' }));
-  }, [theme]);
-
+  
+  // 处理设置项点击
+  const handleSettingClick = (item: SettingItem) => {
+    if (item.isComingSoon) {
+      showToast(
+        isChinese ? `${item.title} 功能即将开放` : `${item.title} feature is coming soon`,
+        'info'
+      );
+      return;
+    }
+    
+    if (item.action) {
+      item.action();
+    } else if (item.path) {
+      navigate(item.path);
+    }
+  };
+  
+  // 处理登出
   const handleLogout = () => {
     setUser(null);
     navigate('/login');
   };
-
+  
+  // 切换偏好设置
   const togglePreference = (key: keyof typeof preferences) => {
     if (key === 'hideBalances') {
       toggleHideBalance();
@@ -56,307 +117,377 @@ export const SettingsPage: React.FC = () => {
     if (key === 'darkMode') {
       toggleTheme();
     }
+    if (key === 'language') {
+      // 语言切换已在 LanguageSwitcher 中处理
+      return;
+    }
     setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
   };
-
+  
+  // 更改语言
   const changeLanguage = (lang: string) => {
-    const code = lang === '中文(简体)' ? 'zh' : 'en';
-    i18n.changeLanguage(code);
+    i18n.changeLanguage(lang);
     setPreferences(prev => ({ ...prev, language: lang }));
   };
-
+  
+  // 更改货币
+  const changeCurrency = (currency: string) => {
+    setPreferences(prev => ({ ...prev, currency }));
+    showToast(
+      isChinese ? `货币已更改为 ${currency}` : `Currency changed to ${currency}`,
+      'success'
+    );
+  };
+  
+  // 地址格式化
   const formatAddress = (addr: string) => shortAddress(addr, 6, 4);
-
+  
+  // ==================== 设置项配置 ====================
+  
+  // 账户管理组
+  const accountSettings: SettingItem[] = [
+    {
+      id: 'account-management',
+      title: 'Account Management',
+      titleKey: 'settings.accountManagement',
+      description: 'Manage your account details and preferences',
+      descriptionKey: 'settings.accountManagementDesc',
+      icon: User,
+      isComingSoon: true
+    },
+    {
+      id: 'address-book',
+      title: 'Address Book',
+      titleKey: 'settings.addressBook',
+      description: 'Save and manage frequently used addresses',
+      descriptionKey: 'settings.addressBookDesc',
+      icon: BookOpen,
+      isComingSoon: true
+    },
+    {
+      id: 'private-key',
+      title: 'Private Key',
+      titleKey: 'settings.privateKey',
+      description: 'View and export your private key (secure)',
+      descriptionKey: 'settings.privateKeyDesc',
+      icon: Key,
+      isComingSoon: true
+    },
+    {
+      id: 'notifications',
+      title: 'Notifications',
+      titleKey: 'settings.notifications',
+      description: 'Configure email and push notifications',
+      descriptionKey: 'settings.notificationsDesc',
+      icon: Bell,
+      action: () => showToast(
+        isChinese ? '通知设置即将开放' : 'Notification settings coming soon',
+        'info'
+      )
+    },
+  ];
+  
+  // 社交与奖励组
+  const socialSettings: SettingItem[] = [
+    {
+      id: 'invite-friend',
+      title: 'Invite a Friend',
+      titleKey: 'settings.inviteFriend',
+      description: 'Invite friends and earn rewards',
+      descriptionKey: 'settings.inviteFriendDesc',
+      icon: Users,
+      isComingSoon: true
+    },
+    {
+      id: 'rewards',
+      title: 'Rewards',
+      titleKey: 'settings.rewards',
+      description: 'View and claim your rewards',
+      descriptionKey: 'settings.rewardsDesc',
+      icon: Gift,
+      isComingSoon: true
+    },
+  ];
+  
+  // 偏好设置组
+  const preferenceSettings: SettingItem[] = [
+    {
+      id: 'currency',
+      title: 'Currency',
+      titleKey: 'settings.currency',
+      description: 'Set your preferred display currency',
+      descriptionKey: 'settings.currencyDesc',
+      icon: DollarSign,
+      action: () => {
+        // 这里可以打开货币选择模态框
+        showToast(
+          isChinese ? '货币选择功能即将开放' : 'Currency selection coming soon',
+          'info'
+        )
+      }
+    },
+    {
+      id: 'one-step-transfer',
+      title: 'One-step Transfer',
+      titleKey: 'settings.oneStepTransfer',
+      description: 'Quick transfer with predefined settings',
+      descriptionKey: 'settings.oneStepTransferDesc',
+      icon: Zap,
+      isComingSoon: true
+    },
+    {
+      id: 'utxo-management',
+      title: 'UTXO Management',
+      titleKey: 'settings.utxoManagement',
+      description: 'Manage Unspent Transaction Outputs',
+      descriptionKey: 'settings.utxoManagementDesc',
+      icon: Database,
+      isComingSoon: true
+    },
+  ];
+  
+  // 安全设置组
+  const securitySettings: SettingItem[] = [
+    {
+      id: 'two-factor-auth',
+      title: 'Two-Factor Authentication',
+      titleKey: 'settings.twoFactorAuth',
+      description: 'Add an extra layer of security',
+      descriptionKey: 'settings.twoFactorAuthDesc',
+      icon: ShieldCheck,
+      isComingSoon: true
+    },
+    {
+      id: 'session-management',
+      title: 'Session Management',
+      titleKey: 'settings.sessionManagement',
+      description: 'View and manage active sessions',
+      descriptionKey: 'settings.sessionManagementDesc',
+      icon: Lock,
+      isComingSoon: true
+    },
+  ];
+  
+  // 支持与关于组
+  const supportSettings: SettingItem[] = [
+    {
+      id: 'help-center',
+      title: 'Help Center',
+      titleKey: 'settings.helpCenter',
+      description: 'Get help and browse FAQs',
+      descriptionKey: 'settings.helpCenterDesc',
+      icon: HelpCircle,
+      isComingSoon: true
+    },
+    {
+      id: 'terms-privacy',
+      title: 'Terms & Privacy',
+      titleKey: 'settings.termsPrivacy',
+      description: 'View our terms of service and privacy policy',
+      descriptionKey: 'settings.termsPrivacyDesc',
+      icon: FileText,
+      isComingSoon: true
+    },
+    {
+      id: 'feedback',
+      title: 'Send Feedback',
+      titleKey: 'settings.feedback',
+      description: 'Share your thoughts with us',
+      descriptionKey: 'settings.feedbackDesc',
+      icon: MessageSquare,
+      isComingSoon: true
+    },
+  ];
+  
+  // ==================== 设置项组件 ====================
+  
+  const SettingItemComponent: React.FC<{ item: SettingItem }> = ({ item }) => {
+    const Icon = item.icon;
+    const title = item.titleKey ? t(item.titleKey) : item.title;
+    const description = item.descriptionKey ? t(item.descriptionKey) : item.description;
+    
+    return (
+      <motion.div
+        whileHover={{ x: 4 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <button
+          onClick={() => handleSettingClick(item)}
+          className={`w-full flex items-center gap-4 p-4 rounded-xl text-left transition-colors ${
+            item.isDanger 
+              ? 'hover:bg-red-500/10 text-red-400' 
+              : item.isComingSoon
+                ? 'hover:bg-[var(--card-hover)] text-[var(--text-muted)]'
+                : 'hover:bg-[var(--card-hover)] text-[var(--text)]'
+          }`}
+          disabled={item.isComingSoon}
+        >
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+            item.isDanger 
+              ? 'bg-red-500/10' 
+              : item.isComingSoon
+                ? 'bg-[var(--card)]'
+                : 'bg-[var(--primary-subtle)]'
+          }`}>
+            <Icon className={`w-5 h-5 ${
+              item.isDanger 
+                ? 'text-red-400' 
+                : item.isComingSoon
+                  ? 'text-[var(--text-muted)]'
+                  : 'text-[var(--primary)]'
+            }`} />
+          </div>
+          
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium truncate">{title}</h3>
+              {item.badge && (
+                <span className={`px-2 py-0.5 text-xs rounded-full ${item.badgeColor || 'bg-blue-500/10 text-blue-400'}`}>
+                  {item.badge}
+                </span>
+              )}
+              {item.isComingSoon && (
+                <span className="px-2 py-0.5 text-xs rounded-full bg-yellow-500/10 text-yellow-400">
+                  {isChinese ? '即将开放' : 'Coming Soon'}
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-[var(--text-muted)] mt-0.5 truncate">{description}</p>
+          </div>
+          
+          <ChevronRight className="w-5 h-5 text-[var(--text-muted)] flex-shrink-0" />
+        </button>
+      </motion.div>
+    );
+  };
+  
+  // ==================== 设置组组件 ====================
+  
+  const SettingsGroup: React.FC<{ 
+    title: string; 
+    titleKey?: string;
+    items: SettingItem[];
+    className?: string;
+  }> = ({ title, titleKey, items, className }) => (
+    <div className={className}>
+      <h2 className="text-lg font-semibold text-[var(--text)] mb-3">
+        {titleKey ? t(titleKey) : title}
+      </h2>
+      <Card className="divide-y divide-[var(--border)]">
+        {items.map((item) => (
+          <SettingItemComponent key={item.id} item={item} />
+        ))}
+      </Card>
+    </div>
+  );
+  
+  // ==================== 主渲染 ====================
+  
   return (
     <PageTransition className="min-h-screen">
-      <PageHeader title={t('settings.title')} subtitle={t('settings.subtitle')} />
+      <PageHeader 
+        title={t('settings.title')} 
+        subtitle={t('settings.subtitle')} 
+      />
       
       <div className="p-4 lg:p-6 max-w-4xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar Navigation */}
-          
-          <div className="lg:w-64 flex-shrink-0">
-            <Card className="p-2">
-              <nav className="space-y-1">
-                {[
-                  { id: 'profile', labelKey: 'settings.profile', icon: User },
-                  { id: 'preferences', labelKey: 'settings.preferences', icon: Globe },
-                  { id: 'security', labelKey: 'settings.security', icon: Shield },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setActiveSection(item.id as typeof activeSection)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors text-left ${
-                      activeSection === item.id 
-                        ? 'bg-[var(--primary-subtle)] text-[var(--primary)]' 
-                        : 'text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card-hover)]'
-                    }`}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    <span className="font-medium">{t(item.labelKey)}</span>
-                    <ChevronRight className={`w-4 h-4 ml-auto transition-transform ${
-                      activeSection === item.id ? 'rotate-90' : ''
-                    }`} />
-                  </button>
-                ))}
-              </nav>
-              
-              <div className="border-t border-[var(--border-subtle)] mt-2 pt-2">
-                <button
-                  onClick={() => setShowLogoutConfirm(true)}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[var(--error)] hover:bg-[var(--error-subtle)] transition-colors text-left"
-                >
-                  <LogOut className="w-5 h-5" />
-                  <span className="font-medium">{t('common.logout')}</span>
-                </button>
+        {/* 用户信息卡片 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mb-8"
+        >
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <span className="text-2xl font-bold text-white">
+                  {user?.email?.charAt(0).toUpperCase()}
+                </span>
               </div>
-            </Card>
-          </div>
-
-          {/* Content */}
+              
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl font-semibold text-[var(--text)] truncate">
+                  {user?.email}
+                </h3>
+                <p className="text-sm text-[var(--text-muted)] mt-1">
+                  {isChinese ? '机构账户' : 'Institutional Account'}
+                </p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-xs font-mono text-[var(--text-muted)] bg-[var(--card)] px-2 py-1 rounded">
+                    {formatAddress(user?.walletAddress || '')}
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded">
+                    {isChinese ? '已验证' : 'Verified'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+        
+        {/* 设置分组 */}
+        <div className="space-y-8">
+          <SettingsGroup
+            title="Account"
+            titleKey="settings.account"
+            items={accountSettings}
+          />
           
-          <div className="flex-1 space-y-4">
-            {/* Profile Section */}
-            
-            {activeSection === 'profile' && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="space-y-4"
+          <SettingsGroup
+            title="Social & Rewards"
+            titleKey="settings.socialRewards"
+            items={socialSettings}
+          />
+          
+          <SettingsGroup
+            title="Preferences"
+            titleKey="settings.preferences"
+            items={preferenceSettings}
+          />
+          
+          <SettingsGroup
+            title="Security"
+            titleKey="settings.security"
+            items={securitySettings}
+          />
+          
+          <SettingsGroup
+            title="Support & About"
+            titleKey="settings.supportAbout"
+            items={supportSettings}
+          />
+          
+          {/* 登出按钮 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            <Card className="p-4">
+              <button
+                onClick={() => setShowLogoutConfirm(true)}
+                className="w-full flex items-center justify-center gap-3 p-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors"
               >
-                <Card className="p-6">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-003e
-                      <span className="text-[var(--text)] text-3xl font-bold">
-                        {user?.email?.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-lg font-semibold text-[var(--text)]">{user?.email?.split('@')[0]}</h3>
-                      <p className="text-[var(--text-muted)]">{user?.email}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm text-[var(--text-secondary)] mb-2">{t('settings.walletAddress')}</label>
-                      <div className="flex items-center gap-2 p-3 bg-[var(--card-hover)] rounded-xl">
-                        <Wallet className="w-5 h-5 text-[var(--text-muted)]" />
-                        <span className="text-[var(--text)] font-mono flex-1">{formatAddress(user?.walletAddress || '')}</span>
-                        <button
-                          onClick={() => navigator.clipboard.writeText(user?.walletAddress || '')}
-                          className="p-2 hover:bg-[var(--card-hover)] rounded-lg transition-colors"
-                        >
-                          <Check className="w-4 h-4 text-[var(--text-secondary)]" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-[var(--card-hover)] rounded-xl">
-                        <p className="text-sm text-[var(--text-secondary)]">{t('settings.accountType')}</p>
-                        <p className="text-[var(--text)] font-medium">{t('settings.standard')}</p>
-                      </div>
-                      
-                      <div className="p-4 bg-[var(--card-hover)] rounded-xl">
-                        <p className="text-sm text-[var(--text-secondary)]">{t('common.network')}</p>
-                        <p className="text-[var(--text)] font-medium">Canton</p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Preferences Section */}
-            
-            {activeSection === 'preferences' && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="space-y-4"
-              >
-                <Card className="p-6 space-y-6">
-                  <h3 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
-                    <Bell className="w-5 h-5 text-[var(--text-secondary)]" />
-                    {t('settings.notifications')}
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)]">
-                      <div>
-                        <p className="text-[var(--text)]">{t('settings.emailNotifications')}</p>
-                        <p className="text-sm text-[var(--text-muted)]">{t('settings.emailNotificationsDesc')}</p>
-                      </div>
-                      
-                      <button
-                        onClick={() => togglePreference('emailNotifications')}
-                        className={`w-12 h-6 rounded-full transition-colors relative ${
-                          preferences.emailNotifications ? 'bg-blue-500' : 'bg-[var(--card-active)]'
-                        }`}
-                      >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                          preferences.emailNotifications ? 'translate-x-7' : 'translate-x-1'
-                        }`} />
-                      </button>
-                    </div>
-                    
-                    <div className="flex items-center justify-between py-3">
-                      <div>
-                        <p className="text-[var(--text)]">{t('settings.pushNotifications')}</p>
-                        <p className="text-sm text-[var(--text-muted)]">{t('settings.pushNotificationsDesc')}</p>
-                      </div>
-                      
-                      <button
-                        onClick={() => togglePreference('pushNotifications')}
-                        className={`w-12 h-6 rounded-full transition-colors relative ${
-                          preferences.pushNotifications ? 'bg-blue-500' : 'bg-[var(--card-active)]'
-                        }`}
-                      >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                          preferences.pushNotifications ? 'translate-x-7' : 'translate-x-1'
-                        }`} />
-                      </button>
-                    </div>
-                  </div>
-                </Card>
-                
-                <Card className="p-6 space-y-6">
-                  <h3 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2">
-                    <Globe className="w-5 h-5 text-[var(--text-secondary)]" />
-                    {t('settings.display')}
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {/* Language Selector */}
-                    <div className="py-3 border-b border-[var(--border-subtle)]">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <Languages className="w-4 h-4 text-[var(--text-secondary)]" />
-                          <p className="text-[var(--text)]">{t('common.language')}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-2">
-                        {['English', '中文(简体)'].map((lang) => (
-                          <button
-                            key={lang}
-                            onClick={() => changeLanguage(lang)}
-                            className={`py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                              preferences.language === lang 
-                                ? 'bg-blue-500 text-[var(--text)]' 
-                                : 'bg-[var(--card-hover)] text-[var(--text-secondary)] hover:bg-[var(--card-active)]'
-                            }`}
-                          >
-                            {lang}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between py-3 border-b border-[var(--border-subtle)]">
-                      <div>
-                        <p className="text-[var(--text)]">{t('settings.hideBalances')}</p>
-                        <p className="text-sm text-[var(--text-muted)]">{t('settings.hideBalancesDesc')}</p>
-                      </div>
-                      
-                      <button
-                        onClick={() => togglePreference('hideBalances')}
-                        className={`w-12 h-6 rounded-full transition-colors relative ${
-                          preferences.hideBalances ? 'bg-blue-500' : 'bg-[var(--card-active)]'
-                        }`}
-                      >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                          preferences.hideBalances ? 'translate-x-7' : 'translate-x-1'
-                        }`} />
-                      </button>
-                    </div>
-                    
-                    <div className="flex items-center justify-between py-3">
-                      <div>
-                        <p className="text-[var(--text)]">{t('settings.darkMode')}</p>
-                        <p className="text-sm text-[var(--text-muted)]">{t('settings.darkModeDesc')}</p>
-                      </div>
-                      
-                      <button
-                        onClick={() => togglePreference('darkMode')}
-                        className={`w-12 h-6 rounded-full transition-colors relative ${
-                          theme === 'dark' ? 'bg-blue-500' : 'bg-gray-300'
-                        }`}
-                      >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                          theme === 'dark' ? 'translate-x-7' : 'translate-x-1'
-                        }`} />
-                      </button>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Security Section */}
-            
-            {activeSection === 'security' && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="space-y-4"
-              >
-                <Card className="p-6">
-                  <h3 className="text-lg font-semibold text-[var(--text)] flex items-center gap-2 mb-4">
-                    <Shield className="w-5 h-5 text-[var(--text-secondary)]" />
-                    {t('settings.security')}
-                  </h3>
-                  
-                  <div className="space-y-3">
-                    <button className="w-full flex items-center justify-between p-4 bg-[var(--card-hover)] hover:bg-[var(--card-active)] rounded-xl transition-colors">
-                      <div className="flex items-center gap-3">
-                        <Key className="w-5 h-5 text-[var(--text-secondary)]" />
-                        <div className="text-left">
-                          <p className="text-[var(--text)]">{t('settings.exportPrivateKey')}</p>
-                          <p className="text-sm text-[var(--text-muted)]">{t('settings.exportPrivateKeyDesc')}</p>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-[var(--text-secondary)]" />
-                    </button>
-                    
-                    <button className="w-full flex items-center justify-between p-4 bg-[var(--card-hover)] hover:bg-[var(--card-active)] rounded-xl transition-colors">
-                      <div className="flex items-center gap-3">
-                        <Shield className="w-5 h-5 text-[var(--text-secondary)]" />
-                        <div className="text-left">
-                          <p className="text-[var(--text)]">{t('settings.twoFactorAuth')}</p>
-                          <p className="text-sm text-[var(--text-muted)]">{t('settings.twoFactorAuthDesc')}</p>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-[var(--text-secondary)]" />
-                    </button>
-                  </div>
-                </Card>
-                
-                <Card className="p-6 border-red-500/20">
-                  <h3 className="text-lg font-semibold text-[var(--error)] flex items-center gap-2 mb-4">
-                    <AlertTriangle className="w-5 h-5" />
-                    {t('settings.dangerZone')}
-                  </h3>
-                  
-                  <button
-                    onClick={() => setShowLogoutConfirm(true)}
-                    className="w-full flex items-center justify-center gap-2 p-4 bg-[var(--error-subtle)] hover:bg-red-500/20 text-[var(--error)] border border-red-500/20 rounded-xl transition-colors"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    {t('common.logout')}
-                  </button>
-                </Card>
-              </motion.div>
-            )}
-          </div>
+                <LogOut className="w-5 h-5" />
+                <span className="font-medium">{t('common.logout')}</span>
+              </button>
+            </Card>
+          </motion.div>
+        </div>
+        
+        {/* 版本信息 */}
+        <div className="mt-8 text-center">
+          <p className="text-sm text-[var(--text-muted)]">
+            Canton Wallet v1.0.0 • {isChinese ? '基于 Canton 网络构建' : 'Built on Canton Network'}
+          </p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">
+            © {new Date().getFullYear()} Canton Network. {isChinese ? '保留所有权利' : 'All rights reserved'}.
+          </p>
         </div>
       </div>
-
-      {/* Logout Confirm Modal */}
       
+      {/* 登出确认模态框 */}
       <Modal
         isOpen={showLogoutConfirm}
         onClose={() => setShowLogoutConfirm(false)}
@@ -366,26 +497,22 @@ export const SettingsPage: React.FC = () => {
           <div className="flex gap-3">
             <button
               onClick={() => setShowLogoutConfirm(false)}
-              className="flex-1 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] bg-[var(--card-hover)] hover:bg-[var(--card-active)] rounded-xl transition-colors"
+              className="flex-1 px-4 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] bg-[var(--card)] hover:bg-[var(--card-hover)] rounded-xl transition-colors"
             >
               {t('common.cancel')}
             </button>
             <button
               onClick={handleLogout}
-              className="flex-1 px-4 py-2.5 text-sm text-[var(--text)] bg-red-500 hover:bg-red-600 rounded-xl transition-colors"
+              className="flex-1 px-4 py-3 text-sm text-white bg-red-500 hover:bg-red-600 rounded-xl transition-colors"
             >
-              {t('common.logout')}
+              {t('common.confirmLogout')}
             </button>
           </div>
         }
       >
-        <div className="flex items-start gap-3 text-yellow-500">
-          <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="font-medium mb-1">{t('common.confirmLogout')}</p>
-            <p className="text-sm text-[var(--text-secondary)]">{t('common.logoutDesc')}</p>
-          </div>
-        </div>
+        <p className="text-[var(--text-muted)] text-sm">
+          {t('common.logoutDesc', 'You will need to sign in again to access your wallet.')}
+        </p>
       </Modal>
     </PageTransition>
   );

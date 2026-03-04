@@ -10,4 +10,5 @@ export { default as ActivityPage } from './Activity';
 export { default as SettingsPage } from './Settings';
 export { default as MarketPage } from './Market';
 export { default as MarketDetailPage } from './MarketDetail';
+export { default as DiscoverPage } from './Discover';
 export { OffersPage } from './Placeholder';

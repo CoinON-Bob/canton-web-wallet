@@ -15,7 +15,8 @@ import {
   ActivityPage, 
   SettingsPage,
   MarketPage,
-  MarketDetailPage
+  MarketDetailPage,
+  DiscoverPage
 } from '../pages';
 
 // ==================== 主路由组件 ====================
@@ -156,6 +157,17 @@ export const Router: React.FC = () => {
             <AuthGuard>
               <MainLayout>
                 <MarketDetailPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        
+        <Route
+          path="/discover"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <DiscoverPage />
               </MainLayout>
             </AuthGuard>
           }

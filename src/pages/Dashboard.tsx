@@ -26,7 +26,8 @@ const QuickAction: React.FC<{
   to?: string;
   onClick?: () => void;
   color?: string;
-}> = ({ icon, labelKey, to, onClick, color = 'blue' }) => {
+  descriptionKey?: string;
+}> = ({ icon, labelKey, to, onClick, color = 'blue', descriptionKey }) => {
   const { t } = useTranslation();
   const colorStyles = {
     blue: 'bg-[var(--primary-subtle)] text-[var(--primary)] active:bg-[var(--primary)]/20',
@@ -40,7 +41,14 @@ const QuickAction: React.FC<{
       <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--card)] flex items-center justify-center">
         {icon}
       </div>
-      <span className="text-xs sm:text-sm font-medium text-[var(--text)]">{t(labelKey)}</span>
+      <div className="text-center">
+        <span className="text-xs sm:text-sm font-medium text-[var(--text)] block">{t(labelKey)}</span>
+        {descriptionKey && (
+          <span className="text-[10px] sm:text-xs text-[var(--text-muted)] block mt-0.5">
+            {t(descriptionKey)}
+          </span>
+        )}
+      </div>
     </>
   );
 
@@ -142,30 +150,20 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full">
               <QuickAction
                 icon={<ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />}
                 labelKey="nav.send"
                 to="/send"
                 color="blue"
+                descriptionKey="dashboard.quickTransfer"
               />
               <QuickAction
                 icon={<ArrowDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />}
                 labelKey="dashboard.receive"
                 onClick={() => setIsReceiveModalOpen(true)}
                 color="green"
-              />
-              <QuickAction
-                icon={<Repeat className="w-5 h-5 sm:w-6 sm:h-6" />}
-                labelKey="nav.swap"
-                to="/swap"
-                color="purple"
-              />
-              <QuickAction
-                icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" />}
-                labelKey="nav.batch"
-                to="/batch"
-                color="orange"
+                descriptionKey="dashboard.receiveFunds"
               />
             </div>
           </div>

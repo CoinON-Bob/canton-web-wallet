@@ -59,10 +59,6 @@ const enTranslations = {
     activity: 'Activity',
     settings: 'Settings',
   },
-  // Discover
-  discover: {
-    title: 'Discover',
-  },
   // Login
   login: {
     title: 'Welcome to Canton',
@@ -133,8 +129,8 @@ const enTranslations = {
     quickActions: 'Quick Actions',
     send: 'Send',
     receive: 'Receive',
-    quickTransfer: 'Quick Transfer',
-    receiveFunds: 'Receive Funds',
+    swap: 'Swap',
+    batch: 'Batch',
     recentActivity: 'Recent Activity',
     assets: 'Assets',
     offers: 'Offers',
@@ -248,52 +244,27 @@ const enTranslations = {
   settings: {
     title: 'Settings',
     subtitle: 'Manage your account preferences',
-    // 分组标题
-    account: 'Account',
-    socialRewards: 'Social & Rewards',
+    profile: 'Profile',
     preferences: 'Preferences',
     security: 'Security',
-    supportAbout: 'Support & About',
-    
-    // 账户管理
-    accountManagement: 'Account Management',
-    accountManagementDesc: 'Manage your account details and preferences',
-    addressBook: 'Address Book',
-    addressBookDesc: 'Save and manage frequently used addresses',
-    privateKey: 'Private Key',
-    privateKeyDesc: 'View and export your private key (secure)',
+    accountType: 'Account Type',
+    standard: 'Standard',
+    walletAddress: 'Wallet Address',
     notifications: 'Notifications',
-    notificationsDesc: 'Configure email and push notifications',
-    
-    // 社交与奖励
-    inviteFriend: 'Invite a Friend',
-    inviteFriendDesc: 'Invite friends and earn rewards',
-    rewards: 'Rewards',
-    rewardsDesc: 'View and claim your rewards',
-    
-    // 偏好设置
-    currency: 'Currency',
-    currencyDesc: 'Set your preferred display currency',
-    oneStepTransfer: 'One-step Transfer',
-    oneStepTransferDesc: 'Quick transfer with predefined settings',
-    utxoManagement: 'UTXO Management',
-    utxoManagementDesc: 'Manage Unspent Transaction Outputs',
-    
-    // 安全设置
+    emailNotifications: 'Email Notifications',
+    emailNotificationsDesc: 'Receive updates about your transactions',
+    pushNotifications: 'Push Notifications',
+    pushNotificationsDesc: 'Get notified when transactions complete',
+    display: 'Display',
+    hideBalances: 'Hide Balances',
+    hideBalancesDesc: 'Show •••••• instead of actual amounts',
+    darkMode: 'Dark Mode',
+    darkModeDesc: 'Always use dark theme',
+    dangerZone: 'Danger Zone',
+    exportPrivateKey: 'Export Private Key',
+    exportPrivateKeyDesc: 'Download encrypted backup',
     twoFactorAuth: 'Two-Factor Authentication',
     twoFactorAuthDesc: 'Add extra security layer',
-    sessionManagement: 'Session Management',
-    sessionManagementDesc: 'View and manage active sessions',
-    
-    // 支持与关于
-    helpCenter: 'Help Center',
-    helpCenterDesc: 'Get help and browse FAQs',
-    termsPrivacy: 'Terms & Privacy',
-    termsPrivacyDesc: 'View our terms of service and privacy policy',
-    feedback: 'Send Feedback',
-    feedbackDesc: 'Share your thoughts with us',
-    
-    // 旧版兼容 - 移除重复项，保留新定义
   },
   // Market
   market: {
@@ -389,10 +360,6 @@ const zhTranslations = {
     activity: '活动',
     settings: '设置',
   },
-  // Discover
-  discover: {
-    title: '发现',
-  },
   // Login
   login: {
     title: '欢迎使用 Canton',
@@ -463,8 +430,8 @@ const zhTranslations = {
     quickActions: '快捷操作',
     send: '发送',
     receive: '接收',
-    quickTransfer: '快速转账',
-    receiveFunds: '接收资金',
+    swap: '兑换',
+    batch: '批量',
     recentActivity: '最近活动',
     assets: '资产',
     offers: '报价',
@@ -578,52 +545,27 @@ const zhTranslations = {
   settings: {
     title: '设置',
     subtitle: '管理账户偏好',
-    // 分组标题
-    account: '账户',
-    socialRewards: '社交与奖励',
+    profile: '个人资料',
     preferences: '偏好设置',
     security: '安全',
-    supportAbout: '支持与关于',
-    
-    // 账户管理
-    accountManagement: '账户管理',
-    accountManagementDesc: '管理您的账户详情和偏好设置',
-    addressBook: '地址簿',
-    addressBookDesc: '保存和管理常用地址',
-    privateKey: '私钥',
-    privateKeyDesc: '查看和导出您的私钥（安全）',
+    accountType: '账户类型',
+    standard: '标准版',
+    walletAddress: '钱包地址',
     notifications: '通知',
-    notificationsDesc: '配置邮件和推送通知',
-    
-    // 社交与奖励
-    inviteFriend: '邀请一位朋友',
-    inviteFriendDesc: '邀请朋友并赚取奖励',
-    rewards: '奖励',
-    rewardsDesc: '查看和领取您的奖励',
-    
-    // 偏好设置
-    currency: '货币',
-    currencyDesc: '设置您偏好的显示货币',
-    oneStepTransfer: '一步转账',
-    oneStepTransferDesc: '使用预定义设置的快速转账',
-    utxoManagement: 'UTXO 管理',
-    utxoManagementDesc: '管理未花费交易输出',
-    
-    // 安全设置
+    emailNotifications: '邮件通知',
+    emailNotificationsDesc: '接收交易更新通知',
+    pushNotifications: '推送通知',
+    pushNotificationsDesc: '交易完成时收到通知',
+    display: '显示',
+    hideBalances: '隐藏余额',
+    hideBalancesDesc: '显示 •••••• 代替实际金额',
+    darkMode: '深色模式',
+    darkModeDesc: '始终使用深色主题',
+    dangerZone: '危险区域',
+    exportPrivateKey: '导出私钥',
+    exportPrivateKeyDesc: '下载加密备份',
     twoFactorAuth: '双重认证',
     twoFactorAuthDesc: '增加额外的安全层',
-    sessionManagement: '会话管理',
-    sessionManagementDesc: '查看和管理活动会话',
-    
-    // 支持与关于
-    helpCenter: '帮助中心',
-    helpCenterDesc: '获取帮助并浏览常见问题',
-    termsPrivacy: '条款与隐私',
-    termsPrivacyDesc: '查看我们的服务条款和隐私政策',
-    feedback: '发送反馈',
-    feedbackDesc: '与我们分享您的想法',
-    
-    // 旧版兼容 - 移除重复项，保留新定义
   },
   // Market
   market: {
