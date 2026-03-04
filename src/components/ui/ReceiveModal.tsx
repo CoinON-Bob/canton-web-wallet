@@ -103,12 +103,12 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-50 sm:relative sm:mx-auto sm:my-auto sm:w-full sm:max-w-md"
+            className="fixed bottom-0 left-0 right-0 z-50 sm:fixed sm:inset-0 sm:flex sm:items-center sm:justify-center sm:p-4"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <Card className="bg-[var(--bg-elevated)] border-[var(--border)] rounded-t-3xl sm:rounded-2xl p-6 max-h-[90vh] overflow-auto">
+            <Card className="bg-[var(--bg-elevated)] border-[var(--border)] rounded-t-3xl sm:rounded-2xl p-6 max-h-[90vh] overflow-auto sm:max-w-md sm:w-full">
               {/* Handle bar for mobile */}
               
               <div className="w-12 h-1 bg-[var(--border-strong)] rounded-full mx-auto mb-6 sm:hidden" />

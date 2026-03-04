@@ -19,6 +19,11 @@ import {
   DiscoverPage
 } from '../pages';
 
+// Settings pages
+import { SettingsLayout } from '../components/layout/SettingsLayout';
+import { SettingsAccountPage } from '../pages/settings/AccountPage';
+import { SettingsAddressBookPage } from '../pages/settings/AddressBookPage';
+
 // ==================== 主路由组件 ====================
 
 export const Router: React.FC = () => {
@@ -134,11 +139,26 @@ export const Router: React.FC = () => {
           element={
             <AuthGuard>
               <MainLayout>
-                <SettingsPage />
+                <SettingsLayout />
               </MainLayout>
             </AuthGuard>
           }
-        />
+        >
+          <Route index element={<SettingsPage />} />
+          <Route path="account" element={<SettingsAccountPage />} />
+          <Route path="address-book" element={<SettingsAddressBookPage />} />
+          <Route path="private-key" element={<SettingsPage />} />
+          <Route path="notifications" element={<SettingsPage />} />
+          <Route path="invite" element={<SettingsPage />} />
+          <Route path="rewards" element={<SettingsPage />} />
+          <Route path="currency" element={<SettingsPage />} />
+          <Route path="one-step-transfer" element={<SettingsPage />} />
+          <Route path="utxo-management" element={<SettingsPage />} />
+          <Route path="security" element={<SettingsPage />} />
+          <Route path="help" element={<SettingsPage />} />
+          <Route path="terms" element={<SettingsPage />} />
+          <Route path="feedback" element={<SettingsPage />} />
+        </Route>
         
         <Route
           path="/market"
