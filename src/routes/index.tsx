@@ -20,7 +20,7 @@ import {
 } from '../pages';
 
 // Settings pages
-import { SettingsLayoutNew } from '../components/layout/SettingsLayoutNew';
+import { SettingsLayoutFixed } from '../components/layout/SettingsLayoutFixed';
 import { SettingsAccountPage } from '../pages/settings/AccountPage';
 import { SettingsAddressBookPage } from '../pages/settings/AddressBookPage';
 import { SettingsNotificationsPage } from '../pages/settings/NotificationsPage';
@@ -141,7 +141,7 @@ export const Router: React.FC = () => {
           element={
             <AuthGuard>
               <MainLayout>
-                <SettingsLayoutNew />
+                <SettingsLayoutFixed />
               </MainLayout>
             </AuthGuard>
           }

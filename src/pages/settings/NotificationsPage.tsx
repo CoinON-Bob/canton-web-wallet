@@ -165,6 +165,13 @@ export const SettingsNotificationsPage: React.FC = () => {
           </div>
         </Card>
       </motion.div>
+      
+      {/* Build Hash 显示 */}
+      <div className="mt-8 pt-4 border-t border-[var(--border)] text-center">
+        <p className="text-xs text-[var(--text-muted)] font-mono">
+          Build: 33b4c68
+        </p>
+      </div>
     </div>
   );
 };
