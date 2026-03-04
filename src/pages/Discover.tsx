@@ -166,7 +166,7 @@ const Card: React.FC<CardProps> = ({ card, onClick, isTool = false }) => {
       </div>
       
       <h3 className="text-lg font-semibold text-[var(--text)] mb-2">{name}</h3>
-      <p className="text-sm text-[var(--text-muted)] mb-4">{description}</p>
+      <p className="text-sm text-[var(--text-muted)] mb-4 line-clamp-2">{description}</p>
       
       {isTool ? (
         <div className="flex items-center text-sm text-[var(--primary)]">

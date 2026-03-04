@@ -370,7 +370,7 @@ export const SettingsPage: React.FC = () => {
     className?: string;
   }> = ({ title, titleKey, items, className }) => (
     <div className={className}>
-      <h2 className="text-lg font-semibold text-[var(--text)] mb-3">
+      <h2 className="text-lg font-semibold text-[var(--text)] mb-3 truncate">
         {titleKey ? t(titleKey) : title}
       </h2>
       <Card className="divide-y divide-[var(--border)]">

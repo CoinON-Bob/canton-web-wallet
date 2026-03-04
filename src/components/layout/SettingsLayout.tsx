@@ -182,8 +182,8 @@ export const SettingsLayout: React.FC = () => {
                       }`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <div className="flex-1">
-                        <div className="font-medium">{t(item.labelKey)}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium truncate">{t(item.labelKey)}</div>
                         <div className="text-xs opacity-75 truncate">
                           {t(item.descriptionKey)}
                         </div>
