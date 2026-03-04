@@ -20,7 +20,8 @@ import {
   Check,
   ArrowLeft,
   TrendingUp,
-  Compass
+  Compass,
+  Globe
 } from 'lucide-react';
 import { useWalletStore } from '../../store';
 import { shortAddress, getCantonExplorerUrl } from '../../utils/address';
@@ -57,6 +58,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { showToast } = useToast();
   const isMobile = useIsMobile();
@@ -100,13 +102,73 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           </Link>
         </div>
 
-        {/* Right: Network + Wallet */}
+        {/* Right: Network + Language + Wallet */}
         <div className="flex items-center gap-2">
           {/* Network Badge - Hidden on smallest screens */}
-          
           <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className="text-xs text-[var(--text-secondary)]">Canton</span>
+          </div>
+
+          {/* Language Switch */}
+          <div className="relative">
+            <button
+              onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[var(--card)] hover:bg-[var(--card-hover)] rounded-lg border border-[var(--border)] transition-colors touch-manipulation"
+            >
+              <Globe className="w-4 h-4 text-[var(--text-muted)]" />
+              <span className="text-xs text-[var(--text-secondary)] font-medium">
+                {i18n.language === 'zh' ? 'ZH' : 'EN'}
+              </span>
+            </button>
+
+            {/* Language Dropdown */}
+            <AnimatePresence>
+              {isLanguageMenuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsLanguageMenuOpen(false)}
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-1 z-50 min-w-[120px] bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl shadow-lg overflow-hidden"
+                  >
+                    <button
+                      onClick={() => {
+                        i18n.changeLanguage('zh');
+                        localStorage.setItem('canton_language', 'zh');
+                        setIsLanguageMenuOpen(false);
+                      }}
+                      className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
+                        i18n.language === 'zh'
+                          ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
+                          : 'text-[var(--text)] hover:bg-[var(--card-hover)]'
+                      }`}
+                    >
+                      中文
+                    </button>
+                    <button
+                      onClick={() => {
+                        i18n.changeLanguage('en');
+                        localStorage.setItem('canton_language', 'en');
+                        setIsLanguageMenuOpen(false);
+                      }}
+                      className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
+                        i18n.language === 'en'
+                          ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
+                          : 'text-[var(--text)] hover:bg-[var(--card-hover)]'
+                      }`}
+                    >
+                      English
+                    </button>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Wallet Address Button */}
@@ -171,6 +233,21 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         <Settings className="w-4 h-4" />
                         Settings
                       </Link>
+                      
+                      {/* Language Option */}
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          setIsLanguageMenuOpen(true);
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation text-left"
+                      >
+                        <Globe className="w-4 h-4" />
+                        Language
+                        <span className="ml-auto text-xs text-[var(--text-muted)]">
+                          {i18n.language === 'zh' ? '中文' : 'English'}
+                        </span>
+                      </button>
                       
                       {/* Explorer 链接 - 阶段1隐藏，阶段2启用 */}
                       {explorerUrl && (
