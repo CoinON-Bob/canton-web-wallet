@@ -56,7 +56,7 @@ const useIsMobile = () => {
 const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
   const { user, setUser } = useWalletStore();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
