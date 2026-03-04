@@ -110,18 +110,18 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
             <span className="text-xs text-[var(--text-secondary)]">Canton</span>
           </div>
 
-          {/* Language Switch */}
+          {/* Language Switch - 始终显示 */}
           <div className="relative">
             <button
               onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[var(--card)] hover:bg-[var(--card-hover)] rounded-lg border border-[var(--border)] transition-colors touch-manipulation group"
+              className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500/10 to-purple-600/10 hover:from-blue-500/20 hover:to-purple-600/20 rounded-lg border border-blue-500/20 transition-all touch-manipulation group"
               aria-label="Change language"
             >
-              <Globe className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--primary)]" />
-              <span className="text-xs font-medium hidden sm:inline">
+              <Globe className="w-4 h-4 text-blue-400 group-hover:text-blue-300 flex-shrink-0" />
+              <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 hidden sm:inline">
                 {i18n.language === 'zh' ? '中文' : 'English'}
               </span>
-              <span className="text-xs font-medium sm:hidden">
+              <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 sm:hidden">
                 {i18n.language === 'zh' ? 'ZH' : 'EN'}
               </span>
             </button>
