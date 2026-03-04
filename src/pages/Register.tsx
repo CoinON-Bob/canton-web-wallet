@@ -17,6 +17,7 @@ export const RegisterPage: React.FC = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    invitationCode: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -44,6 +45,11 @@ export const RegisterPage: React.FC = () => {
     // 确认密码
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = t('register.errors.passwordMismatch');
+    }
+    
+    // 邀请码验证（必填）
+    if (!formData.invitationCode.trim()) {
+      newErrors.invitationCode = t('register.errors.invitationCodeRequired', 'Invitation code is required');
     }
     
     setErrors(newErrors);
@@ -196,6 +202,31 @@ export const RegisterPage: React.FC = () => {
               {errors.confirmPassword && (
                 <p className="mt-1.5 text-sm text-red-500">{errors.confirmPassword}</p>
               )}
+            </div>
+
+            {/* 邀请码 */}
+            <div>
+              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                {t('register.invitationCode', 'Invitation Code')}
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
+                  <UserPlus className="w-5 h-5" />
+                </div>
+                <input
+                  type="text"
+                  value={formData.invitationCode}
+                  onChange={(e) => setFormData({ ...formData, invitationCode: e.target.value })}
+                  placeholder={t('register.invitationCodePlaceholder', 'Enter your invitation code')}
+                  className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 pl-11 text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] transition-colors"
+                />
+              </div>
+              {errors.invitationCode && (
+                <p className="mt-1.5 text-sm text-red-500">{errors.invitationCode}</p>
+              )}
+              <p className="mt-1.5 text-xs text-[var(--text-muted)]">
+                {t('register.invitationCodeHint', 'Invitation code is required for registration')}
+              </p>
             </div>
 
             {/* 提交按钮 */}

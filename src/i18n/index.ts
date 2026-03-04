@@ -62,6 +62,9 @@ const enTranslations = {
   // Discover
   discover: {
     title: 'Discover',
+    tools: 'Tools',
+    dapps: 'DApps',
+    dapp: 'DApp',
   },
   // Login
   login: {
@@ -94,6 +97,9 @@ const enTranslations = {
     passwordHint: 'At least 8 characters',
     confirmPassword: 'Confirm Password',
     confirmPasswordPlaceholder: 'Confirm your password',
+    invitationCode: 'Invitation Code',
+    invitationCodePlaceholder: 'Enter your invitation code',
+    invitationCodeHint: 'Invitation code is required for registration',
     createAccount: 'Create Account',
     creatingAccount: 'Creating account...',
     alreadyHaveAccount: 'Already have an account?',
@@ -106,6 +112,7 @@ const enTranslations = {
       passwordRequired: 'Password is required',
       passwordTooShort: 'Password must be at least 8 characters',
       passwordMismatch: 'Passwords do not match',
+      invitationCodeRequired: 'Invitation code is required',
     },
   },
   forgotPassword: {
@@ -392,6 +399,9 @@ const zhTranslations = {
   // Discover
   discover: {
     title: '发现',
+    tools: '工具',
+    dapps: 'DApps',
+    dapp: 'DApp',
   },
   // Login
   login: {
@@ -424,6 +434,9 @@ const zhTranslations = {
     passwordHint: '至少8个字符',
     confirmPassword: '确认密码',
     confirmPasswordPlaceholder: '确认您的密码',
+    invitationCode: '邀请码',
+    invitationCodePlaceholder: '请输入邀请码',
+    invitationCodeHint: '注册需要邀请码',
     createAccount: '创建账号',
     creatingAccount: '创建中...',
     alreadyHaveAccount: '已有账号？',
@@ -436,6 +449,7 @@ const zhTranslations = {
       passwordRequired: '请输入密码',
       passwordTooShort: '密码至少需要8个字符',
       passwordMismatch: '两次输入的密码不一致',
+      invitationCodeRequired: '邀请码不能为空',
     },
   },
   forgotPassword: {

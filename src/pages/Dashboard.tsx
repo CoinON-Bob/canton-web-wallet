@@ -153,7 +153,7 @@ export const DashboardPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full">
               <QuickAction
                 icon={<ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />}
-                labelKey="nav.send"
+                labelKey="dashboard.send"
                 to="/send"
                 color="blue"
                 descriptionKey="dashboard.quickTransfer"
