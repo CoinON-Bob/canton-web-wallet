@@ -20,9 +20,11 @@ import {
 } from '../pages';
 
 // Settings pages
-import { SettingsLayout } from '../components/layout/SettingsLayout';
+import { SettingsLayoutNew } from '../components/layout/SettingsLayoutNew';
 import { SettingsAccountPage } from '../pages/settings/AccountPage';
 import { SettingsAddressBookPage } from '../pages/settings/AddressBookPage';
+import { SettingsNotificationsPage } from '../pages/settings/NotificationsPage';
+import { SettingsInvitePage } from '../pages/settings/InvitePage';
 
 // ==================== 主路由组件 ====================
 
@@ -139,7 +141,7 @@ export const Router: React.FC = () => {
           element={
             <AuthGuard>
               <MainLayout>
-                <SettingsLayout />
+                <SettingsLayoutNew />
               </MainLayout>
             </AuthGuard>
           }
@@ -147,17 +149,17 @@ export const Router: React.FC = () => {
           <Route index element={<SettingsPage />} />
           <Route path="account" element={<SettingsAccountPage />} />
           <Route path="address-book" element={<SettingsAddressBookPage />} />
-          <Route path="private-key" element={<SettingsPage />} />
-          <Route path="notifications" element={<SettingsPage />} />
-          <Route path="invite" element={<SettingsPage />} />
-          <Route path="rewards" element={<SettingsPage />} />
-          <Route path="currency" element={<SettingsPage />} />
-          <Route path="one-step-transfer" element={<SettingsPage />} />
-          <Route path="utxo-management" element={<SettingsPage />} />
-          <Route path="security" element={<SettingsPage />} />
-          <Route path="help" element={<SettingsPage />} />
-          <Route path="terms" element={<SettingsPage />} />
-          <Route path="feedback" element={<SettingsPage />} />
+          <Route path="private-key" element={<SettingsAccountPage />} />
+          <Route path="notifications" element={<SettingsNotificationsPage />} />
+          <Route path="invite" element={<SettingsInvitePage />} />
+          <Route path="rewards" element={<SettingsInvitePage />} />
+          <Route path="currency" element={<SettingsAccountPage />} />
+          <Route path="one-step-transfer" element={<SettingsAccountPage />} />
+          <Route path="utxo-management" element={<SettingsAccountPage />} />
+          <Route path="security" element={<SettingsAccountPage />} />
+          <Route path="help" element={<SettingsAccountPage />} />
+          <Route path="terms" element={<SettingsAccountPage />} />
+          <Route path="feedback" element={<SettingsAccountPage />} />
         </Route>
         
         <Route
