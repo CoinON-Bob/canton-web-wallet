@@ -221,9 +221,15 @@ const MobileSettingsList: React.FC = () => {
 // ==================== 移动端详情页布局 ====================
 
 const MobileDetailLayout: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const currentItem = settingsMenuItems.find(item => location.pathname === item.path);
-  
+
+  // 进入详情页时自动滚到顶部
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen">
       {/* 固定 Header */}
@@ -237,7 +243,7 @@ const MobileDetailLayout: React.FC = () => {
           </Link>
           <div className="flex-1">
             <h1 className="text-lg font-semibold text-[var(--text)] truncate">
-              {currentItem?.labelKey ? useTranslation().t(currentItem.labelKey) : 'Settings'}
+              {currentItem ? t(currentItem.labelKey) : t('settings.title')}
             </h1>
           </div>
         </div>
@@ -356,7 +362,7 @@ const DesktopSettingsLayout: React.FC = () => {
                   {t('settings.subtitle')}
                 </p>
                 <p className="text-sm text-[var(--text-muted)]">
-                  Select a setting from the menu to configure your account
+                  {t('settings.selectItem')}
                 </p>
               </Card>
             ) : (

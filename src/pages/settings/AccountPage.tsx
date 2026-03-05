@@ -14,6 +14,7 @@ import {
 import { Card } from '../../components/ui';
 import { useWalletStore } from '../../store';
 import { MOCK_CANTON_ADDRESS } from '../../config/canton';
+import { shortAddress } from '../../utils/address';
 
 // ==================== 账户管理页面 ====================
 
@@ -75,7 +76,7 @@ export const SettingsAccountPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-[var(--text)] mb-1">
-                    {t('settings.email', 'Email')}
+                    {t('settingsAccount.email')}
                   </h3>
                   {isEditingEmail ? (
                     <div className="flex items-center gap-2">
@@ -84,19 +85,19 @@ export const SettingsAccountPage: React.FC = () => {
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
                         className="px-3 py-1.5 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)]"
-                        placeholder="Enter new email"
+                        placeholder={t('settingsAccount.email')}
                       />
                       <button
                         onClick={handleSaveEmail}
                         className="px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                       >
-                        Save
+                        {t('common.save')}
                       </button>
                       <button
                         onClick={() => setIsEditingEmail(false)}
                         className="px-3 py-1.5 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] hover:bg-[var(--card-hover)] transition-colors"
                       >
-                        Cancel
+                        {t('common.cancel')}
                       </button>
                     </div>
                   ) : (
@@ -104,7 +105,7 @@ export const SettingsAccountPage: React.FC = () => {
                       <p className="text-[var(--text)]">{user?.email || 'user@example.com'}</p>
                       <span className="flex items-center gap-1 px-2 py-0.5 bg-green-500/10 text-green-400 text-xs rounded-full">
                         <CheckCircle className="w-3 h-3" />
-                        Verified
+                        {t('settingsAccount.verified')}
                       </span>
                       <button
                         onClick={() => setIsEditingEmail(true)}
@@ -126,17 +127,18 @@ export const SettingsAccountPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-[var(--text)] mb-1">
-                    {t('settings.walletAddress', 'Wallet Address')}
+                    {t('settingsAccount.walletAddress')}
                   </h3>
-                  <div className="flex items-center gap-3">
-                    <p className="text-sm font-mono text-[var(--text)] bg-[var(--card)] px-3 py-1.5 rounded-lg">
-                      {MOCK_CANTON_ADDRESS}
+                  <div className="flex items-center gap-2 min-w-0">
+                    <p className="text-sm font-mono text-[var(--text)] bg-[var(--card)] px-3 py-1.5 rounded-lg truncate flex-1 min-w-0">
+                      <span className="hidden sm:inline">{MOCK_CANTON_ADDRESS}</span>
+                      <span className="sm:hidden">{shortAddress(MOCK_CANTON_ADDRESS, 6, 4)}</span>
                     </p>
                     <button
                       onClick={() => navigator.clipboard.writeText(MOCK_CANTON_ADDRESS)}
-                      className="px-3 py-1.5 bg-[var(--primary-subtle)] text-[var(--primary)] rounded-lg hover:bg-[var(--primary)]/20 transition-colors text-sm"
+                      className="flex-shrink-0 px-3 py-1.5 bg-[var(--primary-subtle)] text-[var(--primary)] rounded-lg hover:bg-[var(--primary)]/20 transition-colors text-sm"
                     >
-                      Copy
+                      {t('common.copy')}
                     </button>
                   </div>
                 </div>
@@ -151,14 +153,14 @@ export const SettingsAccountPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-[var(--text)] mb-1">
-                    {t('settings.accountType', 'Account Type')}
+                    {t('settingsAccount.accountType')}
                   </h3>
                   <div className="flex items-center gap-3">
                     <span className="px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg text-sm">
-                      Standard User
+                      {t('settingsAccount.accountTypeName')}
                     </span>
                     <span className="text-sm text-[var(--text-muted)]">
-                      Full access to all features
+                      {t('settingsAccount.accountTypeDesc')}
                     </span>
                   </div>
                 </div>
@@ -173,18 +175,18 @@ export const SettingsAccountPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-[var(--text)] mb-1">
-                    {t('settings.securityStatus', 'Security Status')}
+                    {t('settingsAccount.securityStatus')}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-400" />
-                      <span className="text-sm text-[var(--text)]">Email verified</span>
+                      <span className="text-sm text-[var(--text)]">{t('settingsAccount.emailVerified')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <XCircle className="w-4 h-4 text-red-400" />
-                      <span className="text-sm text-[var(--text)]">2FA not enabled</span>
+                      <span className="text-sm text-[var(--text)]">{t('settingsAccount.twoFA')}</span>
                       <button className="text-sm text-blue-400 hover:text-blue-300">
-                        Enable
+                        {t('settingsAccount.twoFAEnable')}
                       </button>
                     </div>
                   </div>
@@ -207,26 +209,26 @@ export const SettingsAccountPage: React.FC = () => {
           <div className="flex items-start justify-between">
             <div>
               <h3 className="font-medium text-[var(--text)] mb-2">
-                {t('settings.changePassword', 'Change Password')}
+                {t('settingsAccount.changePass')}
               </h3>
               <p className="text-sm text-[var(--text-muted)] mb-4">
-                Update your account password for enhanced security
+                {t('settingsAccount.changePassDesc')}
               </p>
               {isChangingPassword ? (
                 <div className="space-y-3">
                   <input
                     type="password"
-                    placeholder="Current password"
+                    placeholder={t('settingsAccount.currentPass')}
                     className="w-full px-3 py-2 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)]"
                   />
                   <input
                     type="password"
-                    placeholder="New password"
+                    placeholder={t('settingsAccount.newPass')}
                     className="w-full px-3 py-2 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)]"
                   />
                   <input
                     type="password"
-                    placeholder="Confirm new password"
+                    placeholder={t('settingsAccount.confirmPass')}
                     className="w-full px-3 py-2 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)]"
                   />
                   <div className="flex gap-2">
@@ -234,13 +236,13 @@ export const SettingsAccountPage: React.FC = () => {
                       onClick={handleChangePassword}
                       className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                     >
-                      Update Password
+                      {t('settingsAccount.updatePass')}
                     </button>
                     <button
                       onClick={() => setIsChangingPassword(false)}
                       className="px-4 py-2 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] hover:bg-[var(--card-hover)] transition-colors"
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </button>
                   </div>
                 </div>
@@ -249,7 +251,7 @@ export const SettingsAccountPage: React.FC = () => {
                   onClick={() => setIsChangingPassword(true)}
                   className="px-4 py-2 bg-[var(--primary-subtle)] text-[var(--primary)] rounded-lg hover:bg-[var(--primary)]/20 transition-colors"
                 >
-                  Change Password
+                  {t('settingsAccount.changePass')}
                 </button>
               )}
             </div>
@@ -260,23 +262,23 @@ export const SettingsAccountPage: React.FC = () => {
         <Card className="p-6">
           <div>
             <h3 className="font-medium text-[var(--text)] mb-2">
-              {t('settings.accountActions', 'Account Actions')}
+              {t('settingsAccount.actions')}
             </h3>
             <p className="text-sm text-[var(--text-muted)] mb-4">
-              Manage your account settings and preferences
+              {t('settingsAccount.actionsDesc')}
             </p>
             <div className="space-y-3">
               <button
                 className="w-full px-4 py-2.5 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] hover:bg-[var(--card-hover)] transition-colors text-left"
                 onClick={() => console.log('Export data')}
               >
-                Export Account Data
+                {t('settingsAccount.exportData')}
               </button>
               <button
                 className="w-full px-4 py-2.5 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] hover:bg-[var(--card-hover)] transition-colors text-left"
                 onClick={() => console.log('Delete account')}
               >
-                Delete Account
+                {t('settingsAccount.deleteAccount')}
               </button>
             </div>
           </div>
@@ -294,13 +296,13 @@ export const SettingsAccountPage: React.FC = () => {
             <Shield className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-medium text-[var(--text)] mb-2">
-                Security Recommendations
+                {t('settingsAccount.secRec')}
               </h4>
               <ul className="space-y-1.5 text-sm text-[var(--text-muted)]">
-                <li>• Enable two-factor authentication for enhanced security</li>
-                <li>• Use a strong, unique password for your account</li>
-                <li>• Never share your private key or recovery phrase</li>
-                <li>• Regularly update your account recovery information</li>
+                <li>• {t('settingsAccount.secRec1')}</li>
+                <li>• {t('settingsAccount.secRec2')}</li>
+                <li>• {t('settingsAccount.secRec3')}</li>
+                <li>• {t('settingsAccount.secRec4')}</li>
               </ul>
             </div>
           </div>

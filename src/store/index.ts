@@ -11,6 +11,33 @@ import type {
 } from '../types';
 import { MOCK_CANTON_ADDRESS, MOCK_CONTACTS, MOCK_TRANSACTION_PARTIES } from '../config/canton';
 
+// ==================== 合约类型 ====================
+
+export interface ContractOrder {
+  id: string;
+  pair: string;
+  side: 'buy' | 'sell';
+  amount: string;
+  price: string;
+  leverage: number;
+  status: 'Filled' | 'Open' | 'Cancelled';
+  timestamp: string;
+  value: string;
+}
+
+export interface ContractPosition {
+  id: string;
+  pair: string;
+  side: 'long' | 'short';
+  size: string;
+  entryPrice: string;
+  currentPrice: string;
+  unrealizedPnl: string;
+  margin: string;
+  leverage: number;
+  timestamp: string;
+}
+
 // ==================== 初始数据 ====================
 
 const initialUser: User = {
@@ -198,6 +225,16 @@ const initialBatches: BatchTransfer[] = [
   }
 ];
 
+const initialContractOrders: ContractOrder[] = [
+  { id: 'co1', pair: 'CC/BTC', side: 'buy', amount: '1,000', price: '1.2540', leverage: 10, status: 'Filled', timestamp: new Date(Date.now() - 3600000).toISOString(), value: '$1,254' },
+  { id: 'co2', pair: 'CC/BTC', side: 'sell', amount: '500', price: '1.3010', leverage: 5, status: 'Open', timestamp: new Date(Date.now() - 7200000).toISOString(), value: '$650' },
+  { id: 'co3', pair: 'ETH/USDC', side: 'buy', amount: '2,000', price: '3,380.00', leverage: 20, status: 'Cancelled', timestamp: new Date(Date.now() - 10800000).toISOString(), value: '$2,440' },
+];
+
+const initialContractPositions: ContractPosition[] = [
+  { id: 'cp1', pair: 'CC/BTC', side: 'long', size: '5,000 CC', entryPrice: '1.2100', currentPrice: '1.2540', unrealizedPnl: '+$220', margin: '$610', leverage: 10, timestamp: new Date(Date.now() - 86400000).toISOString() },
+];
+
 const initialNotifications: Notification[] = [
   {
     id: 'notif1',
@@ -242,7 +279,9 @@ interface WalletState {
   currentPage: PageRoute;
   hideBalance: boolean;
   theme: 'dark' | 'light';
-  
+  contractOrders: ContractOrder[];
+  contractPositions: ContractPosition[];
+
   // Actions
   setUser: (user: User | null) => void;
   addToken: (token: Token) => void;
@@ -261,6 +300,9 @@ interface WalletState {
   toggleHideBalance: () => void;
   toggleTheme: () => void;
   setTheme: (theme: 'dark' | 'light') => void;
+  addContractOrder: (order: ContractOrder) => void;
+  addContractPosition: (position: ContractPosition) => void;
+  closeContractPosition: (id: string) => void;
 }
 
 // ==================== localStorage 辅助函数 ====================
@@ -307,6 +349,8 @@ export const useWalletStore = create<WalletState>((set) => ({
   currentPage: 'dashboard',
   hideBalance: getInitialHideBalance(),
   theme: getInitialTheme(),
+  contractOrders: initialContractOrders,
+  contractPositions: initialContractPositions,
   
   // Actions
   setUser: (user) => set({ user }),
@@ -389,6 +433,18 @@ export const useWalletStore = create<WalletState>((set) => ({
     applyTheme(theme);
     return { theme };
   }),
+
+  addContractOrder: (order) => set((state) => ({
+    contractOrders: [order, ...state.contractOrders],
+  })),
+
+  addContractPosition: (position) => set((state) => ({
+    contractPositions: [position, ...state.contractPositions],
+  })),
+
+  closeContractPosition: (id) => set((state) => ({
+    contractPositions: state.contractPositions.filter(p => p.id !== id),
+  })),
 }));
 
 // ==================== 导出类型 ====================

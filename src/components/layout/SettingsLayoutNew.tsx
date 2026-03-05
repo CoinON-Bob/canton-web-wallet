@@ -131,6 +131,45 @@ const useIsMobile = () => {
   return isMobile;
 };
 
+// ==================== 移动端详情页 ====================
+
+const MobileDetailPage: React.FC = () => {
+  const { t } = useTranslation();
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  const currentItem = settingsMenuItems.find(item => location.pathname === item.path);
+
+  return (
+    <div className="min-h-screen">
+      {/* 返回按钮和标题 */}
+      <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)]">
+        <div className="flex items-center gap-3 p-4">
+          <Link
+            to="/settings"
+            className="p-2 hover:bg-[var(--card)] rounded-xl transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-[var(--text)]" />
+          </Link>
+          <div className="flex-1">
+            <h1 className="text-lg font-semibold text-[var(--text)] truncate">
+              {currentItem ? t(currentItem.labelKey) : t('settings.title')}
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {/* 内容区域 */}
+      <div className="p-4">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
 // ==================== 移动端设置列表页 ====================
 
 const MobileSettingsList: React.FC = () => {
@@ -216,7 +255,7 @@ const MobileSettingsList: React.FC = () => {
         className="mt-8 text-center"
       >
         <p className="text-sm text-[var(--text-muted)]">
-          Select a setting to configure your account
+          {t('settings.selectItem')}
         </p>
       </motion.div>
     </div>
@@ -321,7 +360,7 @@ const DesktopSettingsLayout: React.FC = () => {
                   {t('settings.subtitle')}
                 </p>
                 <p className="text-sm text-[var(--text-muted)]">
-                  Select a setting from the menu to configure your account
+                  {t('settings.selectItem')}
                 </p>
               </Card>
             ) : (
@@ -338,47 +377,19 @@ const DesktopSettingsLayout: React.FC = () => {
 
 export const SettingsLayoutNew: React.FC = () => {
   const isMobile = useIsMobile();
-  
-  if (isMobile) {
-    // 移动端：只显示列表，详情通过路由跳转
-    const location = useLocation();
-    const isSettingsRoot = location.pathname === '/settings';
-    
-    if (isSettingsRoot) {
-      // 移动端列表页
-      return <MobileSettingsList />;
-    } else {
-      // 移动端详情页：显示返回按钮 + Outlet
-      return (
-        <div className="min-h-screen">
-          {/* 返回按钮和标题 */}
-          <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)]">
-            <div className="flex items-center gap-3 p-4">
-              <Link
-                to="/settings"
-                className="p-2 hover:bg-[var(--card)] rounded-xl transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-[var(--text)]" />
-              </Link>
-              <div className="flex-1">
-                <h1 className="text-lg font-semibold text-[var(--text)] truncate">
-                  {settingsMenuItems.find(item => location.pathname === item.path)?.labelKey || 'Settings'}
-                </h1>
-              </div>
-            </div>
-          </div>
-          
-          {/* 内容区域 */}
-          <div className="p-4">
-            <Outlet />
-          </div>
-        </div>
-      );
-    }
-  } else {
-    // 桌面端：左右分栏布局
+  const location = useLocation();
+
+  if (!isMobile) {
     return <DesktopSettingsLayout />;
   }
+
+  const isSettingsRoot = location.pathname === '/settings';
+
+  if (isSettingsRoot) {
+    return <MobileSettingsList />;
+  }
+
+  return <MobileDetailPage />;
 };
 
 export default SettingsLayoutNew;

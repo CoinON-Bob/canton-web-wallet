@@ -92,7 +92,7 @@ export const SettingsAddressBookPage: React.FC = () => {
 
   const handleAddAddress = () => {
     if (!newAddress.name.trim() || !newAddress.address.trim()) {
-      alert('Please fill in name and address');
+      alert(t('settingsAddr.required'));
       return;
     }
 
@@ -109,7 +109,7 @@ export const SettingsAddressBookPage: React.FC = () => {
   };
 
   const handleDeleteAddress = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this address?')) {
+    if (window.confirm(t('settingsAddr.deleteConfirm'))) {
       const updatedAddresses = addresses.filter(addr => addr.id !== id);
       saveAddresses(updatedAddresses);
     }
@@ -164,7 +164,7 @@ export const SettingsAddressBookPage: React.FC = () => {
           </div>
           <input
             type="text"
-            placeholder="Search by name, address, or note..."
+            placeholder={t('settingsAddr.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-11 pr-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] transition-colors"
@@ -175,7 +175,7 @@ export const SettingsAddressBookPage: React.FC = () => {
           className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
         >
           <Plus className="w-5 h-5" />
-          Add Address
+          {t('settingsAddr.add')}
         </button>
       </motion.div>
 
@@ -188,42 +188,42 @@ export const SettingsAddressBookPage: React.FC = () => {
         >
           <Card className="p-6">
             <h3 className="text-lg font-semibold text-[var(--text)] mb-4">
-              Add New Address
+              {t('settingsAddr.addNew')}
             </h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Name *
+                  {t('settingsAddr.name')} *
                 </label>
                 <input
                   type="text"
                   value={newAddress.name}
                   onChange={(e) => setNewAddress({ ...newAddress, name: e.target.value })}
-                  placeholder="Enter contact name"
+                  placeholder={t('settingsAddr.namePlaceholder')}
                   className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] transition-colors"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Wallet Address *
+                  {t('settingsAddr.address')} *
                 </label>
                 <input
                   type="text"
                   value={newAddress.address}
                   onChange={(e) => setNewAddress({ ...newAddress, address: e.target.value })}
-                  placeholder="0x..."
+                  placeholder={t('settingsAddr.addressPlaceholder')}
                   className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] transition-colors font-mono"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Note (Optional)
+                  {t('settingsAddr.note')}
                 </label>
                 <input
                   type="text"
                   value={newAddress.note}
                   onChange={(e) => setNewAddress({ ...newAddress, note: e.target.value })}
-                  placeholder="Add a note..."
+                  placeholder={t('settingsAddr.notePlaceholder')}
                   className="w-full px-4 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] transition-colors"
                 />
               </div>
@@ -232,13 +232,13 @@ export const SettingsAddressBookPage: React.FC = () => {
                   onClick={handleAddAddress}
                   className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                 >
-                  Save Address
+                  {t('settingsAddr.save')}
                 </button>
                 <button
                   onClick={() => setShowAddForm(false)}
                   className="px-6 py-3 bg-[var(--card)] border border-[var(--border)] rounded-lg text-[var(--text)] hover:bg-[var(--card-hover)] transition-colors"
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </button>
               </div>
             </div>
@@ -255,10 +255,10 @@ export const SettingsAddressBookPage: React.FC = () => {
         <Card className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-[var(--text)]">
-              Saved Addresses ({filteredAddresses.length})
+              {t('settingsAddr.saved')} ({filteredAddresses.length})
             </h3>
             <div className="text-sm text-[var(--text-muted)]">
-              {addresses.filter(a => a.isFavorite).length} favorites
+              {addresses.filter(a => a.isFavorite).length} {t('settingsAddr.favorites')}
             </div>
           </div>
 
@@ -266,10 +266,10 @@ export const SettingsAddressBookPage: React.FC = () => {
             <div className="text-center py-12">
               <Book className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4 opacity-50" />
               <h4 className="text-lg font-medium text-[var(--text)] mb-2">
-                No addresses found
+                {t('settingsAddr.none')}
               </h4>
               <p className="text-[var(--text-muted)]">
-                {searchQuery ? 'Try a different search term' : 'Add your first address to get started'}
+                {searchQuery ? t('settingsAddr.noneSearch') : t('settingsAddr.noneDesc')}
               </p>
             </div>
           ) : (
@@ -293,7 +293,7 @@ export const SettingsAddressBookPage: React.FC = () => {
                         </h4>
                         {address.isFavorite && (
                           <span className="px-2 py-0.5 bg-yellow-500/10 text-yellow-400 text-xs rounded-full">
-                            Favorite
+                            {t('settingsAddr.favorite')}
                           </span>
                         )}
                       </div>
@@ -359,13 +359,13 @@ export const SettingsAddressBookPage: React.FC = () => {
             <Book className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-medium text-[var(--text)] mb-2">
-                Address Book Tips
+                {t('settingsAddr.tipsTitle')}
               </h4>
               <ul className="space-y-1.5 text-sm text-[var(--text-muted)]">
-                <li>• Add frequently used addresses to save time on transactions</li>
-                <li>• Mark important addresses as favorites for quick access</li>
-                <li>• Always double-check addresses before sending funds</li>
-                <li>• Use notes to remember the purpose of each address</li>
+                <li>• {t('settingsAddr.tip1')}</li>
+                <li>• {t('settingsAddr.tip2')}</li>
+                <li>• {t('settingsAddr.tip3')}</li>
+                <li>• {t('settingsAddr.tip4')}</li>
               </ul>
             </div>
           </div>

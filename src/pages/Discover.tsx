@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { 
-  Compass, 
-  Zap, 
-  CreditCard, 
-  Shield, 
-  Globe, 
+import {
+  Compass,
+  Zap,
+  CreditCard,
+  Shield,
+  Globe,
   BarChart3,
   ExternalLink,
   Clock,
-  Send,
-  ArrowLeftRight,
-  Users,
-  Gift,
-  Wrench
 } from 'lucide-react';
 import { useToast } from '../components/ui';
-import { useNavigate } from 'react-router-dom';
 
 // ==================== DApp 卡片数据 ====================
 
@@ -74,73 +68,21 @@ const dappCards = [
   },
 ];
 
-// ==================== 工具卡片数据 ====================
-
-const toolCards = [
-  {
-    id: 'send',
-    name: 'Send',
-    nameZh: '转账',
-    description: 'Transfer assets to other addresses',
-    descriptionZh: '向其他地址转账资产',
-    icon: Send,
-    path: '/send',
-    color: 'from-blue-500 to-cyan-500',
-  },
-  {
-    id: 'swap',
-    name: 'Swap',
-    nameZh: '兑换',
-    description: 'Exchange tokens at best rates',
-    descriptionZh: '以最优汇率兑换代币',
-    icon: ArrowLeftRight,
-    path: '/swap',
-    color: 'from-purple-500 to-pink-500',
-  },
-  {
-    id: 'batch',
-    name: 'Batch Transfer',
-    nameZh: '批量转账',
-    description: 'Send multiple transactions at once',
-    descriptionZh: '一次性发送多笔交易',
-    icon: Users,
-    path: '/batch',
-    color: 'from-green-500 to-emerald-500',
-  },
-  {
-    id: 'quote',
-    name: 'Quote',
-    nameZh: '报价',
-    description: 'Get price quotes and create offers',
-    descriptionZh: '获取价格报价并创建报价单',
-    icon: Gift,
-    path: '/quote',
-    color: 'from-orange-500 to-yellow-500',
-  },
-];
-
 // ==================== 卡片组件 ====================
 
 interface CardProps {
-  card: typeof dappCards[0] | typeof toolCards[0];
+  card: typeof dappCards[0];
   onClick: () => void;
-  isTool?: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ card, onClick, isTool = false }) => {
+const Card: React.FC<CardProps> = ({ card, onClick }) => {
   const { t, i18n } = useTranslation();
   const isChinese = i18n.language === 'zh';
   const Icon = card.icon;
-  
-  const name = isTool 
-    ? (isChinese ? (card as any).nameZh || card.name : card.name)
-    : card.name;
-    
-  const description = isTool
-    ? (isChinese ? (card as any).descriptionZh || card.description : card.description)
-    : (isChinese ? (card as any).descriptionZh || card.description : card.description);
-  
-  const status = isTool ? null : (isChinese ? (card as any).statusZh || (card as any).status : (card as any).status);
+
+  const name = card.name;
+  const description = isChinese ? (card as any).descriptionZh || card.description : card.description;
+  const status = isChinese ? (card as any).statusZh || (card as any).status : (card as any).status;
 
   return (
     <motion.div
@@ -154,7 +96,7 @@ const Card: React.FC<CardProps> = ({ card, onClick, isTool = false }) => {
           <Icon className="w-6 h-6 text-white" />
         </div>
         
-        {!isTool && status && (
+        {status && (
           <span className={`px-2 py-1 text-xs rounded-full ${
             status === 'Available' || status === '可用' 
               ? 'bg-green-500/10 text-green-400' 
@@ -168,19 +110,12 @@ const Card: React.FC<CardProps> = ({ card, onClick, isTool = false }) => {
       <h3 className="text-lg font-semibold text-[var(--text)] mb-2">{name}</h3>
       <p className="text-sm text-[var(--text-muted)] mb-4 line-clamp-2">{description}</p>
       
-      {isTool ? (
-        <div className="flex items-center text-sm text-[var(--primary)]">
-          <span>{t('common.open')}</span>
-          <ExternalLink className="w-4 h-4 ml-1" />
-        </div>
-      ) : (
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-[var(--text-muted)]">
-            {t('discover.dapp')}
-          </span>
-          <ExternalLink className="w-4 h-4 text-[var(--text-muted)]" />
-        </div>
-      )}
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-[var(--text-muted)]">
+          {t('discover.dapp')}
+        </span>
+        <ExternalLink className="w-4 h-4 text-[var(--text-muted)]" />
+      </div>
     </motion.div>
   );
 };
@@ -189,7 +124,6 @@ const Card: React.FC<CardProps> = ({ card, onClick, isTool = false }) => {
 
 const Discover: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
   const { showToast } = useToast();
   const isChinese = i18n.language === 'zh';
 
@@ -201,13 +135,7 @@ const Discover: React.FC = () => {
           : `${dapp.name} is under development, stay tuned!`,
         'info'
       );
-    } else if (dapp.id === 'transfer-tool') {
-      navigate('/send');
     }
-  };
-
-  const handleToolClick = (tool: typeof toolCards[0]) => {
-    navigate(tool.path);
   };
 
   return (
@@ -227,39 +155,9 @@ const Discover: React.FC = () => {
             <div>
               <h1 className="text-3xl font-bold text-[var(--text)]">{t('discover.title', 'Discover')}</h1>
               <p className="text-[var(--text-muted)]">
-                {isChinese ? '探索 Canton 生态系统中的 DApp 和工具' : 'Explore DApps and tools in the Canton ecosystem'}
+                {isChinese ? '探索 Canton 生态系统中的 DApp 和生态项目' : 'Explore DApps and ecosystem projects on Canton'}
               </p>
             </div>
-          </div>
-        </motion.div>
-
-        {/* 工具区域 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="mb-12"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Wrench className="w-6 h-6 text-[var(--primary)]" />
-            <h2 className="text-2xl font-bold text-[var(--text)]">{t('discover.tools', 'Tools')}</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {toolCards.map((tool, index) => (
-              <motion.div
-                key={tool.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
-              >
-                <Card 
-                  card={tool} 
-                  onClick={() => handleToolClick(tool)}
-                  isTool={true}
-                />
-              </motion.div>
-            ))}
           </div>
         </motion.div>
 
@@ -282,10 +180,9 @@ const Discover: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
               >
-                <Card 
-                  card={dapp} 
+                <Card
+                  card={dapp}
                   onClick={() => handleDAppClick(dapp)}
-                  isTool={false}
                 />
               </motion.div>
             ))}

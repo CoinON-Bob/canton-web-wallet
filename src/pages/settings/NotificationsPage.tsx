@@ -28,43 +28,43 @@ export const SettingsNotificationsPage: React.FC = () => {
     {
       id: 'emailNotifications',
       icon: Mail,
-      title: t('settings.notifications.email'),
-      description: t('settings.notifications.emailDesc'),
+      title: t('settingsNotif.email'),
+      description: t('settingsNotif.emailDesc'),
       enabled: notifications.emailNotifications,
     },
     {
       id: 'pushNotifications',
       icon: Smartphone,
-      title: t('settings.notifications.push'),
-      description: t('settings.notifications.pushDesc'),
+      title: t('settingsNotif.push'),
+      description: t('settingsNotif.pushDesc'),
       enabled: notifications.pushNotifications,
     },
     {
       id: 'transactionAlerts',
       icon: Bell,
-      title: t('settings.notifications.transaction'),
-      description: t('settings.notifications.transactionDesc'),
+      title: t('settingsNotif.transaction'),
+      description: t('settingsNotif.transactionDesc'),
       enabled: notifications.transactionAlerts,
     },
     {
       id: 'priceAlerts',
       icon: Bell,
-      title: t('settings.notifications.price'),
-      description: t('settings.notifications.priceDesc'),
+      title: t('settingsNotif.price'),
+      description: t('settingsNotif.priceDesc'),
       enabled: notifications.priceAlerts,
     },
     {
       id: 'securityAlerts',
       icon: Shield,
-      title: t('settings.notifications.security'),
-      description: t('settings.notifications.securityDesc'),
+      title: t('settingsNotif.security'),
+      description: t('settingsNotif.securityDesc'),
       enabled: notifications.securityAlerts,
     },
     {
       id: 'marketingEmails',
       icon: Mail,
-      title: t('settings.notifications.marketing'),
-      description: t('settings.notifications.marketingDesc'),
+      title: t('settingsNotif.marketing'),
+      description: t('settingsNotif.marketingDesc'),
       enabled: notifications.marketingEmails,
     },
   ];
@@ -153,13 +153,13 @@ export const SettingsNotificationsPage: React.FC = () => {
             <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-medium text-[var(--text)] mb-2">
-                Notification Settings Tips
+                {t('settingsNotif.tipsTitle')}
               </h4>
               <ul className="space-y-1.5 text-sm text-[var(--text-muted)]">
-                <li>• Enable transaction alerts to stay informed about your wallet activity</li>
-                <li>• Security alerts help protect your account from suspicious activity</li>
-                <li>• Price alerts can notify you when assets reach target prices</li>
-                <li>• You can adjust these settings anytime</li>
+                <li>• {t('settingsNotif.tip1')}</li>
+                <li>• {t('settingsNotif.tip2')}</li>
+                <li>• {t('settingsNotif.tip3')}</li>
+                <li>• {t('settingsNotif.tip4')}</li>
               </ul>
             </div>
           </div>

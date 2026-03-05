@@ -1,18 +1,19 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Search, 
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Star, 
+import {
+  Search,
+  ArrowUpRight,
+  ArrowDownRight,
+  Star,
   TrendingUp,
   RefreshCw,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  BarChart2,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Card, PageTransition, PageHeader, Tag, useToast } from '../components/ui';
+import { Card, PageTransition, PageHeader, useToast } from '../components/ui';
 
 // ==================== Market Token 接口 ====================
 
@@ -172,7 +173,7 @@ const TokenRow: React.FC<TokenRowProps> = ({ token, onClick }) => {
   const { t, i18n } = useTranslation();
   const isChinese = i18n.language === 'zh';
   const isPositive = token.change24h >= 0;
-  
+
   const formatPrice = (price: number) => {
     if (price >= 1000) {
       return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -182,27 +183,53 @@ const TokenRow: React.FC<TokenRowProps> = ({ token, onClick }) => {
       return `$${price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 6 })}`;
     }
   };
-  
+
   const formatVolume = (volume: number) => {
-    if (volume >= 1000000000) {
-      return `$${(volume / 1000000000).toFixed(2)}B`;
-    } else if (volume >= 1000000) {
-      return `$${(volume / 1000000).toFixed(2)}M`;
-    } else if (volume >= 1000) {
-      return `$${(volume / 1000).toFixed(2)}K`;
-    }
+    if (volume >= 1000000000) return `$${(volume / 1000000000).toFixed(2)}B`;
+    if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
+    if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
     return `$${volume.toFixed(2)}`;
   };
-  
+
+  const changeTag = (
+    <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium ${
+      isPositive ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
+    }`}>
+      {isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+      {Math.abs(token.change24h).toFixed(2)}%
+    </span>
+  );
+
   return (
-    <motion.tr
+    <motion.div
       whileHover={{ backgroundColor: 'var(--card-hover)' }}
-      className="border-b border-[var(--border)] last:border-0 cursor-pointer group"
+      className="border-b border-[var(--border)] last:border-0 cursor-pointer group px-4"
       onClick={onClick}
     >
-      <td className="py-4 px-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+      {/* Mobile: 2-line card (≤ sm) */}
+      <div className="sm:hidden py-3 flex items-center gap-3">
+        <div className="w-9 h-9 flex-shrink-0 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <span className="text-white font-bold">{token.icon}</span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-semibold text-[var(--text)] flex items-center gap-1">
+              {token.symbol}
+              {token.pinned && <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
+            </span>
+            <span className="font-semibold text-[var(--text)] tabular-nums">{formatPrice(token.price)}</span>
+          </div>
+          <div className="flex items-center justify-between gap-2 mt-0.5">
+            <span className="text-xs text-[var(--text-muted)] truncate">{token.name}</span>
+            {changeTag}
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: full-column row (≥ sm) */}
+      <div className="hidden sm:grid grid-cols-12 gap-4 py-4 items-center">
+        <div className="col-span-4 lg:col-span-3 flex items-center gap-3">
+          <div className="w-10 h-10 flex-shrink-0 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
             <span className="text-white font-bold text-lg">{token.icon}</span>
           </div>
           <div>
@@ -213,37 +240,21 @@ const TokenRow: React.FC<TokenRowProps> = ({ token, onClick }) => {
             <span className="text-sm text-[var(--text-muted)]">{token.name}</span>
           </div>
         </div>
-      </td>
-      
-      <td className="py-4 px-4">
-        <span className="font-semibold text-[var(--text)]">{formatPrice(token.price)}</span>
-      </td>
-      
-      <td className="py-4 px-4">
-        <Tag
-          variant={isPositive ? 'success' : 'error'}
-          className="font-medium"
-        >
-          <div className="flex items-center gap-1">
-            {isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-            {Math.abs(token.change24h).toFixed(2)}%
-          </div>
-        </Tag>
-      </td>
-      
-      <td className="py-4 px-4">
-        <span className="text-[var(--text)]">{formatVolume(token.volume24h)}</span>
-      </td>
-      
-      <td className="py-4 px-4">
-        <div className="flex items-center justify-between">
+        <div className="col-span-2 lg:col-span-2">
+          <span className="font-semibold text-[var(--text)] tabular-nums">{formatPrice(token.price)}</span>
+        </div>
+        <div className="col-span-2 lg:col-span-2">{changeTag}</div>
+        <div className="col-span-2 lg:col-span-2">
+          <span className="text-[var(--text)] tabular-nums">{formatVolume(token.volume24h)}</span>
+        </div>
+        <div className="col-span-2 lg:col-span-3 flex items-center justify-between">
           <span className="text-sm text-[var(--text-muted)]">
             {isChinese ? '详情' : 'Details'}
           </span>
           <ChevronRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
         </div>
-      </td>
-    </motion.tr>
+      </div>
+    </motion.div>
   );
 };
 
@@ -351,6 +362,39 @@ export const MarketPage: React.FC = () => {
       />
       
       <div className="p-4 lg:p-6 max-w-7xl mx-auto">
+        {/* 合约交易入口 */}
+        <motion.div
+          className="mb-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <button
+            onClick={() => navigate('/contracts')}
+            className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-500/20 rounded-2xl hover:from-blue-500/15 hover:to-purple-600/15 transition-all touch-manipulation"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <BarChart2 className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-[var(--text)]">
+                  {isChinese ? '合约交易' : 'Contract Trading'}
+                </p>
+                <p className="text-xs text-[var(--text-muted)]">
+                  {isChinese ? 'CC/BTC 永续合约' : 'CC/BTC Perpetual Swap'}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded-full">
+                {isChinese ? '演示' : 'Demo'}
+              </span>
+              <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
+            </div>
+          </button>
+        </motion.div>
+
         {/* 搜索和刷新栏 */}
         <motion.div 
           className="mb-6"
@@ -440,19 +484,15 @@ export const MarketPage: React.FC = () => {
                   </div>
                 </div>
                 
-                {/* 表格内容 */}
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <tbody>
-                      {sortedData.map((token, index) => (
-                        <TokenRow
-                          key={token.symbol}
-                          token={token}
-                          onClick={() => handleTokenClick(token)}
-                        />
-                      ))}
-                    </tbody>
-                  </table>
+                {/* 列表内容 */}
+                <div>
+                  {sortedData.map((token) => (
+                    <TokenRow
+                      key={token.symbol}
+                      token={token}
+                      onClick={() => handleTokenClick(token)}
+                    />
+                  ))}
                 </div>
                 
                 {/* 表格底部信息 */}

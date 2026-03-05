@@ -2,21 +2,22 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthGuard, PublicOnlyGuard } from '../components/auth/AuthGuard';
 import { MainLayout } from '../components/layout';
-import { 
-  LoginPage, 
+import {
+  LoginPage,
   RegisterPage,
   ForgotPasswordPage,
-  DashboardPage, 
-  AssetsPage, 
-  SendPage, 
-  SwapPage, 
-  BatchPage, 
-  OffersPage, 
-  ActivityPage, 
+  DashboardPage,
+  AssetsPage,
+  SendPage,
+  SwapPage,
+  BatchPage,
+  OffersPage,
+  ActivityPage,
   SettingsPage,
   MarketPage,
   MarketDetailPage,
-  DiscoverPage
+  DiscoverPage,
+  ContractsPage
 } from '../pages';
 
 // Settings pages
@@ -190,6 +191,17 @@ export const Router: React.FC = () => {
             <AuthGuard>
               <MainLayout>
                 <DiscoverPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+
+        <Route
+          path="/contracts"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <ContractsPage />
               </MainLayout>
             </AuthGuard>
           }

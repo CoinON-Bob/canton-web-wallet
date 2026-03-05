@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { 
-  LayoutDashboard, 
-  Wallet, 
-  Send, 
-  ArrowLeftRight, 
-  Users, 
-  Gift, 
-  History, 
+import {
+  LayoutDashboard,
+  Wallet,
+  Send,
+  ArrowLeftRight,
+  Users,
+  Gift,
+  History,
   Settings,
   Menu,
   X,
@@ -21,7 +21,8 @@ import {
   ArrowLeft,
   TrendingUp,
   Compass,
-  Globe
+  Globe,
+  BarChart2
 } from 'lucide-react';
 import { useWalletStore } from '../../store';
 import { shortAddress, getCantonExplorerUrl } from '../../utils/address';
@@ -32,6 +33,7 @@ import { Modal, useToast, ToastManager } from '../ui';
 const navItems = [
   { id: 'dashboard', labelKey: 'nav.dashboard', icon: LayoutDashboard, path: '/dashboard' },
   { id: 'market', labelKey: 'nav.market', icon: TrendingUp, path: '/market' },
+  { id: 'contracts', labelKey: 'nav.contracts', icon: BarChart2, path: '/contracts' },
   { id: 'discover', labelKey: 'nav.discover', icon: Compass, path: '/discover' },
   { id: 'activity', labelKey: 'nav.activity', icon: History, path: '/activity' },
   { id: 'settings', labelKey: 'nav.settings', icon: Settings, path: '/settings' },
@@ -212,9 +214,9 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                   >
                     {/* Address Section */}
                     <div className="p-4 border-b border-[var(--border)]">
-                      <p className="text-xs text-[var(--text-muted)] mb-2">Connected Wallet</p>
+                      <p className="text-xs text-[var(--text-muted)] mb-2">{t('common.connectedWallet')}</p>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm text-[var(--text)] font-mono truncate flex-1">{user?.walletAddress}</p>
+                        <p className="text-sm text-[var(--text)] font-mono truncate flex-1 min-w-0">{user?.walletAddress}</p>
                         <button
                           onClick={handleCopyAddress}
                           className="p-2 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
@@ -235,9 +237,9 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
                       >
                         <Settings className="w-4 h-4" />
-                        Settings
+                        {t('common.settings')}
                       </Link>
-                      
+
                       {/* Language Option */}
                       <button
                         onClick={() => {
@@ -247,13 +249,13 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         className="w-full flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation text-left"
                       >
                         <Globe className="w-4 h-4" />
-                        Language
+                        {t('common.language')}
                         <span className="ml-auto text-xs text-[var(--text-muted)]">
                           {i18n.language === 'zh' ? '中文' : 'English'}
                         </span>
                       </button>
-                      
-                      {/* Explorer 链接 - 阶段1隐藏，阶段2启用 */}
+
+                      {/* Explorer 链接 */}
                       {explorerUrl && (
                         <a
                           href={explorerUrl}
@@ -263,7 +265,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                           className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
                         >
                           <ExternalLink className="w-4 h-4" />
-                          View on Explorer
+                          {t('common.viewOnExplorer')}
                         </a>
                       )}
                     </div>
@@ -278,7 +280,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         className="w-full flex items-center gap-3 px-3 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors touch-manipulation"
                       >
                         <LogOut className="w-4 h-4" />
-                        Sign out
+                        {t('common.signOut')}
                       </button>
                     </div>
                   </motion.div>
@@ -543,7 +545,7 @@ const DesktopSidebar: React.FC = () => {
               </div>
               <div className="min-w-0">
                 <p className="text-sm text-[var(--text)] truncate">{user?.email?.split('@')[0]}</p>
-                <p className="text-xs text-[var(--text-muted)]">Institutional</p>
+                <p className="text-xs text-[var(--text-muted)]">{t('common.institutional')}</p>
               </div>
             </div>
           </motion.div>

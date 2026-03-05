@@ -80,17 +80,17 @@ export const SettingsInvitePage: React.FC = () => {
               <Gift className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-xl font-bold text-[var(--text)] mb-2">
-              Invite Friends, Earn Rewards
+              {t('settingsInvite.headline')}
             </h2>
             <p className="text-[var(--text-muted)]">
-              Share your unique invite code and earn rewards when friends join
+              {t('settingsInvite.headlineDesc')}
             </p>
           </div>
 
           {/* 邀请码展示 */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-              Your Invite Code
+              {t('settingsInvite.yourCode')}
             </label>
             <div className="flex gap-2">
               <div className="flex-1 p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl font-mono text-lg font-bold text-center text-[var(--text)]">
@@ -101,7 +101,7 @@ export const SettingsInvitePage: React.FC = () => {
                 className="px-6 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors flex items-center gap-2"
               >
                 <Copy className="w-5 h-5" />
-                {copied ? 'Copied!' : 'Copy'}
+                {copied ? t('settingsInvite.copied') : t('settingsInvite.copy')}
               </button>
             </div>
           </div>
@@ -109,7 +109,7 @@ export const SettingsInvitePage: React.FC = () => {
           {/* 邀请链接 */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-              Invite Link
+              {t('settingsInvite.linkLabel')}
             </label>
             <div className="flex gap-2">
               <div className="flex-1 p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-muted)] truncate">
@@ -120,7 +120,7 @@ export const SettingsInvitePage: React.FC = () => {
                 className="px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
               >
                 <Share2 className="w-5 h-5" />
-                Share
+                {t('settingsInvite.share')}
               </button>
             </div>
           </div>
@@ -132,14 +132,14 @@ export const SettingsInvitePage: React.FC = () => {
               className="p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:border-[var(--primary)]/30 transition-colors flex flex-col items-center gap-2"
             >
               <Share2 className="w-6 h-6 text-[var(--text)]" />
-              <span className="text-sm font-medium text-[var(--text)]">Share</span>
+              <span className="text-sm font-medium text-[var(--text)]">{t('settingsInvite.share')}</span>
             </button>
             <button
               onClick={handleCopyLink}
               className="p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl hover:border-[var(--primary)]/30 transition-colors flex flex-col items-center gap-2"
             >
               <Copy className="w-6 h-6 text-[var(--text)]" />
-              <span className="text-sm font-medium text-[var(--text)]">Copy Link</span>
+              <span className="text-sm font-medium text-[var(--text)]">{t('settingsInvite.copyLink')}</span>
             </button>
           </div>
         </Card>
@@ -153,7 +153,7 @@ export const SettingsInvitePage: React.FC = () => {
       >
         <Card className="p-6">
           <h3 className="text-lg font-semibold text-[var(--text)] mb-4">
-            Your Referral Stats
+            {t('settingsInvite.stats')}
           </h3>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 bg-gradient-to-br from-blue-500/5 to-purple-600/5 rounded-xl">
@@ -161,7 +161,7 @@ export const SettingsInvitePage: React.FC = () => {
                 {referralStats.totalInvites}
               </div>
               <div className="text-sm text-[var(--text-muted)]">
-                Total Invites
+                {t('settingsInvite.totalInvites')}
               </div>
             </div>
             <div className="p-4 bg-gradient-to-br from-green-500/5 to-emerald-600/5 rounded-xl">
@@ -169,7 +169,7 @@ export const SettingsInvitePage: React.FC = () => {
                 {referralStats.successfulInvites}
               </div>
               <div className="text-sm text-[var(--text-muted)]">
-                Successful
+                {t('settingsInvite.successful')}
               </div>
             </div>
             <div className="p-4 bg-gradient-to-br from-yellow-500/5 to-orange-600/5 rounded-xl">
@@ -177,7 +177,7 @@ export const SettingsInvitePage: React.FC = () => {
                 ${referralStats.pendingRewards}
               </div>
               <div className="text-sm text-[var(--text-muted)]">
-                Pending Rewards
+                {t('settingsInvite.pendingRewards')}
               </div>
             </div>
             <div className="p-4 bg-gradient-to-br from-purple-500/5 to-pink-600/5 rounded-xl">
@@ -185,7 +185,7 @@ export const SettingsInvitePage: React.FC = () => {
                 ${referralStats.totalRewards}
               </div>
               <div className="text-sm text-[var(--text-muted)]">
-                Total Earned
+                {t('settingsInvite.totalEarned')}
               </div>
             </div>
           </div>
@@ -203,24 +203,24 @@ export const SettingsInvitePage: React.FC = () => {
             <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-medium text-[var(--text)] mb-2">
-                How It Works
+                {t('settingsInvite.howItWorks')}
               </h4>
               <ul className="space-y-2 text-sm text-[var(--text-muted)]">
                 <li className="flex items-start gap-2">
                   <span className="text-green-400">✓</span>
-                  <span>Share your invite code with friends</span>
+                  <span>{t('settingsInvite.step1')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-400">✓</span>
-                  <span>Friends sign up using your code</span>
+                  <span>{t('settingsInvite.step2')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-400">✓</span>
-                  <span>Earn $20 for each successful referral</span>
+                  <span>{t('settingsInvite.step3')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-400">✓</span>
-                  <span>Rewards are paid in USDT weekly</span>
+                  <span>{t('settingsInvite.step4')}</span>
                 </li>
               </ul>
             </div>

@@ -165,6 +165,20 @@ export const DashboardPage: React.FC = () => {
                 color="green"
                 descriptionKey="dashboard.receiveFunds"
               />
+              <QuickAction
+                icon={<Repeat className="w-5 h-5 sm:w-6 sm:h-6" />}
+                labelKey="dashboard.swap"
+                to="/swap"
+                color="purple"
+                descriptionKey="dashboard.swapDesc"
+              />
+              <QuickAction
+                icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" />}
+                labelKey="dashboard.batchTransfer"
+                to="/batch"
+                color="orange"
+                descriptionKey="dashboard.batchDesc"
+              />
             </div>
           </div>
         </Card>

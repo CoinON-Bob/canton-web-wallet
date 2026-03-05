@@ -27,9 +27,34 @@ type FilterStatus = 'all' | TransactionStatus;
 type FilterType = 'all' | TransactionType;
 
 export const ActivityPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { transactions } = useWalletStore();
+  const isChinese = i18n.language === 'zh';
+
+  const translateTxType = (type: string) => {
+    const map: Record<string, string> = {
+      Send: t('activity.typeSend'),
+      Receive: t('activity.typeReceive'),
+      Swap: t('activity.typeSwap'),
+      Batch: t('activity.typeBatch'),
+      Offer: t('activity.typeOffer'),
+    };
+    return map[type] || type;
+  };
+
+  const translateTxStatus = (status: string) => {
+    const map: Record<string, string> = {
+      all: t('activity.all'),
+      Confirmed: t('activity.confirmed'),
+      Pending: t('activity.pending'),
+      Failed: t('activity.failed'),
+      Created: t('activity.created'),
+      Signing: t('activity.signing'),
+      Broadcasted: t('activity.broadcasted'),
+    };
+    return map[status] || status;
+  };
   
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,11 +83,10 @@ export const ActivityPage: React.FC = () => {
     const groups: Record<string, Transaction[]> = {};
     
     filteredTransactions.forEach(tx => {
-      const date = new Date(tx.timestamp).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
+      const date = new Date(tx.timestamp).toLocaleDateString(
+        isChinese ? 'zh-CN' : 'en-US',
+        { month: 'short', day: 'numeric', year: 'numeric' }
+      );
       
       if (!groups[date]) {
         groups[date] = [];
@@ -71,7 +95,7 @@ export const ActivityPage: React.FC = () => {
     });
     
     return groups;
-  }, [filteredTransactions]);
+  }, [filteredTransactions, isChinese]);
 
   // Stats
   const stats = useMemo(() => {
@@ -134,17 +158,17 @@ export const ActivityPage: React.FC = () => {
         
         <div className="grid grid-cols-3 gap-3">
           <Card className="p-4 text-center">
-            <p className="text-xs text-[var(--text-muted)] mb-1">Confirmed</p>
+            <p className="text-xs text-[var(--text-muted)] mb-1">{t('activity.confirmed')}</p>
             <p className="text-2xl font-bold text-[var(--success)]">{stats.confirmed}</p>
           </Card>
-          
+
           <Card className="p-4 text-center">
-            <p className="text-xs text-[var(--text-muted)] mb-1">Pending</p>
+            <p className="text-xs text-[var(--text-muted)] mb-1">{t('activity.pending')}</p>
             <p className="text-2xl font-bold text-[var(--warning)]">{stats.pending}</p>
           </Card>
-          
+
           <Card className="p-4 text-center">
-            <p className="text-xs text-[var(--text-muted)] mb-1">Failed</p>
+            <p className="text-xs text-[var(--text-muted)] mb-1">{t('activity.failed')}</p>
             <p className="text-2xl font-bold text-[var(--error)]">{stats.failed}</p>
           </Card>
         </div>
@@ -157,7 +181,7 @@ export const ActivityPage: React.FC = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
               <input
                 type="text"
-                placeholder="Search by token, address, or hash..."
+                placeholder={t('activity.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-600 focus:outline-none focus:border-blue-500/50"
@@ -171,7 +195,7 @@ export const ActivityPage: React.FC = () => {
               }`}
             >
               <Filter className="w-5 h-5" />
-              Filters
+              {t('activity.filters')}
             </button>
           </div>
           
@@ -185,38 +209,38 @@ export const ActivityPage: React.FC = () => {
               className="mt-4 pt-4 border-t border-[var(--border-subtle)] space-y-4"
             >
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2">Status</label>
+                <label className="block text-sm text-[var(--text-secondary)] mb-2">{t('activity.status')}</label>
                 <div className="flex flex-wrap gap-2">
                   {(['all', 'Confirmed', 'Pending', 'Failed', 'Created', 'Signing', 'Broadcasted'] as FilterStatus[]).map(status => (
                     <button
                       key={status}
                       onClick={() => setStatusFilter(status)}
                       className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                        statusFilter === status 
-                          ? 'bg-blue-500/20 text-[var(--primary)] border border-blue-500/30' 
+                        statusFilter === status
+                          ? 'bg-blue-500/20 text-[var(--primary)] border border-blue-500/30'
                           : 'bg-[var(--card-hover)] text-[var(--text-secondary)] hover:bg-[var(--card-active)]'
                       }`}
                     >
-                      {status === 'all' ? 'All' : status}
+                      {translateTxStatus(status)}
                     </button>
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <label className="block text-sm text-[var(--text-secondary)] mb-2">Type</label>
+                <label className="block text-sm text-[var(--text-secondary)] mb-2">{t('activity.type')}</label>
                 <div className="flex flex-wrap gap-2">
                   {(['all', 'Send', 'Receive', 'Swap', 'Batch', 'Offer'] as FilterType[]).map(type => (
                     <button
                       key={type}
                       onClick={() => setTypeFilter(type)}
                       className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                        typeFilter === type 
-                          ? 'bg-blue-500/20 text-[var(--primary)] border border-blue-500/30' 
+                        typeFilter === type
+                          ? 'bg-blue-500/20 text-[var(--primary)] border border-blue-500/30'
                           : 'bg-[var(--card-hover)] text-[var(--text-secondary)] hover:bg-[var(--card-active)]'
                       }`}
                     >
-                      {type === 'all' ? 'All' : type}
+                      {type === 'all' ? t('activity.all') : translateTxType(type)}
                     </button>
                   ))}
                 </div>
@@ -233,8 +257,8 @@ export const ActivityPage: React.FC = () => {
               <div className="w-16 h-16 bg-[var(--card-hover)] rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Clock className="w-8 h-8 text-[var(--text-muted)]" />
               </div>
-              <h3 className="text-lg font-semibold text-[var(--text)] mb-2">No transactions found</h3>
-              <p className="text-[var(--text-muted)]">Try adjusting your search or filters</p>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-2">{t('activity.noTransactions')}</h3>
+              <p className="text-[var(--text-muted)]">{t('activity.noTransactionsDesc')}</p>
             </Card>
           ) : (
             Object.entries(groupedTransactions).map(([date, txs]) => (
@@ -270,9 +294,9 @@ export const ActivityPage: React.FC = () => {
                           
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="text-[var(--text)] font-medium">{tx.type}</span>
+                              <span className="text-[var(--text)] font-medium">{translateTxType(tx.type)}</span>
                               <Tag variant={getStatusVariant(tx.status)} className="text-xs">
-                                {tx.status}
+                                {translateTxStatus(tx.status)}
                               </Tag>
                             </div>
                             

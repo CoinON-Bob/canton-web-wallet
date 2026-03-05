@@ -12,3 +12,4 @@ export { default as MarketPage } from './Market';
 export { default as MarketDetailPage } from './MarketDetail';
 export { default as DiscoverPage } from './Discover';
 export { OffersPage } from './Placeholder';
+export { default as ContractsPage } from './Contracts';
