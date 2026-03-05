@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { PlaceholderPage } from '../pages/Placeholder';
 import { AuthGuard, PublicOnlyGuard } from '../components/auth/AuthGuard';
 import { MainLayout } from '../components/layout';
 import {
@@ -26,6 +28,16 @@ import { SettingsAccountPage } from '../pages/settings/AccountPage';
 import { SettingsAddressBookPage } from '../pages/settings/AddressBookPage';
 import { SettingsNotificationsPage } from '../pages/settings/NotificationsPage';
 import { SettingsInvitePage } from '../pages/settings/InvitePage';
+
+// ==================== Settings 占位组件 ====================
+
+const SettingsPlaceholder: React.FC<{ titleKey: string }> = ({ titleKey }) => {
+  const { t, i18n } = useTranslation();
+  const desc = i18n.language === 'zh'
+    ? '该功能正在开发中，敬请期待。'
+    : 'This feature is under development, coming soon.';
+  return <PlaceholderPage title={t(titleKey)} description={desc} />;
+};
 
 // ==================== 主路由组件 ====================
 
@@ -150,17 +162,17 @@ export const Router: React.FC = () => {
           <Route index element={<div />} /> {/* 空元素，SettingsLayoutNew 会处理 */}
           <Route path="account" element={<SettingsAccountPage />} />
           <Route path="address-book" element={<SettingsAddressBookPage />} />
-          <Route path="private-key" element={<SettingsAccountPage />} />
+          <Route path="private-key" element={<SettingsPlaceholder titleKey="settings.privateKey" />} />
           <Route path="notifications" element={<SettingsNotificationsPage />} />
           <Route path="invite" element={<SettingsInvitePage />} />
-          <Route path="rewards" element={<SettingsInvitePage />} />
-          <Route path="currency" element={<SettingsAccountPage />} />
-          <Route path="one-step-transfer" element={<SettingsAccountPage />} />
-          <Route path="utxo-management" element={<SettingsAccountPage />} />
-          <Route path="security" element={<SettingsAccountPage />} />
-          <Route path="help" element={<SettingsAccountPage />} />
-          <Route path="terms" element={<SettingsAccountPage />} />
-          <Route path="feedback" element={<SettingsAccountPage />} />
+          <Route path="rewards" element={<SettingsPlaceholder titleKey="settings.rewards" />} />
+          <Route path="currency" element={<SettingsPlaceholder titleKey="settings.currency" />} />
+          <Route path="one-step-transfer" element={<SettingsPlaceholder titleKey="settings.oneStepTransfer" />} />
+          <Route path="utxo-management" element={<SettingsPlaceholder titleKey="settings.utxoManagement" />} />
+          <Route path="security" element={<SettingsPlaceholder titleKey="settings.security" />} />
+          <Route path="help" element={<SettingsPlaceholder titleKey="settings.helpCenter" />} />
+          <Route path="terms" element={<SettingsPlaceholder titleKey="settings.termsPrivacy" />} />
+          <Route path="feedback" element={<SettingsPlaceholder titleKey="settings.feedback" />} />
         </Route>
         
         <Route

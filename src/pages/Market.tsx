@@ -11,6 +11,7 @@ import {
   ExternalLink,
   ChevronRight,
   BarChart2,
+  X,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card, PageTransition, PageHeader, useToast } from '../components/ui';
@@ -249,7 +250,7 @@ const TokenRow: React.FC<TokenRowProps> = ({ token, onClick }) => {
         </div>
         <div className="col-span-2 lg:col-span-3 flex items-center justify-between">
           <span className="text-sm text-[var(--text-muted)]">
-            {isChinese ? '详情' : 'Details'}
+            {t('market.details')}
           </span>
           <ChevronRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
         </div>
@@ -286,16 +287,10 @@ export const MarketPage: React.FC = () => {
       if (data.length > 0) {
         setLastUpdated(data[0].lastUpdated);
       }
-      showToast(
-        isChinese ? '市场数据已加载' : 'Market data loaded',
-        'success'
-      );
+      showToast(t('market.dataLoaded'), 'success');
     } catch (error) {
       console.error('Failed to load market data:', error);
-      showToast(
-        isChinese ? '加载市场数据失败' : 'Failed to load market data',
-        'error'
-      );
+      showToast(t('market.dataLoadFailed'), 'error');
     } finally {
       setIsLoading(false);
     }
@@ -309,16 +304,10 @@ export const MarketPage: React.FC = () => {
       if (data.length > 0) {
         setLastUpdated(data[0].lastUpdated);
       }
-      showToast(
-        isChinese ? '市场数据已刷新' : 'Market data refreshed',
-        'success'
-      );
+      showToast(t('market.dataRefreshed'), 'success');
     } catch (error) {
       console.error('Failed to refresh market data:', error);
-      showToast(
-        isChinese ? '刷新市场数据失败' : 'Failed to refresh market data',
-        'error'
-      );
+      showToast(t('market.dataRefreshFailed'), 'error');
     } finally {
       setIsRefreshing(false);
     }
@@ -379,16 +368,16 @@ export const MarketPage: React.FC = () => {
               </div>
               <div className="text-left">
                 <p className="font-semibold text-[var(--text)]">
-                  {isChinese ? '合约交易' : 'Contract Trading'}
+                  {t('market.contractTrading')}
                 </p>
                 <p className="text-xs text-[var(--text-muted)]">
-                  {isChinese ? 'CC/BTC 永续合约' : 'CC/BTC Perpetual Swap'}
+                  {t('contracts.pair')}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded-full">
-                {isChinese ? '演示' : 'Demo'}
+                {t('market.contractTradingDemo')}
               </span>
               <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
             </div>
@@ -419,9 +408,9 @@ export const MarketPage: React.FC = () => {
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)]"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)] touch-manipulation"
                     >
-                      ✕
+                      <X className="w-4 h-4" />
                     </button>
                   )}
                 </div>
@@ -430,7 +419,7 @@ export const MarketPage: React.FC = () => {
               <div className="flex items-center gap-3">
                 {lastUpdated && (
                   <div className="text-sm text-[var(--text-muted)] hidden md:block">
-                    {isChinese ? '最后更新' : 'Last updated'}: {formatTime(lastUpdated)}
+                    {t('market.lastUpdatedLabel')}: {formatTime(lastUpdated)}
                   </div>
                 )}
                 
@@ -441,10 +430,7 @@ export const MarketPage: React.FC = () => {
                 >
                   <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
                   <span className="font-medium">
-                    {isRefreshing 
-                      ? (isChinese ? '刷新中...' : 'Refreshing...')
-                      : (isChinese ? '刷新数据' : 'Refresh Data')
-                    }
+                    {isRefreshing ? t('market.refreshing') : t('market.refreshData')}
                   </span>
                 </button>
               </div>
@@ -465,22 +451,22 @@ export const MarketPage: React.FC = () => {
                   <RefreshCw className="w-6 h-6 text-[var(--text-muted)] animate-spin" />
                 </div>
                 <h3 className="text-lg font-medium text-[var(--text)] mb-2">
-                  {isChinese ? '加载市场数据中...' : 'Loading market data...'}
+                  {t('market.loadingData')}
                 </h3>
                 <p className="text-[var(--text-muted)]">
-                  {isChinese ? '正在从 API 获取最新价格信息' : 'Fetching latest price information from API'}
+                  {t('market.loadingDataDesc')}
                 </p>
               </div>
             ) : sortedData.length > 0 ? (
               <>
                 {/* 表格头部 */}
-                <div className="px-4 py-3 border-b border-[var(--border)] bg-[var(--card)]">
+                <div className="hidden sm:block px-4 py-3 border-b border-[var(--border)] bg-[var(--card)]">
                   <div className="grid grid-cols-12 gap-4 text-sm font-medium text-[var(--text-muted)]">
-                    <div className="col-span-4 lg:col-span-3">{isChinese ? '代币' : 'Token'}</div>
-                    <div className="col-span-2 lg:col-span-2">{isChinese ? '价格' : 'Price'}</div>
-                    <div className="col-span-2 lg:col-span-2">{isChinese ? '24h 涨跌' : '24h Change'}</div>
-                    <div className="col-span-2 lg:col-span-2">{isChinese ? '24h 交易量' : '24h Volume'}</div>
-                    <div className="col-span-2 lg:col-span-3">{isChinese ? '操作' : 'Action'}</div>
+                    <div className="col-span-4 lg:col-span-3">{t('market.colToken')}</div>
+                    <div className="col-span-2 lg:col-span-2">{t('market.price')}</div>
+                    <div className="col-span-2 lg:col-span-2">{t('market.colChange')}</div>
+                    <div className="col-span-2 lg:col-span-2">{t('market.volume24h')}</div>
+                    <div className="col-span-2 lg:col-span-3">{t('market.colAction')}</div>
                   </div>
                 </div>
                 
@@ -499,13 +485,10 @@ export const MarketPage: React.FC = () => {
                 <div className="px-4 py-3 border-t border-[var(--border)] bg-[var(--card)]">
                   <div className="flex items-center justify-between text-sm text-[var(--text-muted)]">
                     <span>
-                      {isChinese 
-                        ? `显示 ${sortedData.length} 个代币中的 ${Math.min(sortedData.length, 8)} 个`
-                        : `Showing ${Math.min(sortedData.length, 8)} of ${sortedData.length} tokens`
-                      }
+                      {t('market.showingOf', { shown: Math.min(sortedData.length, 8), total: sortedData.length })}
                     </span>
                     <span>
-                      {lastUpdated && `${isChinese ? '数据更新时间' : 'Data updated'}: ${formatTime(lastUpdated)}`}
+                      {lastUpdated && `${t('market.dataUpdatedLabel')}: ${formatTime(lastUpdated)}`}
                     </span>
                   </div>
                 </div>
@@ -516,13 +499,10 @@ export const MarketPage: React.FC = () => {
                   <Search className="w-6 h-6 text-[var(--text-muted)]" />
                 </div>
                 <h3 className="text-lg font-medium text-[var(--text)] mb-2">
-                  {isChinese ? '未找到匹配的代币' : 'No matching tokens found'}
+                  {t('market.noResults')}
                 </h3>
                 <p className="text-[var(--text-muted)] max-w-md mx-auto">
-                  {isChinese
-                    ? '尝试使用不同的搜索词，或浏览所有可用的代币。'
-                    : 'Try a different search term or browse all available tokens.'
-                  }
+                  {t('market.noResultsDesc')}
                 </p>
               </div>
             )}

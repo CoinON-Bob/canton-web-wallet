@@ -485,7 +485,7 @@ const DesktopSidebar: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-4 w-6 h-6 bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] z-10"
+        className="absolute -right-4 top-4 w-8 h-8 bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text)] z-10 touch-manipulation"
         title={isCollapsed ? 'Expand' : 'Collapse'}
       >
         <ChevronDown className={`w-3 h-3 transition-transform ${isCollapsed ? '-rotate-90' : 'rotate-90'}`} />

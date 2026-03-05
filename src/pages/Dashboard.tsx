@@ -44,7 +44,7 @@ const QuickAction: React.FC<{
       <div className="text-center">
         <span className="text-xs sm:text-sm font-medium text-[var(--text)] block">{t(labelKey)}</span>
         {descriptionKey && (
-          <span className="text-[10px] sm:text-xs text-[var(--text-muted)] block mt-0.5">
+          <span className="text-xs text-[var(--text-muted)] block mt-0.5">
             {t(descriptionKey)}
           </span>
         )}
@@ -73,6 +73,29 @@ const QuickAction: React.FC<{
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
+
+  const translateTxType = (type: string) => {
+    const map: Record<string, string> = {
+      Send: t('activity.typeSend'),
+      Receive: t('activity.typeReceive'),
+      Swap: t('activity.typeSwap'),
+      Batch: t('activity.typeBatch'),
+      Offer: t('activity.typeOffer'),
+    };
+    return map[type] || type;
+  };
+
+  const translateTxStatus = (status: string) => {
+    const map: Record<string, string> = {
+      Confirmed: t('activity.confirmed'),
+      Pending: t('activity.pending'),
+      Failed: t('activity.failed'),
+      Created: t('activity.created'),
+      Signing: t('activity.signing'),
+      Broadcasted: t('activity.broadcasted'),
+    };
+    return map[status] || status;
+  };
   const { tokens, transactions, offers, batchTransfers, user, hideBalance, toggleHideBalance } = useWalletStore();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -301,7 +324,7 @@ export const DashboardPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <p className="font-medium text-[var(--text)] text-sm">{tx.type}</p>
+                      <p className="font-medium text-[var(--text)] text-sm">{translateTxType(tx.type)}</p>
                       <p className="text-xs text-[var(--text-muted)]">{tx.amount} {tx.token}</p>
                     </div>
                   </div>
@@ -311,7 +334,7 @@ export const DashboardPage: React.FC = () => {
                       tx.status === 'Confirmed' ? 'success' :
                       tx.status === 'Pending' ? 'warning' : 'error'
                     } className="text-[10px] px-1.5 py-0.5">
-                      {tx.status}
+                      {translateTxStatus(tx.status)}
                     </Tag>
                     <p className="text-[10px] text-[var(--text-muted)] mt-1">
                       {new Date(tx.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}

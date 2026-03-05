@@ -136,7 +136,7 @@ const PlaceOrderModal: React.FC<PlaceOrderModalProps> = ({ isOpen, onClose, pair
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 40 }}
         transition={{ duration: 0.2 }}
-        className="relative w-full max-w-sm bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-sm bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-2xl shadow-2xl overflow-hidden pb-[env(safe-area-inset-bottom)]"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">

@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { Card } from '../ui';
 
+const BUILD_HASH = '33b4c68';
+
 // ==================== 设置菜单项 ====================
 
 const settingsMenuItems = [
@@ -211,7 +213,7 @@ const MobileSettingsList: React.FC = () => {
       {/* Build Hash 显示 */}
       <div className="mt-8 pt-4 border-t border-[var(--border)] text-center">
         <p className="text-xs text-[var(--text-muted)] font-mono">
-          Build: 33b4c68
+          Build: {BUILD_HASH}
         </p>
       </div>
     </div>
@@ -257,7 +259,7 @@ const MobileDetailLayout: React.FC = () => {
       {/* Build Hash 显示 */}
       <div className="mt-8 pt-4 border-t border-[var(--border)] text-center">
         <p className="text-xs text-[var(--text-muted)] font-mono">
-          Build: 33b4c68
+          Build: {BUILD_HASH}
         </p>
       </div>
     </div>
@@ -282,12 +284,14 @@ const DesktopSettingsLayout: React.FC = () => {
           className="mb-8"
         >
           <div className="flex items-center gap-4 mb-6">
-            <Link
-              to="/settings"
-              className="p-2 hover:bg-[var(--card)] rounded-xl transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-[var(--text)]" />
-            </Link>
+            {!isSettingsRoot && (
+              <Link
+                to="/settings"
+                className="p-2 hover:bg-[var(--card)] rounded-xl transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5 text-[var(--text)]" />
+              </Link>
+            )}
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold text-[var(--text)]">
                 {t('settings.title')}
@@ -372,7 +376,7 @@ const DesktopSettingsLayout: React.FC = () => {
             {/* Build Hash 显示 */}
             <div className="mt-8 pt-4 border-t border-[var(--border)] text-center">
               <p className="text-xs text-[var(--text-muted)] font-mono">
-                Build: 33b4c68
+                Build: {BUILD_HASH}
               </p>
             </div>
           </motion.div>

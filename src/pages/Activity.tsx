@@ -140,9 +140,10 @@ export const ActivityPage: React.FC = () => {
   };
 
   const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString('en-US', {
+    return new Date(timestamp).toLocaleTimeString(isChinese ? 'zh-CN' : 'en-US', {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: !isChinese,
     });
   };
 
@@ -314,7 +315,7 @@ export const ActivityPage: React.FC = () => {
                                   e.stopPropagation();
                                   handleCopyHash(tx.hash);
                                 }}
-                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-[var(--card-hover)] rounded transition-all"
+                                className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1 hover:bg-[var(--card-hover)] rounded transition-all touch-manipulation"
                               >
                                 <Copy className="w-3 h-3 text-[var(--text-muted)]" />
                               </button>
