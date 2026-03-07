@@ -342,7 +342,7 @@ export const SettingsPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <h3 className="font-medium truncate">{title}</h3>
               {item.badge && (
-                <span className={`px-2 py-0.5 text-xs rounded-full ${item.badgeColor || 'bg-blue-500/10 text-blue-400'}`}>
+                <span className={`px-2 py-0.5 text-xs rounded-full ${item.badgeColor || 'bg-green-500/10 text-green-400'}`}>
                   {item.badge}
                 </span>
               )}
@@ -400,7 +400,7 @@ export const SettingsPage: React.FC = () => {
         >
           <Card className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center">
                 <span className="text-2xl font-bold text-white">
                   {user?.email?.charAt(0).toUpperCase()}
                 </span>

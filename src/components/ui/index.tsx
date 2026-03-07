@@ -73,7 +73,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       className={`rounded-2xl p-6 bg-[var(--card)] border border-[var(--border)] shadow-[var(--shadow-sm)] ${
-        hover ? 'cursor-pointer hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]' : ''
+        hover ? 'cursor-pointer hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)] hover:-translate-y-0.5' : ''
       } transition-all duration-200 ${className}`}
       onClick={onClick}
     >
@@ -299,3 +299,4 @@ export const StatCard: React.FC<StatCardProps> = ({
 export { Toast, ToastManager, useToast } from './Toast';
 export { ReceiveModal } from './ReceiveModal';
 export { PageHeader } from './PageHeader';
+export { AssetTrendChart, type ChartPeriod } from './AssetTrendChart';

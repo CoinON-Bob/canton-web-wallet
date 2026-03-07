@@ -68,7 +68,7 @@ const LanguageSwitcher: React.FC = () => {
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
                 className={`w-full px-3 py-2.5 text-sm text-left hover:bg-white/5 transition-colors flex items-center gap-2 ${
-                  i18n.language === lang.code ? 'bg-blue-500/10 text-blue-400' : 'text-gray-300'
+                  i18n.language === lang.code ? 'bg-green-500/10 text-green-400' : 'text-slate-300'
                 }`}
               >
                 <span className="text-base">{lang.flag}</span>
@@ -130,16 +130,17 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden grain-overlay">
       {/* 语言切换控件 - 右上角 */}
       <div className="absolute top-4 right-4 z-20">
         <LanguageSwitcher />
       </div>
       
-      {/* Background decorations - subtle gradient orbs */}
+      {/* Background - Bright green gradient orbs */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/8 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4" />
+        <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-green-400/5 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2" />
       </div>
 
       <motion.div 
@@ -151,21 +152,21 @@ export const LoginPage: React.FC = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <motion.div 
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-5 shadow-lg shadow-blue-500/20"
+            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-400 rounded-2xl mb-5 shadow-xl shadow-green-500/30"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <span className="text-4xl font-bold text-white">C</span>
+            <span className="text-4xl font-bold text-slate-900 font-display">C</span>
           </motion.div>
 
-          <h1 className="text-3xl font-bold text-white mb-1">Canton Wallet</h1>
-          <p className="text-gray-400 text-base">{t('login.subtitle')}</p>
-          <p className="text-gray-500 text-xs mt-1">Built on Canton Network</p>
+          <h1 className="text-3xl font-bold text-white mb-1 font-display tracking-tight">Canton Wallet</h1>
+          <p className="text-slate-400 text-base">{t('login.subtitle')}</p>
+          <p className="text-slate-500 text-xs mt-1">Built on Canton Network</p>
         </div>
 
-        {/* Login Card */}
+        {/* Login Card - Glassmorphism */}
         <motion.div 
-          className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 sm:p-8 backdrop-blur-sm"
+          className="glass-strong rounded-2xl p-6 sm:p-8"
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
@@ -188,7 +189,7 @@ export const LoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t('login.emailPlaceholder')}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/20 transition-all text-sm"
                 />
               </div>
             </div>
@@ -210,7 +211,7 @@ export const LoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={t('login.passwordPlaceholder')}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/20 transition-all text-sm"
                 />
                 <button
                   type="button"
@@ -232,11 +233,11 @@ export const LoginPage: React.FC = () => {
               </motion.div>
             )}
 
-            {/* 登录按钮 */}
+            {/* 登录按钮 - Bright Green CTA */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 text-white font-medium rounded-xl transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3 bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-green-500/25"
             >
               {isLoading ? (
                 <>
@@ -285,8 +286,8 @@ export const LoginPage: React.FC = () => {
 
           {/* Security Notice */}
           <div className="mt-6 pt-5 border-t border-white/10">
-            <div className="flex items-start gap-3 p-3 bg-blue-500/5 border border-blue-500/10 rounded-xl">
-              <div className="p-1.5 bg-blue-500/10 rounded-lg text-blue-400">
+            <div className="flex items-start gap-3 p-3 bg-green-500/5 border border-green-500/15 rounded-xl">
+              <div className="p-1.5 bg-green-500/10 rounded-lg text-green-400">
                 <Icons.Lock />
               </div>
               <div className="flex-1">

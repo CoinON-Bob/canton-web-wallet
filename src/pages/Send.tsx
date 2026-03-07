@@ -141,7 +141,7 @@ export const SendPage: React.FC = () => {
               placeholder={t('send.recipientPlaceholder')}
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full px-4 py-3 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors font-mono text-sm"
+              className="w-full px-4 py-3 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--input-border-focus)] focus:ring-1 focus:ring-[var(--ring)] transition-colors font-mono text-sm"
             />
             
             {recipient && (
@@ -208,7 +208,7 @@ export const SendPage: React.FC = () => {
                     }}
                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
                       selectedToken.symbol === token.symbol 
-                        ? 'bg-[var(--primary-subtle)] border border-blue-500/20' 
+                        ? 'bg-[var(--primary-subtle)] border border-[var(--primary)]/20' 
                         : 'hover:bg-[var(--card-hover)]'
                     }`}
                   >
@@ -236,12 +236,12 @@ export const SendPage: React.FC = () => {
               placeholder={t('send.amountPlaceholder')}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-4 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-2xl text-[var(--text)] placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+              className="w-full px-4 py-4 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-2xl text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--input-border-focus)] focus:ring-1 focus:ring-[var(--ring)] transition-colors"
             />
             
             <button
               onClick={handleMax}
-              className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[var(--primary-subtle)] hover:bg-blue-500/20 text-[var(--primary)] text-sm font-medium rounded-lg transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[var(--primary-subtle)] hover:bg-[var(--primary)]/20 text-[var(--primary)] text-sm font-medium rounded-lg transition-colors"
             >
               {t('send.max')}
             </button>
@@ -283,7 +283,7 @@ export const SendPage: React.FC = () => {
             placeholder={t('send.notePlaceholder')}
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="w-full px-4 py-3 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+            className="w-full px-4 py-3 bg-[var(--card-hover)] border border-[var(--border)] rounded-xl text-[var(--text)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--input-border-focus)] focus:ring-1 focus:ring-[var(--ring)] transition-colors"
           />
         </Card>
 
@@ -292,7 +292,7 @@ export const SendPage: React.FC = () => {
         <button
           onClick={() => setShowConfirm(true)}
           disabled={!canSubmit}
-          className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-[var(--text)] font-semibold rounded-xl transition-all active:scale-[0.98] touch-manipulation"
+          className="w-full py-4 bg-[var(--primary)] hover:bg-[var(--primary-600)] disabled:opacity-50 disabled:cursor-not-allowed text-[var(--text-inverse)] font-semibold rounded-xl transition-all active:scale-[0.98] touch-manipulation shadow-[var(--shadow-sm)]"
         >
           {getButtonText()}
         </button>
@@ -317,7 +317,7 @@ export const SendPage: React.FC = () => {
             <button
               onClick={handleSubmit}
               disabled={isProcessing}
-              className="flex-1 px-4 py-2.5 text-sm text-[var(--text)] bg-blue-500 hover:bg-blue-600 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              className="flex-1 px-4 py-2.5 text-sm text-[var(--text-inverse)] bg-[var(--primary)] hover:bg-[var(--primary-600)] rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isProcessing ? (
                 <>
@@ -381,7 +381,7 @@ export const SendPage: React.FC = () => {
           txStatus === 'Confirmed' || txStatus === 'Failed' ? (
             <button
               onClick={handleCloseStatus}
-              className="w-full px-4 py-2.5 text-sm text-[var(--text)] bg-blue-500 hover:bg-blue-600 rounded-xl transition-colors"
+              className="w-full px-4 py-2.5 text-sm text-[var(--text-inverse)] bg-[var(--primary)] hover:bg-[var(--primary-600)] rounded-xl transition-colors"
             >
               {txStatus === 'Confirmed' ? t('common.view') : t('common.close')}
             </button>
@@ -391,8 +391,8 @@ export const SendPage: React.FC = () => {
         <div className="text-center py-6">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
             {txStatus === 'Created' && (
-              <div className="w-full h-full bg-blue-500/20 rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
+              <div className="w-full h-full bg-[var(--primary)]/20 rounded-full flex items-center justify-center">
+                <div className="w-3 h-3 bg-[var(--primary)] rounded-full animate-pulse" />
               </div>
             )}
             {txStatus === 'Signing' && (

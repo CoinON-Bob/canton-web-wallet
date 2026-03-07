@@ -309,7 +309,7 @@ const DesktopSettingsLayout: React.FC = () => {
           >
             {isSettingsRoot ? (
               <Card className="p-8 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/25">
                   <span className="text-3xl font-bold text-white">⚙️</span>
                 </div>
                 <h2 className="text-2xl font-bold text-[var(--text)] mb-3">

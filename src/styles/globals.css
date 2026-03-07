@@ -6,44 +6,54 @@
    Design System - Theme Variables
    ============================================ */
 
-/* Dark Theme (Default) */
+/* ============================================
+   Web3 Trading UI - Coinbase/OKX Style
+   Neon Green | Deep Navy | Cyan accent
+   ============================================ */
+
+/* Dark Theme (Default) - Crypto Trading Dashboard */
 html[data-theme="dark"],
 :root {
-  /* Brand Colors */
-  --primary: #3b82f6;
-  --primary-600: #2563eb;
-  --primary-700: #1d4ed8;
-  --primary-subtle: rgba(59, 130, 246, 0.1);
+  /* Primary - Neon Green */
+  --primary: #00E676;
+  --primary-600: #00C853;
+  --primary-700: #00B248;
+  --primary-subtle: rgba(0, 230, 118, 0.1);
+  /* Secondary - Cyan/Blue */
+  --accent: #22D3EE;
+  --accent-subtle: rgba(34, 211, 238, 0.1);
   
-  /* Background Layers */
-  --bg: #0a0a0f;
-  --bg-elevated: #111118;
-  --bg-surface: #1a1a24;
-  --bg-overlay: rgba(0, 0, 0, 0.8);
+  /* Background - Deep Navy */
+  --bg: #0A0E17;
+  --bg-elevated: #0F1419;
+  --bg-surface: #141B26;
+  --bg-overlay: rgba(10, 14, 23, 0.95);
   
-  /* Card System */
-  --card: rgba(255, 255, 255, 0.03);
-  --card-elevated: rgba(255, 255, 255, 0.05);
-  --card-hover: rgba(255, 255, 255, 0.06);
-  --card-active: rgba(255, 255, 255, 0.08);
+  /* Card - Subtle, financial UI (avoid AI glass overload) */
+  --card: rgba(20, 27, 38, 0.6);
+  --card-elevated: rgba(25, 32, 45, 0.8);
+  --card-hover: rgba(30, 40, 55, 0.9);
+  --card-active: rgba(35, 45, 60, 0.95);
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
   
-  /* Border System */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --border-subtle: rgba(255, 255, 255, 0.04);
+  /* Border - Weakened for financial UI */
+  --border: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --border-subtle: rgba(255, 255, 255, 0.02);
   
   /* Text System */
-  --text: #ffffff;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
-  --text-inverse: #0f172a;
+  --text: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-inverse: #0F172A;
   
   /* Input System */
   --input: rgba(255, 255, 255, 0.05);
   --input-hover: rgba(255, 255, 255, 0.08);
   --input-focus: rgba(255, 255, 255, 0.1);
   --input-border: rgba(255, 255, 255, 0.1);
-  --input-border-focus: rgba(59, 130, 246, 0.5);
+  --input-border-focus: rgba(0, 230, 118, 0.5);
   
   /* Modal/Dialog */
   --modal: #111118;
@@ -58,18 +68,18 @@ html[data-theme="dark"],
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
   
   /* Focus Ring */
-  --ring: rgba(59, 130, 246, 0.4);
+  --ring: rgba(0, 230, 118, 0.4);
   --ring-offset: 2px;
   
-  /* Status Colors */
-  --success: #10b981;
-  --success-subtle: rgba(16, 185, 129, 0.1);
+  /* Status - Neon green positive, red negative */
+  --success: #00E676;
+  --success-subtle: rgba(0, 230, 118, 0.12);
   --warning: #f59e0b;
   --warning-subtle: rgba(245, 158, 11, 0.1);
   --error: #ef4444;
-  --error-subtle: rgba(239, 68, 68, 0.1);
-  --info: #3b82f6;
-  --info-subtle: rgba(59, 130, 246, 0.1);
+  --error-subtle: rgba(239, 68, 68, 0.12);
+  --info: #38bdf8;
+  --info-subtle: rgba(56, 189, 248, 0.12);
 }
 
 /* Light Theme - Professional Web3 Wallet Standard */
@@ -156,7 +166,7 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -164,17 +174,55 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Fintech typography - Display font for headings */
+.font-display {
+  font-family: 'Orbitron', 'Exo 2', sans-serif;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Subtle grain overlay for depth */
+.grain-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle grid pattern - CryptoVault style */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 /* ============================================
    Component Classes
    ============================================ */
 
-/* Card */
+/* Card - Financial dashboard style (subtle, not AI) */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
 }
 

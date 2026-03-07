@@ -85,31 +85,31 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
 
   return (
     <>
-      <header className="h-14 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)] flex items-center justify-between px-3 sm:px-4 sticky top-0 z-50">
+      <header className="h-14 glass border-b border-[var(--glass-border)] flex items-center justify-between px-3 sm:px-4 sticky top-0 z-50">
         {/* Left: Menu Toggle + Logo */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 -ml-1 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+            className="lg:hidden p-2 -ml-1 hover:bg-white/5 rounded-lg transition-colors touch-manipulation"
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5 text-[var(--text-muted)]" />
           </button>
           
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-[var(--text)] text-sm font-bold">C</span>
+          <Link to="/dashboard" className="flex items-center gap-2 group">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-green-500 to-emerald-400 rounded-lg flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:shadow-green-500/35 transition-shadow">
+              <span className="text-[var(--text-inverse)] text-sm font-bold font-display">C</span>
             </div>
-            <span className="font-semibold text-[var(--text)] text-sm hidden sm:block">Canton</span>
+            <span className="font-display font-semibold text-[var(--text)] text-sm hidden sm:block tracking-tight">Canton</span>
           </Link>
         </div>
 
         {/* Right: Network + Wallet */}
         <div className="flex items-center gap-2">
           {/* Network Badge - Hidden on smallest screens */}
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-xs text-[var(--text-secondary)]">Canton</span>
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 glass rounded-lg border border-[var(--glass-border)]">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-sm shadow-green-400/50" />
+            <span className="text-xs text-[var(--text-secondary)] font-medium">Canton</span>
           </div>
 
           {/* Wallet Address Button */}
@@ -117,9 +117,9 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           <div className="relative">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center gap-2 px-2 sm:px-3 py-1.5 bg-[var(--card)] hover:bg-[var(--card-hover)] rounded-lg border border-[var(--border)] transition-colors touch-manipulation min-h-[36px]"
+              className="flex items-center gap-2 px-2 sm:px-3 py-1.5 glass hover:bg-white/10 rounded-lg border border-[var(--glass-border)] transition-all duration-200 touch-manipulation min-h-[36px]"
             >
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm shadow-green-500/25">
                 <span className="text-[var(--text)] text-[10px] font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
               </div>
               
@@ -145,7 +145,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.1 }}
-                    className="absolute right-0 top-full mt-2 w-[280px] sm:w-72 bg-[var(--bg-elevated)] border border-[var(--border-strong)] rounded-xl shadow-2xl overflow-hidden z-50"
+                    className="absolute right-0 top-full mt-2 w-[280px] sm:w-72 rounded-xl overflow-hidden z-50 bg-[rgba(10,14,23,0.95)] backdrop-blur-[12px] border border-white/[0.06] shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
                   >
                     {/* Address Section */}
                     <div className="p-4 border-b border-[var(--border)]">
@@ -154,7 +154,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         <p className="text-sm text-[var(--text)] font-mono truncate flex-1 min-w-0">{user?.walletAddress}</p>
                         <button
                           onClick={handleCopyAddress}
-                          className="p-2 hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                          className="p-2 hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                           title="Copy address"
                         >
                           <Copy className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--text)]" />
@@ -169,7 +169,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <Link
                         to="/settings/account"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                       >
                         <User className="w-4 h-4" />
                         {t('settings.accountManagement')}
@@ -177,7 +177,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <Link
                         to="/settings/address-book"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                       >
                         <BookOpen className="w-4 h-4" />
                         {t('settings.addressBook')}
@@ -185,7 +185,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <Link
                         to="/settings/invite"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                       >
                         <Users className="w-4 h-4" />
                         {t('settings.inviteFriend')}
@@ -193,7 +193,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <Link
                         to="/settings/rewards"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                       >
                         <Gift className="w-4 h-4" />
                         {t('settings.rewards')}
@@ -208,7 +208,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <Link
                         to="/settings"
                         onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                       >
                         <Settings className="w-4 h-4" />
                         {t('common.settings')}
@@ -227,7 +227,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                             className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
                               i18n.language === 'zh'
                                 ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
-                                : 'text-[var(--text-muted)] hover:bg-[var(--card)] hover:text-[var(--text)]'
+                                : 'text-[var(--text-muted)] hover:bg-white/[0.05] hover:text-[var(--text)]'
                             }`}
                           >
                             中文
@@ -240,7 +240,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                             className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
                               i18n.language === 'en'
                                 ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
-                                : 'text-[var(--text-muted)] hover:bg-[var(--card)] hover:text-[var(--text)]'
+                                : 'text-[var(--text-muted)] hover:bg-white/[0.05] hover:text-[var(--text)]'
                             }`}
                           >
                             EN
@@ -255,7 +255,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                          className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
                         >
                           <ExternalLink className="w-4 h-4" />
                           {t('common.viewOnExplorer')}
@@ -385,7 +385,7 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
           
           {/* Drawer */}
           <motion.aside
-            className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[var(--bg)] border-r border-[var(--border-strong)] z-50 flex flex-col"
+            className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] glass-strong border-r border-[var(--glass-border)] z-50 flex flex-col"
             initial={{ x: '-100%' }}
             animate={{ x: translateX }}
             exit={{ x: '-100%' }}
@@ -395,9 +395,9 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             onTouchEnd={onTouchEnd}
           >
             {/* Drawer Header */}
-            <div className="h-14 flex items-center justify-between px-4 border-b border-[var(--border)]">
+            <div className="h-14 flex items-center justify-between px-4 border-b border-[var(--glass-border)]">
               <Link to="/dashboard" className="flex items-center gap-2" onClick={onClose}>
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-400 rounded-lg flex items-center justify-center">
                   <span className="text-[var(--text)] text-sm font-bold">C</span>
                 </div>
                 <span className="font-semibold text-[var(--text)]">Canton</span>
@@ -441,7 +441,7 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             {/* User Info */}
             <div className="p-4 border-t border-[var(--border)]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center">
                   <span className="text-[var(--text)] text-sm font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
                 </div>
                 <div className="min-w-0 flex-1">
@@ -470,7 +470,7 @@ const DesktopSidebar: React.FC = () => {
 
   return (
     <motion.aside
-      className="hidden lg:flex flex-col h-[calc(100vh-56px)] sticky top-14 border-r border-[var(--border)] bg-[var(--bg)]"
+      className="hidden lg:flex flex-col h-[calc(100vh-56px)] sticky top-14 border-r border-[var(--glass-border)] glass"
       initial={false}
       animate={{ width: isCollapsed ? 64 : 200 }}
       transition={{ duration: 0.2, ease: 'easeInOut' }}
@@ -533,7 +533,7 @@ const DesktopSidebar: React.FC = () => {
             className="p-3 border-t border-[var(--border)]"
           >
             <div className="flex items-center gap-3 px-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-[var(--text)] text-xs font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
               </div>
               <div className="min-w-0">
@@ -577,7 +577,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const { toasts, removeToast } = useToast();
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] flex flex-col">
+    <div className="min-h-screen bg-[var(--bg)] flex flex-col relative grain-overlay bg-grid-pattern">
       <WalletControlBar onMenuClick={() => setIsDrawerOpen(true)} />
       
       <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

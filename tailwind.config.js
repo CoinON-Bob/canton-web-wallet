@@ -15,19 +15,19 @@ module.exports = {
           active: '#222230',
         },
         primary: {
-          DEFAULT: '#3B82F6',
-          light: '#60A5FA',
-          dark: '#1D4ED8',
+          DEFAULT: '#00E676',
+          light: '#00FF88',
+          dark: '#00C853',
         },
         secondary: {
-          DEFAULT: '#8B5CF6',
-          light: '#A78BFA',
-          dark: '#7C3AED',
+          DEFAULT: '#22D3EE',
+          light: '#67E8F9',
+          dark: '#06B6D4',
         },
         accent: {
-          DEFAULT: '#10B981',
-          light: '#34D399',
-          dark: '#059669',
+          DEFAULT: '#22C55E',
+          light: '#4ADE80',
+          dark: '#16A34A',
         },
         border: {
           DEFAULT: '#2D2D3D',
@@ -47,7 +47,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Exo 2', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Orbitron', 'Exo 2', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
     },

@@ -327,12 +327,12 @@ export const ContractsPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Card className="bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-transparent border-blue-500/10">
+          <Card className="bg-gradient-to-br from-green-500/8 via-green-500/3 to-transparent border-green-500/20">
             <div className="flex items-start justify-between mb-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xl font-bold text-[var(--text)]">{pair.id}</span>
-                  <span className="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-xs rounded-full">
+                  <span className="px-2 py-0.5 bg-green-500/10 text-green-400 text-xs rounded-full">
                     {isChinese ? '永续' : 'Perp'}
                   </span>
                 </div>
@@ -515,7 +515,7 @@ export const ContractsPage: React.FC = () => {
         )}
 
         {/* Demo Banner */}
-        <Card className="p-4 bg-blue-500/5 border-blue-500/20">
+        <Card className="p-4 bg-green-500/5 border-green-500/20">
           <div className="flex items-start gap-3">
             <BarChart2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-[var(--text-muted)]">

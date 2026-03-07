@@ -209,7 +209,7 @@ const TokenRow: React.FC<TokenRowProps> = ({ token, onClick }) => {
     >
       {/* Mobile: 2-line card (≤ sm) */}
       <div className="sm:hidden py-3 flex items-center gap-3">
-        <div className="w-9 h-9 flex-shrink-0 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+        <div className="w-9 h-9 flex-shrink-0 rounded-lg bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center">
           <span className="text-white font-bold">{token.icon}</span>
         </div>
         <div className="flex-1 min-w-0">
@@ -230,7 +230,7 @@ const TokenRow: React.FC<TokenRowProps> = ({ token, onClick }) => {
       {/* Desktop: full-column row (≥ sm) */}
       <div className="hidden sm:grid grid-cols-12 gap-4 py-4 items-center">
         <div className="col-span-4 lg:col-span-3 flex items-center gap-3">
-          <div className="w-10 h-10 flex-shrink-0 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <div className="w-10 h-10 flex-shrink-0 rounded-lg bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center">
             <span className="text-white font-bold text-lg">{token.icon}</span>
           </div>
           <div>
@@ -360,10 +360,10 @@ export const MarketPage: React.FC = () => {
         >
           <button
             onClick={() => navigate('/contracts')}
-            className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-500/20 rounded-2xl hover:from-blue-500/15 hover:to-purple-600/15 transition-all touch-manipulation"
+            className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/5 border border-green-500/20 rounded-2xl hover:from-green-500/15 hover:to-emerald-500/10 transition-all touch-manipulation"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-400 rounded-xl flex items-center justify-center flex-shrink-0">
                 <BarChart2 className="w-5 h-5 text-white" />
               </div>
               <div className="text-left">
@@ -516,9 +516,9 @@ export const MarketPage: React.FC = () => {
           transition={{ duration: 0.3, delay: 0.2 }}
           className="mt-6"
         >
-          <Card className="p-4 bg-blue-500/5 border-blue-500/20">
+          <Card className="p-4 bg-green-500/5 border-green-500/20">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-blue-500/10 rounded-lg">
+              <div className="p-2 bg-green-500/10 rounded-lg">
                 <ExternalLink className="w-5 h-5 text-blue-400" />
               </div>
               <div className="flex-1">
@@ -537,7 +537,7 @@ export const MarketPage: React.FC = () => {
                     {isChinese ? '模拟 API 延迟' : 'Simulated API delay'}
                   </span>
                   <span className="flex items-center gap-1">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
                     {isChinese ? '随机价格波动' : 'Random price fluctuations'}
                   </span>
                   <span className="flex items-center gap-1">
