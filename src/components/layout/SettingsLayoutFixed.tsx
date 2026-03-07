@@ -4,18 +4,12 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { 
   ArrowLeft,
-  User,
-  Book,
   Key,
   Bell,
-  Users,
-  Gift,
   DollarSign,
   Repeat,
   Database,
-  Shield,
   HelpCircle,
-  FileText,
   MessageSquare,
   ChevronRight
 } from 'lucide-react';
@@ -25,28 +19,8 @@ const BUILD_HASH = '33b4c68';
 
 // ==================== 设置菜单项 ====================
 
+// Settings menu: 1 通知 2 私钥 3 货币 4 一步转账 5 UTXO 管理 6 帮助中心 7 发送反馈
 const settingsMenuItems = [
-  {
-    id: 'account',
-    labelKey: 'settings.accountManagement',
-    descriptionKey: 'settings.accountManagementDesc',
-    icon: User,
-    path: '/settings/account',
-  },
-  {
-    id: 'address-book',
-    labelKey: 'settings.addressBook',
-    descriptionKey: 'settings.addressBookDesc',
-    icon: Book,
-    path: '/settings/address-book',
-  },
-  {
-    id: 'private-key',
-    labelKey: 'settings.privateKey',
-    descriptionKey: 'settings.privateKeyDesc',
-    icon: Key,
-    path: '/settings/private-key',
-  },
   {
     id: 'notifications',
     labelKey: 'settings.notifications',
@@ -55,18 +29,11 @@ const settingsMenuItems = [
     path: '/settings/notifications',
   },
   {
-    id: 'invite',
-    labelKey: 'settings.inviteFriend',
-    descriptionKey: 'settings.inviteFriendDesc',
-    icon: Users,
-    path: '/settings/invite',
-  },
-  {
-    id: 'rewards',
-    labelKey: 'settings.rewards',
-    descriptionKey: 'settings.rewardsDesc',
-    icon: Gift,
-    path: '/settings/rewards',
+    id: 'private-key',
+    labelKey: 'settings.privateKey',
+    descriptionKey: 'settings.privateKeyDesc',
+    icon: Key,
+    path: '/settings/private-key',
   },
   {
     id: 'currency',
@@ -90,25 +57,11 @@ const settingsMenuItems = [
     path: '/settings/utxo-management',
   },
   {
-    id: 'security',
-    labelKey: 'settings.security',
-    descriptionKey: 'settings.securityDesc',
-    icon: Shield,
-    path: '/settings/security',
-  },
-  {
     id: 'help',
     labelKey: 'settings.helpCenter',
     descriptionKey: 'settings.helpCenterDesc',
     icon: HelpCircle,
     path: '/settings/help',
-  },
-  {
-    id: 'terms',
-    labelKey: 'settings.terms',
-    descriptionKey: 'settings.termsDesc',
-    icon: FileText,
-    path: '/settings/terms',
   },
   {
     id: 'feedback',

@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useWalletStore } from '../store';
 import { PlaceholderPage } from '../pages/Placeholder';
 import { AuthGuard, PublicOnlyGuard } from '../components/auth/AuthGuard';
 import { MainLayout } from '../components/layout';
@@ -39,6 +40,31 @@ const SettingsPlaceholder: React.FC<{ titleKey: string }> = ({ titleKey }) => {
   return <PlaceholderPage title={t(titleKey)} description={desc} />;
 };
 
+const TermsPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const { user } = useWalletStore();
+  const desc = i18n.language === 'zh'
+    ? '查看我们的服务条款和隐私政策。'
+    : 'View our terms of service and privacy policy.';
+  const backTo = user ? '/dashboard' : '/login';
+  const backLabel = user
+    ? (i18n.language === 'zh' ? '返回' : 'Back')
+    : (i18n.language === 'zh' ? '返回登录' : 'Back to Login');
+  return (
+    <div className="min-h-screen bg-[var(--bg)] p-4">
+      <div className="max-w-2xl mx-auto">
+        <Link
+          to={backTo}
+          className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--primary)] mb-6 transition-colors"
+        >
+          ← {backLabel}
+        </Link>
+        <PlaceholderPage title={t('common.termsPrivacy')} description={desc} />
+      </div>
+    </div>
+  );
+};
+
 // ==================== 主路由组件 ====================
 
 export const Router: React.FC = () => {
@@ -68,6 +94,12 @@ export const Router: React.FC = () => {
             <PublicOnlyGuard>
               <ForgotPasswordPage />
             </PublicOnlyGuard>
+          } 
+        />
+        <Route 
+          path="/terms" 
+          element={
+            <TermsPage />
           } 
         />
 

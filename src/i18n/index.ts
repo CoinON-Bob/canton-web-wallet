@@ -53,6 +53,7 @@ const enTranslations = {
     logoutDesc: 'You will need to sign in again to access your wallet.',
     confirmLogout: 'Confirm Sign Out',
     account: 'Account',
+    termsPrivacy: 'Terms & Privacy',
   },
   // Navigation
   nav: {
@@ -554,6 +555,7 @@ const zhTranslations = {
     logoutDesc: '退出后需要重新登录才能访问钱包。',
     confirmLogout: '确认退出',
     account: '账户',
+    termsPrivacy: '条款与隐私',
   },
   // Navigation
   nav: {

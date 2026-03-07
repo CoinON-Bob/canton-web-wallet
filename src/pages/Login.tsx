@@ -276,6 +276,13 @@ export const LoginPage: React.FC = () => {
             </Link>
           </p>
 
+          {/* Terms & Privacy */}
+          <p className="text-center mt-4">
+            <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+              {t('common.termsPrivacy')}
+            </Link>
+          </p>
+
           {/* Security Notice */}
           <div className="mt-6 pt-5 border-t border-white/10">
             <div className="flex items-start gap-3 p-3 bg-blue-500/5 border border-blue-500/10 rounded-xl">

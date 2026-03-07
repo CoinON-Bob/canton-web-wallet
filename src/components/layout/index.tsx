@@ -22,7 +22,9 @@ import {
   TrendingUp,
   Compass,
   Globe,
-  BarChart2
+  BarChart2,
+  User,
+  BookOpen
 } from 'lucide-react';
 import { useWalletStore } from '../../store';
 import { shortAddress, getCantonExplorerUrl } from '../../utils/address';
@@ -36,7 +38,6 @@ const navItems = [
   { id: 'contracts', labelKey: 'nav.contracts', icon: BarChart2, path: '/contracts' },
   { id: 'discover', labelKey: 'nav.discover', icon: Compass, path: '/discover' },
   { id: 'activity', labelKey: 'nav.activity', icon: History, path: '/activity' },
-  { id: 'settings', labelKey: 'nav.settings', icon: Settings, path: '/settings' },
 ];
 
 // ==================== 响应式工具 Hook ====================
@@ -60,7 +61,6 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { showToast } = useToast();
   const isMobile = useIsMobile();
@@ -104,77 +104,12 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           </Link>
         </div>
 
-        {/* Right: Network + Language + Wallet */}
+        {/* Right: Network + Wallet */}
         <div className="flex items-center gap-2">
           {/* Network Badge - Hidden on smallest screens */}
           <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className="text-xs text-[var(--text-secondary)]">Canton</span>
-          </div>
-
-          {/* Language Switch - 始终显示 */}
-          <div className="relative">
-            <button
-              onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-              className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500/10 to-purple-600/10 hover:from-blue-500/20 hover:to-purple-600/20 rounded-lg border border-blue-500/20 transition-all touch-manipulation group"
-              aria-label="Change language"
-            >
-              <Globe className="w-4 h-4 text-blue-400 group-hover:text-blue-300 flex-shrink-0" />
-              <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 hidden sm:inline">
-                {i18n.language === 'zh' ? '中文' : 'English'}
-              </span>
-              <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 sm:hidden">
-                {i18n.language === 'zh' ? 'ZH' : 'EN'}
-              </span>
-            </button>
-
-            {/* Language Dropdown */}
-            <AnimatePresence>
-              {isLanguageMenuOpen && (
-                <>
-                  <div 
-                    className="fixed inset-0 z-40" 
-                    onClick={() => setIsLanguageMenuOpen(false)}
-                  />
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-1 z-50 min-w-[120px] bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl shadow-lg overflow-hidden"
-                  >
-                    <button
-                      onClick={() => {
-                        i18n.changeLanguage('zh');
-                        localStorage.setItem('canton_language', 'zh');
-                        setIsLanguageMenuOpen(false);
-                      }}
-                      className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
-                        i18n.language === 'zh'
-                          ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
-                          : 'text-[var(--text)] hover:bg-[var(--card-hover)]'
-                      }`}
-                    >
-                      中文
-                    </button>
-                    <button
-                      onClick={() => {
-                        i18n.changeLanguage('en');
-                        localStorage.setItem('canton_language', 'en');
-                        setIsLanguageMenuOpen(false);
-                      }}
-                      className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
-                        i18n.language === 'en'
-                          ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
-                          : 'text-[var(--text)] hover:bg-[var(--card-hover)]'
-                      }`}
-                    >
-                      English
-                    </button>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Wallet Address Button */}
@@ -229,7 +164,46 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                       <p className="text-xs text-[var(--text-muted)] mt-2 truncate">{user?.email}</p>
                     </div>
 
-                    {/* Menu Items */}
+                    {/* Menu Items - 账户管理 / 地址簿 / 邀请 / 奖励 */}
+                    <div className="p-2">
+                      <Link
+                        to="/settings/account"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                      >
+                        <User className="w-4 h-4" />
+                        {t('settings.accountManagement')}
+                      </Link>
+                      <Link
+                        to="/settings/address-book"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        {t('settings.addressBook')}
+                      </Link>
+                      <Link
+                        to="/settings/invite"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                      >
+                        <Users className="w-4 h-4" />
+                        {t('settings.inviteFriend')}
+                      </Link>
+                      <Link
+                        to="/settings/rewards"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation"
+                      >
+                        <Gift className="w-4 h-4" />
+                        {t('settings.rewards')}
+                      </Link>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-[var(--border)]" />
+
+                    {/* 设置 / 语言 / 浏览器查看 */}
                     <div className="p-2">
                       <Link
                         to="/settings"
@@ -240,20 +214,39 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         {t('common.settings')}
                       </Link>
 
-                      {/* Language Option */}
-                      <button
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                          setIsLanguageMenuOpen(true);
-                        }}
-                        className="w-full flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--card)] rounded-lg transition-colors touch-manipulation text-left"
-                      >
-                        <Globe className="w-4 h-4" />
-                        {t('common.language')}
-                        <span className="ml-auto text-xs text-[var(--text-muted)]">
-                          {i18n.language === 'zh' ? '中文' : 'English'}
-                        </span>
-                      </button>
+                      {/* Language Option - inline switcher */}
+                      <div className="flex items-center gap-3 px-3 py-3">
+                        <Globe className="w-4 h-4 text-[var(--text-muted)]" />
+                        <span className="text-sm text-[var(--text-secondary)] flex-1">{t('common.language')}</span>
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => {
+                              i18n.changeLanguage('zh');
+                              localStorage.setItem('canton_language', 'zh');
+                            }}
+                            className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
+                              i18n.language === 'zh'
+                                ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
+                                : 'text-[var(--text-muted)] hover:bg-[var(--card)] hover:text-[var(--text)]'
+                            }`}
+                          >
+                            中文
+                          </button>
+                          <button
+                            onClick={() => {
+                              i18n.changeLanguage('en');
+                              localStorage.setItem('canton_language', 'en');
+                            }}
+                            className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
+                              i18n.language === 'en'
+                                ? 'bg-[var(--primary-subtle)] text-[var(--primary)]'
+                                : 'text-[var(--text-muted)] hover:bg-[var(--card)] hover:text-[var(--text)]'
+                            }`}
+                          >
+                            EN
+                          </button>
+                        </div>
+                      </div>
 
                       {/* Explorer 链接 */}
                       {explorerUrl && (
@@ -557,23 +550,48 @@ const DesktopSidebar: React.FC = () => {
 
 // ==================== Main Layout ====================
 
+// ==================== App Footer ====================
+
+const AppFooter: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <footer className="border-t border-[var(--border)] bg-[var(--bg)] py-4 px-4">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
+        <span className="text-sm text-[var(--text-muted)]">
+          © Canton Wallet
+        </span>
+        <Link
+          to="/terms"
+          className="text-sm text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"
+        >
+          {t('common.termsPrivacy')}
+        </Link>
+      </div>
+    </footer>
+  );
+};
+
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { toasts, removeToast } = useToast();
 
   return (
-    <div className="min-h-screen bg-[var(--bg)]">
+    <div className="min-h-screen bg-[var(--bg)] flex flex-col">
       <WalletControlBar onMenuClick={() => setIsDrawerOpen(true)} />
       
       <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
       
-      <div className="flex">
+      <div className="flex flex-1">
         <DesktopSidebar />
         
-        <main className="flex-1 min-h-[calc(100vh-56px)] overflow-auto">
-          <AnimatePresence mode="wait">
-            {children}
-          </AnimatePresence>
+        <main className="flex-1 min-h-[calc(100vh-56px)] overflow-auto flex flex-col">
+          <div className="flex-1">
+            <AnimatePresence mode="wait">
+              {children}
+            </AnimatePresence>
+          </div>
+          <AppFooter />
         </main>
       </div>
 
