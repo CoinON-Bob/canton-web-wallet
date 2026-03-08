@@ -13,8 +13,6 @@ import {
 } from 'lucide-react';
 import { Card } from '../../components/ui';
 import { useWalletStore } from '../../store';
-import { MOCK_CANTON_ADDRESS } from '../../config/canton';
-import { shortAddress } from '../../utils/address';
 
 // ==================== 账户管理页面 ====================
 
@@ -119,7 +117,7 @@ export const SettingsAccountPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 钱包地址 */}
+            {/* 钱包 / 模式 */}
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
@@ -129,18 +127,9 @@ export const SettingsAccountPage: React.FC = () => {
                   <h3 className="font-medium text-[var(--text)] mb-1">
                     {t('settingsAccount.walletAddress')}
                   </h3>
-                  <div className="flex items-center gap-2 min-w-0">
-                    <p className="text-sm font-mono text-[var(--text)] bg-[var(--card)] px-3 py-1.5 rounded-lg truncate flex-1 min-w-0">
-                      <span className="hidden sm:inline">{MOCK_CANTON_ADDRESS}</span>
-                      <span className="sm:hidden">{shortAddress(MOCK_CANTON_ADDRESS, 6, 4)}</span>
-                    </p>
-                    <button
-                      onClick={() => navigator.clipboard.writeText(MOCK_CANTON_ADDRESS)}
-                      className="flex-shrink-0 px-3 py-1.5 bg-[var(--primary-subtle)] text-[var(--primary)] rounded-lg hover:bg-[var(--primary)]/20 transition-colors text-sm"
-                    >
-                      {t('common.copy')}
-                    </button>
-                  </div>
+                  <p className="text-sm text-[var(--text-muted)]">
+                    Mock mode. Wallet IDs are shown on the Wallets page. Not connected to real Canton network.
+                  </p>
                 </div>
               </div>
             </div>

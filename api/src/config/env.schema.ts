@@ -17,4 +17,13 @@ export const configValidationSchema = Joi.object({
     'string.min': 'JWT_SECRET must be at least 16 characters',
   }),
   JWT_EXPIRES_IN: Joi.string().default('7d'),
+
+  NODE_API_BASE_URL: Joi.string().uri().default('http://node-api.local'),
+
+  // Real Canton: when true, wallets use Canton SDK (Ledger + Token Standard) instead of NODE_API_BASE_URL
+  CANTON_USE_SDK: Joi.boolean().default(false),
+  // 32-byte hex key for encrypting wallet private keys at rest (required when CANTON_USE_SDK=true)
+  KEY_ENCRYPTION_KEY: Joi.string().length(64).hex().optional(),
+  // Default token instrument for balance/transfer (e.g. Amulet on LocalNet)
+  CANTON_DEFAULT_INSTRUMENT: Joi.string().optional(),
 });

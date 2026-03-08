@@ -34,7 +34,7 @@ const mockMarketData: MarketToken[] = [
     pinned: true,
   },
   {
-    symbol: 'ETH',
+    symbol: 'CC',
     name: 'Ethereum',
     price: 3456.78,
     change24h: -2.15,

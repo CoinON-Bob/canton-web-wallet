@@ -14,6 +14,7 @@ import { AddressBookModule } from './address-book/address-book.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { SystemSettingsModule } from './system-settings/system-settings.module';
+import { CantonModule } from './canton/canton.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SystemSettingsModule } from './system-settings/system-settings.module';
     NotificationsModule,
     AuditLogsModule,
     SystemSettingsModule,
+    CantonModule,
   ],
 })
 export class AppModule implements NestModule {

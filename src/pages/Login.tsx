@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useWalletStore } from '../store';
-import { MOCK_CANTON_ADDRESS } from '../config/canton';
+import { authApi } from '../utils/api';
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Globe, ChevronDown } from 'lucide-react';
 
 // ==================== 图标 ====================
@@ -98,30 +98,40 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
-    // 验证
     if (!email || !password) {
       setError(t('login.errors.required'));
       return;
     }
-    
     setIsLoading(true);
-    
-    // 模拟 API 调用
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // 登录成功
-    setUser({
-      email,
-      walletAddress: MOCK_CANTON_ADDRESS,
-      isAuthenticated: true
-    });
-    
-    setIsLoading(false);
-    
-    // 检查是否有 redirect 参数
-    const redirect = searchParams.get('redirect');
-    navigate(redirect || '/dashboard');
+    try {
+      const { ok, data } = await authApi.login(email, password);
+      if (!ok || !(data as { access_token?: string }).access_token) {
+        setError((data as { message?: string }).message || t('login.errors.required'));
+        setIsLoading(false);
+        return;
+      }
+      const token = (data as { access_token: string }).access_token;
+      const userPayload = (data as { user?: { id?: string; email?: string; emailVerified?: boolean } }).user;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('canton_access_token', token);
+      }
+      setUser({
+        id: userPayload?.id,
+        email: userPayload?.email ?? email,
+        emailVerified: userPayload?.emailVerified ?? false,
+        isAuthenticated: true,
+      });
+      const redirect = searchParams.get('redirect');
+      if (userPayload?.emailVerified === false) {
+        navigate(`/verify-email?email=${encodeURIComponent(email)}`);
+      } else {
+        navigate(redirect || '/wallets');
+      }
+    } catch {
+      setError('Network error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fillDemoCredentials = () => {

@@ -11,17 +11,20 @@ interface AuthGuardProps {
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const { user } = useWalletStore();
   const location = useLocation();
-  
-  if (!user) {
-    // 未登录，跳转到登录页，并记录原页面路径
+
+  if (!user || !user.isAuthenticated) {
     return (
-      <Navigate 
-        to={`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`} 
-        replace 
+      <Navigate
+        to={`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`}
+        replace
       />
     );
   }
-  
+
+  if (user.emailVerified === false) {
+    return <Navigate to={`/verify-email?email=${encodeURIComponent(user.email)}`} replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -34,16 +37,16 @@ interface PublicOnlyGuardProps {
 export const PublicOnlyGuard: React.FC<PublicOnlyGuardProps> = ({ children }) => {
   const { user } = useWalletStore();
   const location = useLocation();
-  
-  if (user) {
-    // 已登录，检查是否有 redirect 参数
+
+  if (user && user.isAuthenticated) {
     const searchParams = new URLSearchParams(location.search);
     const redirect = searchParams.get('redirect');
-    
-    // 有 redirect 就跳回去，否则去 dashboard
-    return <Navigate to={redirect || '/dashboard'} replace />;
+    if (user.emailVerified === false) {
+      return <Navigate to={`/verify-email?email=${encodeURIComponent(user.email)}`} replace />;
+    }
+    return <Navigate to={redirect || '/wallets'} replace />;
   }
-  
+
   return <>{children}</>;
 };
 

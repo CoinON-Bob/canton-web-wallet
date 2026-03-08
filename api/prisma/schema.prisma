@@ -18,11 +18,12 @@ model User {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  sessions          UserSession[]
-  wallets           Wallet[]
-  addressBook       AddressBookEntry[]
-  notifications     Notification[]
-  auditLogs         AuditLog[]
+  sessions            UserSession[]
+  wallets             Wallet[]
+  addressBook         AddressBookEntry[]
+  notifications       Notification[]
+  auditLogs           AuditLog[]
+  emailVerifications  EmailVerification[]
 
   @@map("users")
 }
@@ -42,23 +43,29 @@ model UserSession {
 }
 
 model EmailVerification {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
+  userId    String?   @map("user_id")
   email     String
-  codeHash  String   @map("code_hash")
-  expiresAt DateTime @map("expires_at")
+  codeHash  String    @map("code_hash")
+  expiresAt DateTime  @map("expires_at")
   usedAt    DateTime? @map("used_at")
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([email])
+  @@index([userId])
   @@map("email_verifications")
 }
 
 model Wallet {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  label     String?  // user-facing label
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  label          String?  // user-facing label
+  nodeAccountId  String?  @unique @map("node_account_id") // Node API account id (party id)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   keystores WalletKeystore[]

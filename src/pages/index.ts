@@ -1,6 +1,7 @@
 export { default as DashboardPage } from './Dashboard';
 export { default as LoginPage } from './Login';
 export { default as RegisterPage } from './Register';
+export { default as VerifyEmailPage } from './VerifyEmail';
 export { default as ForgotPasswordPage } from './ForgotPassword';
 export { default as AssetsPage } from './Assets';
 export { default as SendPage } from './Send';
@@ -13,3 +14,5 @@ export { default as MarketDetailPage } from './MarketDetail';
 export { default as DiscoverPage } from './Discover';
 export { OffersPage } from './Placeholder';
 export { default as ContractsPage } from './Contracts';
+export { default as WalletsPage } from './Wallets';
+export { default as WalletDetailPage } from './WalletDetail';

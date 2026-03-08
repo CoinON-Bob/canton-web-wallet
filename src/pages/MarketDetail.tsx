@@ -42,7 +42,7 @@ const mockTokenDetails: Record<string, {
     description: 'Native token of the Canton Network',
   },
   eth: {
-    symbol: 'ETH',
+    symbol: 'CC',
     name: 'Ethereum',
     price: 3456.78,
     change24h: -2.15,

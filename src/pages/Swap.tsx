@@ -16,7 +16,6 @@ import {
   Info
 } from 'lucide-react';
 import { useWalletStore } from '../store';
-import { MOCK_TRANSACTION_PARTIES } from '../config/canton';
 import { Card, PageTransition, PageHeader, Modal, useToast } from '../components/ui';
 import type { Token, Transaction, TransactionStatus } from '../types';
 
@@ -115,8 +114,8 @@ export const SwapPage: React.FC = () => {
       token: `${fromToken.symbol} → ${toToken.symbol}`,
       status: 'Created',
       from: user.walletAddress,
-      to: MOCK_TRANSACTION_PARTIES[0],
-      fee: `${networkFee} ETH`,
+      to: 'Mock Wallet',
+      fee: `${networkFee} CC`,
       timestamp: new Date().toISOString(),
       description: `Swap ${fromAmount} ${fromToken.symbol} for ${toAmount} ${toToken.symbol}`
     };
@@ -363,7 +362,7 @@ export const SwapPage: React.FC = () => {
             
             <div className="flex items-center justify-between text-sm">
               <span className="text-[var(--text-secondary)]">Network Fee</span>
-              <span className="text-[var(--text)]">{networkFee} ETH</span>
+              <span className="text-[var(--text)]">{networkFee} CC</span>
             </div>
           </Card>
         )}
@@ -489,7 +488,7 @@ export const SwapPage: React.FC = () => {
             
             <div className="flex justify-between">
               <span className="text-[var(--text-muted)]">Network Fee</span>
-              <span className="text-[var(--text)]">{networkFee} ETH</span>
+              <span className="text-[var(--text)]">{networkFee} CC</span>
             </div>
           </div>
           

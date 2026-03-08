@@ -16,41 +16,11 @@ import { Card } from '../../components/ui';
 // ==================== Mock 地址数据 ====================
 
 const mockAddresses = [
-  {
-    id: '1',
-    name: 'Alice Johnson',
-    address: '0x742d35Cc6634C0532925a3b844Bc9eC37c56b9d3',
-    note: 'Business partner',
-    isFavorite: true,
-  },
-  {
-    id: '2',
-    name: 'Bob Smith',
-    address: '0x8e8c7c8b9a2b1c3d4e5f6a7b8c9d0e1f2a3b4c5d',
-    note: 'Friend',
-    isFavorite: false,
-  },
-  {
-    id: '3',
-    name: 'Canton Exchange',
-    address: '0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE',
-    note: 'Trading platform',
-    isFavorite: true,
-  },
-  {
-    id: '4',
-    name: 'David Wilson',
-    address: '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe',
-    note: 'Family',
-    isFavorite: false,
-  },
-  {
-    id: '5',
-    name: 'Eve Davis',
-    address: '0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490',
-    note: 'Colleague',
-    isFavorite: false,
-  },
+  { id: '1', name: 'Alice Johnson', address: 'Mock Wallet ID (sample 1)', note: 'Business partner', isFavorite: true },
+  { id: '2', name: 'Bob Smith', address: 'Mock Wallet ID (sample 2)', note: 'Friend', isFavorite: false },
+  { id: '3', name: 'Canton Exchange', address: 'Mock Wallet ID (sample 3)', note: 'Trading platform', isFavorite: true },
+  { id: '4', name: 'David Wilson', address: 'Mock Wallet ID (sample 4)', note: 'Family', isFavorite: false },
+  { id: '5', name: 'Eve Davis', address: 'Mock Wallet ID (sample 5)', note: 'Colleague', isFavorite: false },
 ];
 
 // ==================== 地址簿页面 ====================

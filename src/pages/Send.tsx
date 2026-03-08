@@ -81,7 +81,7 @@ export const SendPage: React.FC = () => {
       status: 'Created',
       from: user.walletAddress,
       to: recipient,
-      fee: `${selectedFee.fee} ETH`,
+      fee: `${selectedFee.fee} CC`,
       timestamp: new Date().toISOString(),
       description: note || `${t('send.send')} ${amount} ${selectedToken.symbol}`
     };
@@ -267,7 +267,7 @@ export const SendPage: React.FC = () => {
             </div>
             
             <div className="text-right">
-              <p className="text-[var(--text)]">{selectedFee.fee} ETH</p>
+              <p className="text-[var(--text)]">{selectedFee.fee} CC</p>
               <p className="text-xs text-[var(--text-muted)]">{selectedFee.time}</p>
             </div>
           </div>
@@ -349,7 +349,7 @@ export const SendPage: React.FC = () => {
             
             <div className="flex justify-between">
               <span className="text-[var(--text-muted)]">{t('send.networkFee')}</span>
-              <span className="text-[var(--text)]">{selectedFee.fee} ETH</span>
+              <span className="text-[var(--text)]">{selectedFee.fee} CC</span>
             </div>
             
             <div className="flex justify-between">
@@ -363,7 +363,7 @@ export const SendPage: React.FC = () => {
               <span className="text-[var(--text-secondary)]">{t('common.total')}</span>
               <div className="text-right">
                 <p className="text-[var(--text)] font-semibold">{totalAmount.toFixed(6)} {selectedToken.symbol}</p>
-                <p className="text-xs text-[var(--text-muted)]">+ {selectedFee.fee} ETH {t('common.fee').toLowerCase()}</p>
+                <p className="text-xs text-[var(--text-muted)]">+ {selectedFee.fee} CC {t('common.fee').toLowerCase()}</p>
               </div>
             </div>
           </div>

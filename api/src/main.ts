@@ -18,16 +18,17 @@ async function bootstrap() {
     }),
   );
 
+  const port = process.env.PORT ?? 3000;
   const config = new DocumentBuilder()
     .setTitle('Canton Wallet API')
     .setDescription('Backend API for Canton Web Wallet')
     .setVersion('0.1.0')
-    .addBearerAuth()
+    .addServer(`http://localhost:${port}`, 'Local')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`Canton Wallet API running on http://localhost:${port}, Swagger: http://localhost:${port}/api/docs`);
 }

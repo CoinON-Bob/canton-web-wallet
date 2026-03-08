@@ -1,9 +1,11 @@
 // ==================== 用户类型 ====================
 
 export interface User {
+  id?: string;
   email: string;
-  walletAddress: string;
+  emailVerified?: boolean;
   isAuthenticated: boolean;
+  walletAddress?: string;
 }
 
 // ==================== Token 类型 ====================

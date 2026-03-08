@@ -30,7 +30,7 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({
     const generateQR = async () => {
       try {
         // Build URI with optional amount and note
-        let uri = `ethereum:${address}`;
+        let uri = address;
         const params = new URLSearchParams();
         if (amount) params.append('value', amount);
         if (note) params.append('memo', note);

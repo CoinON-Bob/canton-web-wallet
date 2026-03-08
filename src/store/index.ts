@@ -9,8 +9,6 @@ import type {
   Notification,
   PageRoute
 } from '../types';
-import { MOCK_CANTON_ADDRESS, MOCK_CONTACTS, MOCK_TRANSACTION_PARTIES } from '../config/canton';
-
 // ==================== 合约类型 ====================
 
 export interface ContractOrder {
@@ -40,56 +38,28 @@ export interface ContractPosition {
 
 // ==================== 初始数据 ====================
 
-const initialUser: User = {
-  email: 'user@canton.network',
-  walletAddress: MOCK_CANTON_ADDRESS,
-  isAuthenticated: true,
-};
-
 const initialTokens: Token[] = [
   { 
-    symbol: 'ETH', 
-    name: 'Ethereum', 
-    balance: '2.5', 
-    valueUSD: '8,500.00', 
-    change24h: '+2.5%', 
-    icon: '◆', 
-    price: 3400,
-    decimals: 18,
-    chain: 'ethereum'
+    symbol: 'CC', 
+    name: 'Canton', 
+    balance: '0', 
+    valueUSD: '0', 
+    change24h: '0%', 
+    icon: 'C', 
+    price: 0,
+    decimals: 8,
+    chain: 'canton'
   },
   { 
     symbol: 'USDC', 
     name: 'USD Coin', 
-    balance: '15,000.00', 
-    valueUSD: '15,000.00', 
-    change24h: '+0.1%', 
+    balance: '0', 
+    valueUSD: '0', 
+    change24h: '0%', 
     icon: '$', 
     price: 1,
     decimals: 6,
-    chain: 'ethereum'
-  },
-  { 
-    symbol: 'BTC', 
-    name: 'Bitcoin', 
-    balance: '0.15', 
-    valueUSD: '10,500.00', 
-    change24h: '+1.8%', 
-    icon: '₿', 
-    price: 70000,
-    decimals: 8,
-    chain: 'bitcoin'
-  },
-  { 
-    symbol: 'MATIC', 
-    name: 'Polygon', 
-    balance: '5,000.00', 
-    valueUSD: '3,500.00', 
-    change24h: '-0.5%', 
-    icon: '⬡', 
-    price: 0.7,
-    decimals: 18,
-    chain: 'polygon'
+    chain: 'canton'
   },
 ];
 
@@ -97,130 +67,68 @@ const initialTransactions: Transaction[] = [
   {
     id: 'tx1',
     type: 'Send',
-    hash: 'CANTON::TX1A2B3C4D5E6F7G8',
-    amount: '1.5',
-    token: 'ETH',
+    hash: 'mock-tx-1',
+    amount: '0',
+    token: 'CC',
     status: 'Confirmed',
-    from: MOCK_CANTON_ADDRESS,
-    to: MOCK_CONTACTS.INSTITUTIONAL_PARTNER,
-    fee: '0.0021 ETH',
-    timestamp: '2024-03-02T14:30:00Z',
-    description: 'Transfer to institutional partner'
-  },
-  {
-    id: 'tx2',
-    type: 'Receive',
-    hash: 'CANTON::TX2B3C4D5E6F7G8H9',
-    amount: '5,000',
-    token: 'USDC',
-    status: 'Confirmed',
-    from: MOCK_CONTACTS.CLIENT_A,
-    to: MOCK_CANTON_ADDRESS,
-    fee: '0.0015 ETH',
-    timestamp: '2024-03-02T13:15:00Z',
-    description: 'Payment from client'
-  },
-  {
-    id: 'tx3',
-    type: 'Swap',
-    hash: 'CANTON::TX3C4D5E6F7G8H9J0',
-    amount: '0.05',
-    token: 'BTC',
-    status: 'Confirmed',
-    from: MOCK_CANTON_ADDRESS,
-    to: MOCK_TRANSACTION_PARTIES[0],
-    fee: '0.0018 ETH',
-    timestamp: '2024-03-01T09:45:00Z',
-    description: 'ETH → BTC swap'
-  },
-  {
-    id: 'tx4',
-    type: 'Batch',
-    hash: 'CANTON::TX4D5E6F7G8H9J1K2',
-    amount: '50',
-    token: 'USDC',
-    status: 'Confirmed',
-    from: MOCK_CANTON_ADDRESS,
-    to: MOCK_TRANSACTION_PARTIES[1],
-    fee: '0.025 ETH',
-    timestamp: '2024-02-28T16:20:00Z',
-    description: 'Monthly salary distribution'
-  },
-  {
-    id: 'tx5',
-    type: 'Send',
-    hash: 'CANTON::TX5E6F7G8H9J1K2L3',
-    amount: '100',
-    token: 'MATIC',
-    status: 'Pending',
-    from: MOCK_CANTON_ADDRESS,
-    to: MOCK_TRANSACTION_PARTIES[2],
-    fee: '0.0012 ETH',
-    timestamp: '2024-03-02T15:00:00Z',
-    description: 'Gas fee reimbursement'
+    from: 'Mock Wallet',
+    to: 'Mock Wallet',
+    fee: '0 CC',
+    timestamp: new Date().toISOString(),
+    description: 'Canton transfer (mock)'
   },
 ];
 
 const initialOffers: Offer[] = [
   {
     id: 'offer1',
-    from: 'CANTONclientAA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0',
-    amount: '2,500',
+    from: 'Mock Wallet',
+    amount: '0',
     token: 'USDC',
-    expiresAt: '2024-03-03T12:00:00Z',
+    expiresAt: new Date(Date.now() + 86400000).toISOString(),
     status: 'pending',
-    createdAt: '2024-03-02T10:00:00Z',
-    description: 'Invoice #1234 payment'
-  },
-  {
-    id: 'offer2',
-    from: MOCK_CONTACTS.CLIENT_B,
-    amount: '0.8',
-    token: 'ETH',
-    expiresAt: '2024-03-02T18:00:00Z',
-    status: 'pending',
-    createdAt: '2024-03-02T08:00:00Z',
-    description: 'Consulting fee'
+    createdAt: new Date().toISOString(),
+    description: 'Canton offer (mock)'
   },
 ];
 
 const initialBatches: BatchTransfer[] = [
   {
     id: 'batch1',
-    name: 'March Salary Distribution',
-    total: 50,
-    success: 48,
-    failed: 2,
+    name: 'Canton Batch (mock)',
+    total: 0,
+    success: 0,
+    failed: 0,
     status: 'Completed',
-    createdAt: '2024-03-01T09:00:00Z',
-    completedAt: '2024-03-01T09:15:00Z',
+    createdAt: new Date().toISOString(),
+    completedAt: new Date().toISOString(),
     token: 'USDC',
-    totalAmount: '125,000',
+    totalAmount: '0',
     recipients: []
   },
   {
     id: 'batch2',
-    name: 'Community Airdrop Campaign',
-    total: 1000,
-    success: 450,
+    name: 'Canton Batch (mock)',
+    total: 0,
+    success: 0,
     failed: 0,
     status: 'Processing',
-    createdAt: '2024-03-02T10:00:00Z',
-    token: 'MATIC',
-    totalAmount: '50,000',
+    createdAt: new Date().toISOString(),
+    token: 'CC',
+    totalAmount: '0',
     recipients: []
   },
   {
     id: 'batch3',
-    name: 'Partner Rewards Q1',
-    total: 25,
-    success: 20,
-    failed: 5,
-    status: 'Partial Failed',
-    createdAt: '2024-02-15T14:30:00Z',
-    completedAt: '2024-02-15T14:45:00Z',
-    token: 'ETH',
-    totalAmount: '12.5',
+    name: 'Partner Rewards (mock)',
+    total: 0,
+    success: 0,
+    failed: 0,
+    status: 'Completed',
+    createdAt: new Date().toISOString(),
+    completedAt: new Date().toISOString(),
+    token: 'CC',
+    totalAmount: '0',
     recipients: []
   }
 ];
@@ -228,7 +136,7 @@ const initialBatches: BatchTransfer[] = [
 const initialContractOrders: ContractOrder[] = [
   { id: 'co1', pair: 'CC/BTC', side: 'buy', amount: '1,000', price: '1.2540', leverage: 10, status: 'Filled', timestamp: new Date(Date.now() - 3600000).toISOString(), value: '$1,254' },
   { id: 'co2', pair: 'CC/BTC', side: 'sell', amount: '500', price: '1.3010', leverage: 5, status: 'Open', timestamp: new Date(Date.now() - 7200000).toISOString(), value: '$650' },
-  { id: 'co3', pair: 'ETH/USDC', side: 'buy', amount: '2,000', price: '3,380.00', leverage: 20, status: 'Cancelled', timestamp: new Date(Date.now() - 10800000).toISOString(), value: '$2,440' },
+  { id: 'co3', pair: 'CC/USDC', side: 'buy', amount: '2,000', price: '1.00', leverage: 20, status: 'Cancelled', timestamp: new Date(Date.now() - 10800000).toISOString(), value: '$2,000' },
 ];
 
 const initialContractPositions: ContractPosition[] = [
@@ -240,7 +148,7 @@ const initialNotifications: Notification[] = [
     id: 'notif1',
     type: 'transaction',
     title: 'Transaction Confirmed',
-    message: 'Your transfer of 1.5 ETH has been confirmed',
+    message: 'Your Canton transfer has been confirmed (mock)',
     timestamp: '2024-03-02T14:32:00Z',
     read: false,
     link: '/activity'

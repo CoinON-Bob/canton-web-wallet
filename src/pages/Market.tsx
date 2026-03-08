@@ -71,7 +71,7 @@ class MarketApiService {
         lastUpdated: timestamp,
       },
       {
-        symbol: 'ETH',
+        symbol: 'CC',
         name: 'Ethereum',
         price: 3456.78 * (1 + randomFluctuation()),
         change24h: -2.15 + (Math.random() - 0.5) * 2,

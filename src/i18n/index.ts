@@ -58,6 +58,7 @@ const enTranslations = {
   // Navigation
   nav: {
     dashboard: 'Dashboard',
+    wallets: 'Wallets',
     market: 'Market',
     contracts: 'Contracts',
     discover: 'Discover',
@@ -92,6 +93,16 @@ const enTranslations = {
       invalidPassword: 'Password must be at least 8 characters',
     },
   },
+  verifyEmail: {
+    title: 'Verify your email',
+    subtitle: 'Enter the 6-digit code. In development the code is shown after you request it.',
+    email: 'Email',
+    sendCode: 'Send verification code',
+    code: '6-digit code',
+    verify: 'Verify',
+    requestNew: 'Request new code',
+    backToLogin: 'Back to login',
+  },
   register: {
     title: 'Create Account',
     subtitle: 'Join Canton Wallet today',
@@ -114,6 +125,7 @@ const enTranslations = {
     errors: {
       emailRequired: 'Email is required',
       emailInvalid: 'Please enter a valid email',
+      emailExists: 'Email already registered',
       passwordRequired: 'Password is required',
       passwordTooShort: 'Password must be at least 8 characters',
       passwordMismatch: 'Passwords do not match',
@@ -459,7 +471,7 @@ const enTranslations = {
     name: 'Name',
     namePlaceholder: 'Enter contact name',
     address: 'Wallet Address',
-    addressPlaceholder: '0x...',
+    addressPlaceholder: 'Wallet ID or address',
     note: 'Note (Optional)',
     notePlaceholder: 'Add a note...',
     save: 'Save Address',
@@ -560,6 +572,7 @@ const zhTranslations = {
   // Navigation
   nav: {
     dashboard: '首页',
+    wallets: '钱包',
     market: '行情',
     contracts: '合约',
     discover: '发现',
@@ -594,6 +607,16 @@ const zhTranslations = {
       invalidPassword: '密码至少需要8个字符',
     },
   },
+  verifyEmail: {
+    title: '验证邮箱',
+    subtitle: '请输入6位验证码。开发环境下点击发送后会在页面显示验证码。',
+    email: '邮箱',
+    sendCode: '发送验证码',
+    code: '6位验证码',
+    verify: '验证',
+    requestNew: '重新获取验证码',
+    backToLogin: '返回登录',
+  },
   register: {
     title: '创建账号',
     subtitle: '立即加入 Canton Wallet',
@@ -616,6 +639,7 @@ const zhTranslations = {
     errors: {
       emailRequired: '请输入邮箱',
       emailInvalid: '请输入有效的邮箱地址',
+      emailExists: '该邮箱已注册',
       passwordRequired: '请输入密码',
       passwordTooShort: '密码至少需要8个字符',
       passwordMismatch: '两次输入的密码不一致',
@@ -961,7 +985,7 @@ const zhTranslations = {
     name: '姓名',
     namePlaceholder: '输入联系人姓名',
     address: '钱包地址',
-    addressPlaceholder: '0x...',
+    addressPlaceholder: 'Wallet ID or address',
     note: '备注（可选）',
     notePlaceholder: '添加备注...',
     save: '保存地址',

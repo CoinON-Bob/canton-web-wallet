@@ -8,6 +8,7 @@ import { MainLayout } from '../components/layout';
 import {
   LoginPage,
   RegisterPage,
+  VerifyEmailPage,
   ForgotPasswordPage,
   DashboardPage,
   AssetsPage,
@@ -20,7 +21,9 @@ import {
   MarketPage,
   MarketDetailPage,
   DiscoverPage,
-  ContractsPage
+  ContractsPage,
+  WalletsPage,
+  WalletDetailPage,
 } from '../pages';
 
 // Settings pages
@@ -88,6 +91,7 @@ export const Router: React.FC = () => {
             </PublicOnlyGuard>
           } 
         />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route 
           path="/forgot-password" 
           element={
@@ -110,6 +114,26 @@ export const Router: React.FC = () => {
             <AuthGuard>
               <MainLayout>
                 <DashboardPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/wallets"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <WalletsPage />
+              </MainLayout>
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/wallets/:id"
+          element={
+            <AuthGuard>
+              <MainLayout>
+                <WalletDetailPage />
               </MainLayout>
             </AuthGuard>
           }

@@ -16,7 +16,6 @@ import {
   LogOut,
   ChevronDown,
   Copy,
-  ExternalLink,
   Check,
   ArrowLeft,
   TrendingUp,
@@ -27,13 +26,13 @@ import {
   BookOpen
 } from 'lucide-react';
 import { useWalletStore } from '../../store';
-import { shortAddress, getCantonExplorerUrl } from '../../utils/address';
 import { Modal, useToast, ToastManager } from '../ui';
 
 // ==================== 导航项配置 ====================
 
 const navItems = [
   { id: 'dashboard', labelKey: 'nav.dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { id: 'wallets', labelKey: 'nav.wallets', icon: Wallet, path: '/wallets' },
   { id: 'market', labelKey: 'nav.market', icon: TrendingUp, path: '/market' },
   { id: 'contracts', labelKey: 'nav.contracts', icon: BarChart2, path: '/contracts' },
   { id: 'discover', labelKey: 'nav.discover', icon: Compass, path: '/discover' },
@@ -65,23 +64,20 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
   const { showToast } = useToast();
   const isMobile = useIsMobile();
 
-  const handleCopyAddress = () => {
-    if (user?.walletAddress) {
-      navigator.clipboard.writeText(user.walletAddress);
+  const handleCopyEmail = () => {
+    if (user?.email) {
+      navigator.clipboard.writeText(user.email);
       showToast(t('common.copied'), 'success');
     }
   };
 
   const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('canton_access_token');
+    }
     setUser(null);
     navigate('/login');
   };
-
-  // 使用 Canton 地址短格式
-  const formatAddress = (addr: string) => shortAddress(addr, 6, 4);
-
-  // Canton Explorer 链接（阶段1占位）
-  const explorerUrl = getCantonExplorerUrl(user?.walletAddress || '');
 
   return (
     <>
@@ -123,8 +119,8 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                 <span className="text-[var(--text)] text-[10px] font-bold">{user?.email?.charAt(0).toUpperCase()}</span>
               </div>
               
-              <span className="text-sm text-[var(--text)] font-mono hidden sm:block">
-                {user?.walletAddress ? formatAddress(user.walletAddress) : ''}
+              <span className="text-sm text-[var(--text)] truncate max-w-[120px] sm:max-w-[180px] hidden sm:block">
+                {user?.email ?? ''}
               </span>
               
               <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] flex-shrink-0 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
@@ -147,21 +143,19 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                     transition={{ duration: 0.1 }}
                     className="absolute right-0 top-full mt-2 w-[280px] sm:w-72 rounded-xl overflow-hidden z-50 bg-[rgba(10,14,23,0.95)] backdrop-blur-[12px] border border-white/[0.06] shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
                   >
-                    {/* Address Section */}
+                    {/* Account Section */}
                     <div className="p-4 border-b border-[var(--border)]">
                       <p className="text-xs text-[var(--text-muted)] mb-2">{t('common.connectedWallet')}</p>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm text-[var(--text)] font-mono truncate flex-1 min-w-0">{user?.walletAddress}</p>
+                        <p className="text-sm text-[var(--text)] truncate flex-1 min-w-0">{user?.email}</p>
                         <button
-                          onClick={handleCopyAddress}
+                          onClick={handleCopyEmail}
                           className="p-2 hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
-                          title="Copy address"
+                          title="Copy email"
                         >
                           <Copy className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--text)]" />
                         </button>
                       </div>
-                      
-                      <p className="text-xs text-[var(--text-muted)] mt-2 truncate">{user?.email}</p>
                     </div>
 
                     {/* Menu Items - 账户管理 / 地址簿 / 邀请 / 奖励 */}
@@ -248,19 +242,6 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
                         </div>
                       </div>
 
-                      {/* Explorer 链接 */}
-                      {explorerUrl && (
-                        <a
-                          href={explorerUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 px-3 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-white/[0.05] rounded-lg transition-colors touch-manipulation"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          {t('common.viewOnExplorer')}
-                        </a>
-                      )}
                     </div>
 
                     {/* Sign Out */}

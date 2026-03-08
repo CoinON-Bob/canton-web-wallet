@@ -29,8 +29,8 @@ const PAIRS = [
     currentPrice: 1.2540,
   },
   {
-    id: 'ETH/USDC',
-    label: 'ETH/USDC',
+    id: 'CC/USDC',
+    label: 'CC/USDC',
     lastPrice: '3,456.78',
     change24h: '-2.15%',
     isPositive: false,

@@ -133,6 +133,9 @@ npm run preview
 npm run deploy
 ```
 
+### Backend API（本地）
+后端默认端口 **3001**（`api/.env` 中 `PORT`）。启动：`cd api && npm run start:dev`。Swagger：http://localhost:3001/api/docs
+
 ## Git 自动备份
 
 开发过程中建议定期执行：
