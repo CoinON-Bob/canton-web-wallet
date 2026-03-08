@@ -133,6 +133,16 @@ npm run preview
 npm run deploy
 ```
 
+## Git 自动备份
+
+开发过程中建议定期执行：
+
+```bash
+npm run backup
+```
+
+会将当前所有变更提交并推送到 GitHub，便于版本备份与恢复。详细说明见 [docs/git-auto-backup.md](docs/git-auto-backup.md)。
+
 ## 🏗️ Project Structure
 
 ```

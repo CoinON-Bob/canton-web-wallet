@@ -1,0 +1,12 @@
+import { registerAs } from '@nestjs/config';
+
+/**
+ * Redis configuration (optional).
+ * Set REDIS_URL or REDIS_HOST/REDIS_PORT/REDIS_PASSWORD to enable.
+ */
+export default registerAs('redis', () => ({
+  url: process.env.REDIS_URL,
+  host: process.env.REDIS_HOST || 'localhost',
+  port: parseInt(process.env.REDIS_PORT || '6379', 10),
+  password: process.env.REDIS_PASSWORD || undefined,
+}));
