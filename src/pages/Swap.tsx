@@ -29,7 +29,7 @@ export const SwapPage: React.FC = () => {
   
   // Form state
   const [fromToken, setFromToken] = useState<Token>(tokens[0]);
-  const [toToken, setToToken] = useState<Token>(tokens[2]); // Default to BTC
+  const [toToken, setToToken] = useState<Token>(tokens[1] || tokens[0]);
   const [fromAmount, setFromAmount] = useState('');
   const [toAmount, setToAmount] = useState('');
   
