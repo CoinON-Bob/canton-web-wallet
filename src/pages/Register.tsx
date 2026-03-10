@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useWalletStore } from '../store';
-import { authApi } from '../utils/api';
+import { MOCK_CANTON_ADDRESS } from '../config/canton';
 import { Mail, Lock, UserPlus, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 export const RegisterPage: React.FC = () => {
@@ -46,41 +46,14 @@ export const RegisterPage: React.FC = () => {
     if (!validateForm()) return;
     setIsLoading(true);
     setErrors({});
-    try {
-      const { ok: regOk, data: regData } = await authApi.register(formData.email, formData.password);
-      if (!regOk && (regData as { statusCode?: number }).statusCode === 409) {
-        setErrors({ email: t('register.errors.emailExists', 'Email already registered') });
-        setIsLoading(false);
-        return;
-      }
-      if (!regOk) {
-        setErrors({ email: (regData as { message?: string }).message || 'Registration failed' });
-        setIsLoading(false);
-        return;
-      }
-      const { ok: loginOk, data: loginData } = await authApi.login(formData.email, formData.password);
-      if (!loginOk || !(loginData as { access_token?: string }).access_token) {
-        setErrors({ email: 'Registration succeeded but login failed. Please log in manually.' });
-        setIsLoading(false);
-        return;
-      }
-      const token = (loginData as { access_token: string }).access_token;
-      const userPayload = (loginData as { user?: { id?: string; email?: string; emailVerified?: boolean } }).user;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('canton_access_token', token);
-      }
-      setUser({
-        id: userPayload?.id,
-        email: userPayload?.email ?? formData.email,
-        emailVerified: userPayload?.emailVerified ?? false,
-        isAuthenticated: true,
-      });
-      navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`);
-    } catch {
-      setErrors({ email: 'Network error' });
-    } finally {
-      setIsLoading(false);
-    }
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setUser({
+      email: formData.email,
+      walletAddress: MOCK_CANTON_ADDRESS,
+      isAuthenticated: true,
+    });
+    setIsLoading(false);
+    navigate('/dashboard');
   };
 
   return (

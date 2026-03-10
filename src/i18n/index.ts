@@ -74,7 +74,7 @@ const enTranslations = {
   },
   // Login
   login: {
-    title: 'Welcome to Canton',
+    title: 'Welcome to BlackBerry',
     subtitle: 'Secure institutional-grade wallet',
     email: 'Email',
     emailPlaceholder: 'Enter your email',
@@ -106,7 +106,7 @@ const enTranslations = {
   },
   register: {
     title: 'Create Account',
-    subtitle: 'Join Canton Wallet today',
+    subtitle: 'Join BlackBerry Wallet today',
     email: 'Email',
     emailPlaceholder: 'Enter your email',
     password: 'Password',
@@ -589,7 +589,7 @@ const zhTranslations = {
   },
   // Login
   login: {
-    title: '欢迎使用 Canton',
+    title: '欢迎使用 BlackBerry',
     subtitle: '安全的机构级钱包',
     email: '邮箱',
     emailPlaceholder: '请输入邮箱',
@@ -621,7 +621,7 @@ const zhTranslations = {
   },
   register: {
     title: '创建账号',
-    subtitle: '立即加入 Canton Wallet',
+    subtitle: '立即加入 BlackBerry Wallet',
     email: '邮箱',
     emailPlaceholder: '请输入邮箱',
     password: '密码',

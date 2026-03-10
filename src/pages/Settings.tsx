@@ -479,7 +479,7 @@ export const SettingsPage: React.FC = () => {
         {/* 版本信息 */}
         <div className="mt-8 text-center">
           <p className="text-sm text-[var(--text-muted)]">
-            Canton Wallet v1.0.0 • {isChinese ? '基于 Canton 网络构建' : 'Built on Canton Network'}
+            BlackBerry Wallet v1.0.0 • {isChinese ? '基于 Canton 网络构建' : 'Built on Canton Network'}
           </p>
           <p className="text-xs text-[var(--text-muted)] mt-1">
             © {new Date().getFullYear()} Canton Network. {isChinese ? '保留所有权利' : 'All rights reserved'}.

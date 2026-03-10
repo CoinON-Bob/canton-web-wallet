@@ -33,8 +33,8 @@ export const SettingsInvitePage: React.FC = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Join Canton Wallet',
-          text: `Use my invite code ${inviteCode} to join Canton Wallet!`,
+          title: 'Join BlackBerry Wallet',
+          text: `Use my invite code ${inviteCode} to join BlackBerry Wallet!`,
           url: inviteLink,
         });
       } catch (error) {

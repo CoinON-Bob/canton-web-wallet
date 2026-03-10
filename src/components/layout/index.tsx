@@ -98,7 +98,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
               alt="Canton Logo"
               className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover shadow-lg shadow-green-500/25 group-hover:shadow-green-500/35 transition-shadow"
             />
-            <span className="font-display font-semibold text-[var(--text)] text-sm hidden sm:block tracking-tight">Canton</span>
+            <span className="font-display font-semibold text-[var(--text)] text-sm hidden sm:block tracking-tight">BlackBerry</span>
           </Link>
         </div>
 
@@ -107,7 +107,7 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           {/* Network Badge - Hidden on smallest screens */}
           <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 glass rounded-lg border border-[var(--glass-border)]">
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-sm shadow-green-400/50" />
-            <span className="text-xs text-[var(--text-secondary)] font-medium">Canton</span>
+            <span className="text-xs text-[var(--text-secondary)] font-medium">BlackBerry</span>
           </div>
 
           {/* Wallet Address Button */}
@@ -385,7 +385,7 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
                   alt="Canton Logo"
                   className="w-8 h-8 rounded-lg object-cover"
                 />
-                <span className="font-semibold text-[var(--text)]">Canton</span>
+                <span className="font-semibold text-[var(--text)]">BlackBerry</span>
               </Link>
               
               <button
@@ -544,7 +544,7 @@ const AppFooter: React.FC = () => {
     <footer className="border-t border-[var(--border)] bg-[var(--bg)] py-4 px-4">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
         <span className="text-sm text-[var(--text-muted)]">
-          © Canton Wallet
+          © BlackBerry Wallet
         </span>
         <Link
           to="/terms"
