@@ -161,13 +161,13 @@ export const LoginPage: React.FC = () => {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <motion.div 
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-400 rounded-2xl mb-5 shadow-xl shadow-green-500/30"
+          <motion.img
+            src="/canton-logo.jpg"
+            alt="Canton Logo"
+            className="w-20 h-20 rounded-2xl object-cover mb-5 shadow-xl shadow-green-500/30 mx-auto"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-          >
-            <span className="text-4xl font-bold text-slate-900 font-display">C</span>
-          </motion.div>
+          />
 
           <h1 className="text-3xl font-bold text-white mb-1 font-display tracking-tight">Canton Wallet</h1>
           <p className="text-slate-400 text-base">{t('login.subtitle')}</p>

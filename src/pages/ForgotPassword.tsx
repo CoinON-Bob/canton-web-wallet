@@ -49,13 +49,13 @@ export const ForgotPasswordPage: React.FC = () => {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <motion.div 
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-5 shadow-lg"
+          <motion.img
+            src="/canton-logo.jpg"
+            alt="Canton Logo"
+            className="w-20 h-20 rounded-2xl object-cover mb-5 shadow-lg mx-auto"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-          >
-            <span className="text-4xl font-bold text-white">C</span>
-          </motion.div>
+          />
           <h1 className="text-3xl font-bold text-[var(--text)] mb-1">{t('forgotPassword.title')}</h1>
           <p className="text-[var(--text-muted)] text-base">{!isSubmitted ? t('forgotPassword.subtitle') : t('forgotPassword.checkEmail')}</p>
         </div>

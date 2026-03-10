@@ -93,9 +93,11 @@ const WalletControlBar: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }
           </button>
           
           <Link to="/dashboard" className="flex items-center gap-2 group">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-green-500 to-emerald-400 rounded-lg flex items-center justify-center shadow-lg shadow-green-500/25 group-hover:shadow-green-500/35 transition-shadow">
-              <span className="text-[var(--text-inverse)] text-sm font-bold font-display">C</span>
-            </div>
+            <img
+              src="/canton-logo.jpg"
+              alt="Canton Logo"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover shadow-lg shadow-green-500/25 group-hover:shadow-green-500/35 transition-shadow"
+            />
             <span className="font-display font-semibold text-[var(--text)] text-sm hidden sm:block tracking-tight">Canton</span>
           </Link>
         </div>
@@ -378,9 +380,11 @@ const MobileDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
             {/* Drawer Header */}
             <div className="h-14 flex items-center justify-between px-4 border-b border-[var(--glass-border)]">
               <Link to="/dashboard" className="flex items-center gap-2" onClick={onClose}>
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-400 rounded-lg flex items-center justify-center">
-                  <span className="text-[var(--text)] text-sm font-bold">C</span>
-                </div>
+                <img
+                  src="/canton-logo.jpg"
+                  alt="Canton Logo"
+                  className="w-8 h-8 rounded-lg object-cover"
+                />
                 <span className="font-semibold text-[var(--text)]">Canton</span>
               </Link>
               
