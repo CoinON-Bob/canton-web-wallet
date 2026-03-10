@@ -85,7 +85,8 @@ const enTranslations = {
     forgotPassword: 'Forgot password?',
     noAccount: "Don't have an account?",
     signUp: 'Sign Up',
-    useDemo: 'Use demo credentials',
+    useDemo: 'Autofill demo account',
+    useDemoHint: 'Click to fill test email and password',
     or: 'OR',
     errors: {
       required: 'Please enter both email and password',
@@ -599,7 +600,8 @@ const zhTranslations = {
     forgotPassword: '忘记密码？',
     noAccount: '还没有账号？',
     signUp: '注册',
-    useDemo: '使用演示账号',
+    useDemo: '一键填充演示账号',
+    useDemoHint: '点击自动填入测试邮箱和密码',
     or: '或',
     errors: {
       required: '请输入邮箱和密码',
@@ -1045,10 +1047,10 @@ i18n
         translation: enTranslations,
       },
     },
-    lng: 'zh', // 默认中文
-    fallbackLng: 'zh',
+    lng: 'en', // 默认英文
+    fallbackLng: 'en',
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
       lookupLocalStorage: 'canton_language', // 使用我们自定义的 key
     },

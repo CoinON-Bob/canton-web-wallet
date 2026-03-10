@@ -37,7 +37,7 @@ const LanguageSwitcher: React.FC = () => {
     { code: 'en', name: 'English', flag: '🇺🇸' }
   ];
   
-  const currentLang = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const currentLang = languages.find(lang => i18n.language.startsWith(lang.code)) || languages[1];
   
   const handleLanguageChange = (langCode: string) => {
     i18n.changeLanguage(langCode);
@@ -266,10 +266,13 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               onClick={fillDemoCredentials}
-              className="w-full py-2 text-xs text-gray-500 hover:text-gray-300 transition-colors"
+              className="w-full py-2.5 text-sm font-medium text-blue-300 hover:text-blue-200 bg-blue-500/10 border border-blue-500/25 hover:border-blue-400/40 rounded-lg transition-colors"
             >
               {t('login.useDemo')}
             </button>
+            <p className="text-[11px] text-gray-500 text-center -mt-1">
+              {t('login.useDemoHint')}
+            </p>
           </form>
 
           {/* 分隔线 */}
