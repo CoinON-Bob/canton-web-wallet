@@ -4,9 +4,8 @@
  */
 
 export const getApiBaseUrl = (): string => {
-  if (typeof import.meta !== 'undefined' && (import.meta as { env?: Record<string, string> }).env?.VITE_API_BASE_URL) {
-    return (import.meta as { env: Record<string, string> }).env.VITE_API_BASE_URL;
-  }
+  const env = (import.meta as any)?.env as Record<string, string | undefined> | undefined;
+  if (env?.VITE_API_BASE_URL) return env.VITE_API_BASE_URL;
   return 'http://localhost:3000';
 };
 
